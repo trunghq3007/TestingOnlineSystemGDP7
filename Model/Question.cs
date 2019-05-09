@@ -14,6 +14,7 @@ namespace Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public int Id { get; set; }
         public Category Category { get; set; }
+        [Required(ErrorMessage = "Content question is required.")]
         public string Content { get; set; }
         public int Level { get; set; }
         public string Suggestion { get; set; }

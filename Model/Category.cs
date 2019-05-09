@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 namespace Model
 {
     [Table("Category", Schema = "dbo")]
-    class Category
+   public class Category
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public int Id { get; set; }
+        [Required(ErrorMessage = "Name category is required.")]
         public string Name { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }

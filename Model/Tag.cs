@@ -8,14 +8,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model
 {
-    [Table("Tag",Schema ="dbo")]
-    class Tag
+    [Table("Tag", Schema = "dbo")]
+    public class Tag
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "Name tag is required.")]
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Status { get; set; } 
+        public int Status { get; set; }
     }
 }

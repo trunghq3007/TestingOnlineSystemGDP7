@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Model
 {
     [Table("SemesterExam_User",Schema ="dbo")]
-    class SemesterExam_User
+    public class SemesterExam_User
     {
         [Key]
         public int ID { get; set; }
@@ -17,6 +17,7 @@ namespace Model
         [Required]
         public int UserId { get; set; }
         public int Type { get; set; }
-       
+        public virtual User User { get; set; }
+        public virtual SemesterExam SemesterExam { get; set; }
     }
 }

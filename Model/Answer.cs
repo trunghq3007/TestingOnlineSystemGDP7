@@ -14,7 +14,7 @@ namespace Model
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public int Id { get; set; }
-        public Question Question { get; set; }
+        public virtual Question Question { get; set; }
         [Required(ErrorMessage = "Content answer is required.")]
         public string Content { get; set; }
         public string Media { get; set; }

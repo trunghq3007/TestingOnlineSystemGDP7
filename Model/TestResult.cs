@@ -16,6 +16,7 @@ namespace Model
         [Required(ErrorMessage = "test id is not null")]
         public int TestId { get; set; }
         [Required(ErrorMessage = "user id is not null")]
+        [ForeignKey("User")]
         public int UserId { get; set; }
         [Required(ErrorMessage = "question id is not null")]
         public int QuestionId { get; set; }
@@ -25,5 +26,7 @@ namespace Model
         public float Score { get; set; }
         
         public string DescriptionName { get; set; }
+        public virtual User User { get; set; }
+        public virtual Test Test { get; set; }
     }
 }

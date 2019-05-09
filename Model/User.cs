@@ -37,5 +37,7 @@ namespace Model
         public bool Status { get; set; }
         public virtual ICollection<UserGroup> UserGroups { get; set; }
         public virtual Role Role { get; set; }
+        public virtual ICollection<SemesterExam_User> SemesterExam_Users { get; set; }
+        public virtual ICollection<TestResult> TestResults { get; set; }
     }
 }

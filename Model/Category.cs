@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+
     [Table("Category", Schema = "dbo")]
    public class Category
     {

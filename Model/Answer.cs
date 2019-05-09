@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model
 {
+
     [Table("Answer", Schema = "dbo")]
     public class Answer
     {

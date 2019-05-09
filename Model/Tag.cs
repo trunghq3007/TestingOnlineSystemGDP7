@@ -13,8 +13,8 @@ namespace Model
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key]
         public int Id { get; set; }
-        public String Name { get; set; }
-        public String Description { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public int Status { get; set; } 
     }
 }

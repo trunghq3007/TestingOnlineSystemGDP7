@@ -1,0 +1,16 @@
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Services.dll
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Services.pdb
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\DataAccessLayer.dll
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Model.dll
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Repository.dll
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\DataAccessLayer.pdb
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\DataAccessLayer.dll.config
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Model.pdb
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Model.dll.config
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Repository.pdb
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\bin\Debug\Repository.dll.config
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\obj\Debug\Services.csprojAssemblyReference.cache
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\obj\Debug\Services.csproj.CoreCompileInputs.cache
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\obj\Debug\Services.csproj.CopyComplete
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\obj\Debug\Services.dll
+C:\Users\admin\Desktop\team3\TestingOnlineSystemGDP7\Services\obj\Debug\Services.pdb

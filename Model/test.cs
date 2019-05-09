@@ -8,26 +8,30 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-  public class test
+  public class Test
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        public int Exam_id { get; set; }
+        public int ExamId { get; set; }
         [Required]
-        public int Semaster_exam_id { get; set; }
+        public int SemasterExamId { get; set; }
         
         public int Status { get; set; }
-        [Required]
-        public DateTime Start_date { get; set; }
-        [Required]
-        public DateTime End_date { get; set; }
-        public string Create_by { get; set; }
-        public float Pass_score { get; set; }
-        public string Test_name  { get; set; }
-        public int number_time { get; set; }
-        public float time_test { get; set; }
+        public DateTime? StartDate { get; set; }
+       
+        public DateTime? EndDate { get; set; }
+        [Required(ErrorMessage = "create by is not null")]
+        public string CreateBy { get; set; }
+        [Required(ErrorMessage = "pass score is not null")]
+        public float PassScore { get; set; }
+        [Required(ErrorMessage = "test name is not null")]
+        public string TestName  { get; set; }
+        [Required(ErrorMessage = "number of time is not null")]
+        public int NumberTime { get; set; }
+        [Required(ErrorMessage = "test time is not null")]
+        public float TestTime { get; set; }
         
     }
 }

@@ -8,10 +8,11 @@ using Model;
 
 namespace DataAccessLayer
 {
-    class DBEntityContext:DbContext
+    public class DBEntityContext:DbContext
     {
         public DBEntityContext() : base("name=defaultConnection")
         {
+            Database.SetInitializer<DBEntityContext>(new DbInitializer());
         }
         public virtual DbSet<Model.Action> Actions { get; set; }
         public virtual DbSet<Answer> Answers { get; set; }

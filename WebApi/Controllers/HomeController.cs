@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DataAccessLayer;
 using Services;
 using Model;
 
@@ -14,11 +13,11 @@ namespace WebApi.Controllers
         private GroupServices groupServices;
         public HomeController()
         {
-            groupServices = new GroupServices();
+           // groupServices = new GroupServices();
         }
         public ActionResult Index(Group group)
         {          
-            groupServices.Insert(group);           
+            //groupServices.Insert(group);           
             return View();
         }
     }

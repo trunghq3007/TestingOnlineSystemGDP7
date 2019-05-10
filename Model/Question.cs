@@ -14,7 +14,7 @@ namespace Model
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public int Id { get; set; }
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
         [Required(ErrorMessage = "Content question is required.")]
         public string Content { get; set; }
         public int Level { get; set; }
@@ -27,6 +27,8 @@ namespace Model
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
-        public ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Exam> Exams { get; set; }
     }
 }

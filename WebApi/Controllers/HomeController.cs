@@ -4,18 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DataAccessLayer;
+using Services;
+using Model;
 
 namespace WebApi.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private GroupServices groupServices;
+        public HomeController()
         {
-            var db = new DBEntityContext();
-            db.Tags.Add(new Model.Tag { Name = "tag", Status = 0, Description = "test" });
-            db.SaveChanges();
-            ViewBag.Title = "Home Page";
-
+            groupServices = new GroupServices();
+        }
+        public ActionResult Index(Group group)
+        {          
+            groupServices.Insert(group);           
             return View();
         }
     }

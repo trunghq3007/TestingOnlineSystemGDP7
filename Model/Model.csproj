@@ -48,20 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Include="Exam.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SemasterExam.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="TestResult.cs" />
-=======
     <Compile Include="Answer.cs" />
     <Compile Include="Category.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SemesterExam.cs" />
     <Compile Include="SemesterExam_User.cs" />
->>>>>>> a0c2dcdd40d57e9d21f010449112d24825c2d370
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

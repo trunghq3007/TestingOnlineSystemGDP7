@@ -14,8 +14,7 @@ namespace Model
         [Key]
         public int ID { get; set; }
         
-        [Required]
-        public int UserId { get; set; }
+        
         public int Type { get; set; }
         public virtual User User { get; set; }
         public virtual SemesterExam SemesterExam { get; set; }

@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+
+using System.Web.Http;
+
 using Model;
 using Newtonsoft.Json;
 using Services;
+using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace WebApi.Controllers
 {
-    public class SemesterExamController : Controller
+    public class SemesterExamController : ApiController
     {
         private SemesterExamServices service;
         public SemesterExamController()
@@ -20,7 +23,7 @@ namespace WebApi.Controllers
         // GET: SemesterExam
         [Route("SemesterExams")]
         [System.Web.Http.HttpGet]
-        public string GetAll()
+        public string Index()
         {
             var result = service.GetAll();
             return JsonConvert.SerializeObject(result);

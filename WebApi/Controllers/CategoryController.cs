@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Services;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using Model;
 using Newtonsoft.Json;
-using System.Web.Http;
+using Services;
 
 namespace WebApi.Controllers
 {
-    public class QuestionController : ApiController
+    public class CategoryController : ApiController
     {
-        private QuestionServices service;
+        private CategoryService service;
 
-        public QuestionController()
+        public CategoryController()
         {
-            service = new QuestionServices();
+            service = new CategoryService();
         }
         [HttpGet]
         public string Get()
         {
             var result = service.GetAll().ToList();
-           return JsonConvert.SerializeObject(result) ;      
+            return JsonConvert.SerializeObject(result);
         }
         [HttpGet]
         public string Get(int id)
@@ -35,21 +36,21 @@ namespace WebApi.Controllers
         {
             if (value.Count() > 0)
             {
-                var question = JsonConvert.DeserializeObject<Question>(value);
-                var result = service.Insert(question);
+                var category = JsonConvert.DeserializeObject<Category>(value);
+                var result = service.Insert(category);
                 return JsonConvert.SerializeObject(result);
             }
             return "FALSE";
         }
 
         [HttpPut]
-        public string Put(int id ,[FromBody]string value)
+        public string Put(int id, [FromBody]string value)
         {
             if (value.Count() > 0)
             {
-                var question = JsonConvert.DeserializeObject<Question>(value);
-                question.Id = id;
-                var result = service.Update(question);
+                var category = JsonConvert.DeserializeObject<Category>(value);
+                category.Id = id;
+                var result = service.Update(category);
                 return JsonConvert.SerializeObject(result);
             }
             return "FALSE";
@@ -60,7 +61,5 @@ namespace WebApi.Controllers
             var result = service.Delete(id);
             return JsonConvert.SerializeObject(result);
         }
-
-
     }
 }

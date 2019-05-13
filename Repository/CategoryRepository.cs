@@ -1,56 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Repository.Interfaces;
 
 namespace Repository
 {
-    public class GroupRepository : Interfaces.IRepository<Group>, IDisposable
+    public class CategoryRepository : Interfaces.IRepository<Category>, IDisposable
     {
         private DBEntityContext context;
 
-        public GroupRepository(DBEntityContext context)
+        public CategoryRepository(DBEntityContext context)
         {
             this.context = context;
         }
+
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            var item = context.Categorys.Where(s => s.Id == id).SingleOrDefault();
+            if (item != null)
+            {
+                context.Categorys.Remove(item);
+                return context.SaveChanges();
+            }
+            return 0;
         }
 
-        public IEnumerable<Group> Filter(Group t)
+        public IEnumerable<Category> Filter(Category t)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Group> GetAll()
+       
+
+        public IEnumerable<Category> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Categorys.ToList();
         }
 
-        public Group GetById(int id)
+        public Category GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Categorys.Where(s => s.Id == id).SingleOrDefault();
         }
 
-        public int Insert(Group t)
+        public int Insert(Category t)
         {
-            context.Groups.Add(t);
+            context.Categorys.Add(t);
             return context.SaveChanges();
         }
 
-
-        public IEnumerable<Group> Search(string searchString)
+        public IEnumerable<Category> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return context.Categorys.Where(s => s.Name.Contains(searchString));
         }
 
-        public int Update(Group t)
+        public int Update(Category t)
         {
-            throw new NotImplementedException();
+            context.Entry(t).State = EntityState.Modified;
+            return context.SaveChanges();
         }
 
         private bool disposed = false;

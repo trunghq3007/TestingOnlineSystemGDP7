@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
 namespace Repository.Interfaces
 {
@@ -14,6 +15,7 @@ namespace Repository.Interfaces
         int Insert(T t);
         int Update(T t);
         int Delete(int id);
-        T GetById(int id);   
+        T GetById(int id);
+        IEnumerable<Question> Filter(object t);
     }
 }

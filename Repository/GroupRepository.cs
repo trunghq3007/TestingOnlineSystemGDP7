@@ -70,5 +70,10 @@ namespace Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public IEnumerable<Question> Filter(object t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

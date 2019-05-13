@@ -10,50 +10,49 @@ using Repository;
 
 namespace Services
 {
-    public class QuestionServices : Interfaces.IServices<Question>
+    public class AnswerServices : Interfaces.IServices<Answer>
     {
-        private IRepository<Question> repository;
+        private IRepository<Answer> repository;
 
-        public QuestionServices()
+        public AnswerServices()
         {
-            repository = new QuestionRepository(new DBEntityContext());
+            repository = new AnswerRepository(new DBEntityContext());
         }
         public int Delete(int id)
         {
             return repository.Delete(id);
         }
-        public IEnumerable<Question> Filter(Question t)
-        {
-            return null;
-        }
-        public IEnumerable<Question> Filter(QuestionFillterModel t)
+
+        public IEnumerable<Answer> Filter(Answer t)
         {
             return repository.Filter(t);
         }
 
-        public IEnumerable<Question> GetAll()
+        public IEnumerable<Answer> GetAll()
         {
             return repository.GetAll();
         }
 
-        public Question GetById(int id)
+        public Answer GetById(int id)
         {
             return repository.GetById(id);
         }
 
-        public int Insert(Question t)
+        public int Insert(Answer t)
         {
             return repository.Insert(t);
         }
 
-        public IEnumerable<Question> Search(string searchString)
+        public IEnumerable<Answer> Search(string searchString)
         {
             return repository.Search(searchString);
         }
 
-        public int Update(Question t)
+        public int Update(Answer t)
         {
             return repository.Update(t);
         }
+
+        //public IEnumerable<Answer> GetAll()
     }
 }

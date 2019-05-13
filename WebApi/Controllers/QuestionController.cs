@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using Services;
 using Model;
 using Newtonsoft.Json;
+using System.Web.Http;
 
 namespace WebApi.Controllers
 {
-    public class QuestionController : Controller
+    public class QuestionController : ApiController
     {
         private QuestionServices service;
 
@@ -17,26 +17,50 @@ namespace WebApi.Controllers
         {
             service = new QuestionServices();
         }
-
-        public string Index()
+        [HttpGet]
+        public string Get()
         {
             var result = service.GetAll().ToList();
            return JsonConvert.SerializeObject(result) ;      
         }
-
-        [HttpPost]
-        public string Index(Question question)
+        [HttpGet]
+        public string Get(int id)
         {
-            var result = service.Insert(question);
+            var result = service.GetById(id);
             return JsonConvert.SerializeObject(result);
         }
 
-        //[HttpPut]
-        //public string Index(Question tag)
-        //{
-        //    var result = tagServices.Insert(tag);
-        //    return JsonConvert.SerializeObject(result);
-        //}
+        [HttpPost]
+        public string Post([FromBody]string value)
+        {
+            if (value.Count() > 0)
+            {
+                var question = JsonConvert.DeserializeObject<Question>(value);
+                var result = service.Insert(question);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
+        }
+
+        [HttpPut]
+        public string Put(int id ,[FromBody]string value)
+        {
+            if (value.Count() > 0)
+            {
+                var question = JsonConvert.DeserializeObject<Question>(value);
+                question.Id = id;
+                var result = service.Update(question);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
+        }
+        [HttpDelete]
+        public string Put(int id)
+        {
+            var result = service.Delete(id);
+            return JsonConvert.SerializeObject(result);
+        }
+
 
     }
 }

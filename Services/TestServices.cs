@@ -39,7 +39,7 @@ namespace Services
 
         public int Insert(Test t)
         {
-            throw new NotImplementedException();
+            return testRepository.Insert(t);
         }
 
         public IEnumerable<Test> Search(string searchString)

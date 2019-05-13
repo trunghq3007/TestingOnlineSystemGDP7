@@ -11,23 +11,24 @@ namespace WebApi.Controllers
 {
     public class TestController : Controller
     {
-        private QuestionServices service;
-
+        private QuestionServices questionServices;
+        private TestServices testServices;
         public TestController()
         {
-            service = new QuestionServices();
+            questionServices = new QuestionServices();
+            testServices=new TestServices();
         }
 
-        public string Index()
-        {
-            var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
-        }
+        //public string Index()
+        //{
+        //    var result = questionServices.GetAll();
+        //    return JsonConvert.SerializeObject(result);
+        //}
 
         [HttpPost]
-        public string Index(Question question)
+        public string Index(Test test)
         {
-            var result = service.Insert(question);
+            var result = testServices.Insert(test);
             return JsonConvert.SerializeObject(result);
         }
 

@@ -12,14 +12,16 @@ namespace WebApi.Controllers
     public class ExamController : Controller
     {
         private ExamServices examServices;
-
+        private QuestionServices questionServices;
         public ExamController()
         {
             examServices = new ExamServices();
+            questionServices = new QuestionServices();
         }
+        //get question
         public string Index()
         {
-            var result = examServices.GetAll().ToList();
+            var result = questionServices.GetAll();
             return JsonConvert.SerializeObject(result);
         }
         [HttpPost]

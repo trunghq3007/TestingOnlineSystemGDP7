@@ -11,14 +11,15 @@ namespace WebApi.Controllers
 {
     public class HomeController : Controller
     {
-        private GroupServices groupServices;
+        private SemesterExamServices semesterExamServices;
         public HomeController()
         {
-            groupServices = new GroupServices();
+            semesterExamServices = new SemesterExamServices();
         }
-        public ActionResult Index(Group group)
-        {          
-            groupServices.Insert(group);           
+        public ActionResult Index()
+        {
+            SemesterExam semesterExam = new SemesterExam("dd", DateTime.Now, DateTime.Now, "code1", 1);
+            semesterExamServices.Insert(semesterExam);           
             return View();
         }
     }

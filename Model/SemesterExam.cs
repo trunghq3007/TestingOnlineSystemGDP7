@@ -13,6 +13,19 @@ namespace Model
     [Table("SemesterExam",Schema ="dbo")]
     public class SemesterExam
     {
+        public SemesterExam()
+        {
+        }
+
+        public SemesterExam(string semesterName, DateTime? startDay, DateTime? endDay, string code, int status)
+        {
+            SemesterName = semesterName;
+            StartDay = startDay;
+            EndDay = endDay;
+            Code = code;
+            this.status = status;
+        }
+
         [Key]
         public int ID { get; set; }
         [Required(ErrorMessage ="Semester Name is required")]

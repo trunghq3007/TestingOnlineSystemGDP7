@@ -17,3 +17,8 @@
 /DataAccessLayer/obj/Debug/*.force
 /Repository/obj/Debug/build.force
 /Services/obj/Debug/build.force
+/.vs/TestingOnlineSystem/v15/.suo
+/.vs/TestingOnlineSystem/v15/Server/sqlite3/storage.ide
+/.vs/TestingOnlineSystem/v15/Server/sqlite3/storage.ide-shm
+/.vs/TestingOnlineSystem/v15/Server/sqlite3/storage.ide-wal
+/.vs/config/applicationhost.config

@@ -7,10 +7,12 @@ using Repository;
 using Model;
 using DataAccessLayer;
 using Repository.Interfaces;
+
 namespace Services
 {
     public class ExamServices : Interfaces.IServices<Exam>
     {
+        private DBEntityContext context;
         private IRepository<Exam> examRepository;
 
         public ExamServices()
@@ -29,7 +31,8 @@ namespace Services
 
         public IEnumerable<Exam> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Exams.ToList();
+            
         }
 
         public Exam GetById(int id)

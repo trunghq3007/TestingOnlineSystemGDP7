@@ -19,11 +19,11 @@ namespace WebApi.Controllers
             testServices=new TestServices();
         }
 
-        //public string Index()
-        //{
-        //    var result = questionServices.GetAll();
-        //    return JsonConvert.SerializeObject(result);
-        //}
+        public string Index()
+        {
+            var result = questionServices.GetAll();
+            return JsonConvert.SerializeObject(result);
+        }
 
         [HttpPost]
         public string Index(Test test)

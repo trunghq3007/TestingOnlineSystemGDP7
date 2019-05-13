@@ -71,5 +71,10 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Question> Filter(object t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

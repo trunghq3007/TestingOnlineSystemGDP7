@@ -15,8 +15,8 @@ namespace Model
         public int Id { get; set; }
         [Required]
         public int ExamId { get; set; }
-        [Required]
-        public int SemasterExamId { get; set; }
+        //[Required]
+        //public int SemasterExamId { get; set; }
         
         public int Status { get; set; }
         public DateTime? StartDate { get; set; }

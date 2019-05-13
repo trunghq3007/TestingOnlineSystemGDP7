@@ -14,6 +14,6 @@ namespace Model
         public string RoleName { get; set; }
         public string Description { get; set; }
         public virtual ICollection<RoleAction> RoleActions { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        //public virtual ICollection<User> Users { get; set; }
     }
 }

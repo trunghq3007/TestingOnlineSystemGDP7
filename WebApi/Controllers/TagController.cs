@@ -2,41 +2,65 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using Services;
 using Model;
 using Newtonsoft.Json;
+using System.Web.Http;
 
 namespace WebApi.Controllers
 {
-    public class TagController : Controller
+    public class TagController : ApiController
     {
-        private TagServices tagServices;
+        private TagServices service;
 
         public TagController()
         {
-            tagServices = new TagServices();
+            service = new TagServices();
         }
-
-        public string Index()
+        [HttpGet]
+        public string Get()
         {
-            var result = tagServices.GetAll().ToList();
-           return JsonConvert.SerializeObject(result) ;      
+            var result = service.GetAll().ToList();
+            return JsonConvert.SerializeObject(result);
         }
-
-        [HttpPost]
-        public string Index(Tag tag)
+        [HttpGet]
+        public string Get(int id)
         {
-            var result = tagServices.Insert(tag);
+            var result = service.GetById(id);
             return JsonConvert.SerializeObject(result);
         }
 
-        //[HttpPut]
-        //public string Index(Tag tag)
-        //{
-        //    var result = tagServices.Insert(tag);
-        //    return JsonConvert.SerializeObject(result);
-        //}
+        [HttpPost]
+        public string Post([FromBody]string value)
+        {
+            if (value.Count() > 0)
+            {
+                var question = JsonConvert.DeserializeObject<Tag>(value);
+                var result = service.Insert(question);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
+        }
+
+        [HttpPut]
+        public string Put(int id, [FromBody]string value)
+        {
+            if (value.Count() > 0)
+            {
+                var question = JsonConvert.DeserializeObject<Tag>(value);
+                question.Id = id;
+                var result = service.Update(question);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
+        }
+        [HttpDelete]
+        public string Put(int id)
+        {
+            var result = service.Delete(id);
+            return JsonConvert.SerializeObject(result);
+        }
+
 
     }
 }

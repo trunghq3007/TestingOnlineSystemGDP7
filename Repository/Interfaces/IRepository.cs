@@ -16,6 +16,6 @@ namespace Repository.Interfaces
         int Update(T t);
         int Delete(int id);
         T GetById(int id);
-        IEnumerable<Question> Filter(object t);
+        IEnumerable<T> Filter(object t);
     }
 }

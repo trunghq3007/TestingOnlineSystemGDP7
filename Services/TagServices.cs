@@ -12,45 +12,48 @@ namespace Services
 {
     public class TagServices : Interfaces.IServices<Tag>
     {
-        private IRepository<Tag> tagRepository;
+        private IRepository<Tag> repository;
 
         public TagServices()
         {
-            tagRepository = new TagRepository(new DBEntityContext());
+            repository = new TagRepository(new DBEntityContext());
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            return repository.Delete(id);
         }
-
         public IEnumerable<Tag> Filter(Tag t)
         {
-            throw new NotImplementedException();
+            return null;
+        }
+        public IEnumerable<Tag> Filter(TagFillterModel t)
+        {
+            return repository.Filter(t);
         }
 
         public IEnumerable<Tag> GetAll()
         {
-            return tagRepository.GetAll();
+            return repository.GetAll();
         }
 
         public Tag GetById(int id)
         {
-            throw new NotImplementedException();
+            return repository.GetById(id);
         }
 
         public int Insert(Tag t)
         {
-            throw new NotImplementedException();
+            return repository.Insert(t);
         }
 
         public IEnumerable<Tag> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return repository.Search(searchString);
         }
 
         public int Update(Tag t)
         {
-            throw new NotImplementedException();
+            return repository.Update(t);
         }
     }
 }

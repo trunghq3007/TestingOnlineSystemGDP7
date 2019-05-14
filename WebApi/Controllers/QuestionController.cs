@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class QuestionController : ApiController
     {
         private QuestionServices service;

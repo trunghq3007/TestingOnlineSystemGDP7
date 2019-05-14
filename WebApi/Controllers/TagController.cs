@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class TagController : ApiController
     {
         private TagServices service;

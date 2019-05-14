@@ -15,24 +15,10 @@ namespace WebApi
     {
         public static void Register(HttpConfiguration config)
         {
-<<<<<<< .mine
 
-=======
-          
->>>>>>> .theirs
-
-            
-            // Web API configuration and services
-            // Configure Web API to use only bearer token authentication.
-<<<<<<< .mine
-            //config.EnableCors(new EnableCorsAttribute("http://localhost:4200", headers: "*", methods: "*"));
-=======
-
->>>>>>> .theirs
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
-            config.EnableCors();
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
 

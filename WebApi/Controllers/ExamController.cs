@@ -8,71 +8,50 @@ using Newtonsoft.Json;
 using Services;
 using Model;
 using System.Web.Http.Cors;
-using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
-<<<<<<< .mine
-    [EnableCors("*", "*", "*")]
-=======
+
+    //[EnableCors("*", "*", "*")]
+
     [AllowCrossSite]
->>>>>>> .theirs
+
     public class ExamController : ApiController
     {
         private ExamServices services;
-
+		private QuestionServices QuestionServices;
         public ExamController()
         {
             services = new ExamServices();
+			QuestionServices = new QuestionServices();
         }
-<<<<<<< .mine
-        //get question
-      
-        [System.Web.Http.HttpGet]
-        public string Index()
-=======
-        [HttpGet]
-        // GET: User
-        public string GetExam()
 
->>>>>>> .theirs
-        {
-            var result = services.GetAll();
-            return JsonConvert.SerializeObject(result);
-        }
-<<<<<<< .mine
+      
+   
         [System.Web.Http.HttpGet]
         public string Index(int id)
         {
-            var result = questionServices.GetById(2);
+            var result = QuestionServices.GetById(2);
             return JsonConvert.SerializeObject(result);
         }
-        
-        [System.Web.Http.HttpPost]
-        
-        public string Index (Exam exam)
-=======
-
-        [HttpGet]
-        // GETID : User
-        public string GetExam(int id)
 
 
 
+		[HttpGet]
+		// GETID : User
+		public string GetExam(int id)
+		{
 
 
+			var result = QuestionServices.GetById(id);
 
->>>>>>> .theirs
-        {
-<<<<<<< .mine
+
+			return JsonConvert.SerializeObject(result);
+		}
             
-            var result = examServices.Insert(exam);
-=======
-            var result = services.GetById(id);
 
->>>>>>> .theirs
-            return JsonConvert.SerializeObject(result);
-        }
+           
+        
         [HttpPost]
         public string InsertExam([FromBody] string value)
         {

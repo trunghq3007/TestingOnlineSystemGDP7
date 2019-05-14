@@ -10,9 +10,9 @@ using Repository;
 
 namespace Services
 {
-    public class QuestionServices : Interfaces.IServices<Question>
+    public class QuestionServices : Interfaces.IQuestionServices<Question>
     {
-        private IRepository<Question> repository;
+        private IQuestionRepository<Question> repository;
 
         public QuestionServices()
         {
@@ -29,6 +29,11 @@ namespace Services
         public IEnumerable<Question> Filter(QuestionFillterModel t)
         {
             return repository.Filter(t);
+        }
+
+        public IEnumerable<Question> Filter(object t)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Question> GetAll()

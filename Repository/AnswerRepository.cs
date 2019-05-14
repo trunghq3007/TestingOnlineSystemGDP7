@@ -8,7 +8,7 @@ using Model;
 
 namespace Repository
 {
-    public class AnswerRepository : Interfaces.IRepository<Answer>, IDisposable
+    public class AnswerRepository : Interfaces.IAnswerRepository<Answer>, IDisposable
     {
         private DBEntityContext context;
 
@@ -31,11 +31,6 @@ namespace Repository
             }
             return 0;
 
-        }
-
-        public IEnumerable<Answer> Filter(Answer t)
-        {
-            return null;
         }
 
         public IEnumerable<Answer> GetAll()
@@ -83,9 +78,6 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<Question> Filter(object t)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

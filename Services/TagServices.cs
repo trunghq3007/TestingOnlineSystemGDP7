@@ -10,9 +10,9 @@ using Repository;
 
 namespace Services
 {
-    public class TagServices : Interfaces.IServices<Tag>
+    public class TagServices : Interfaces.ITagServices<Tag>
     {
-        private IRepository<Tag> repository;
+        private ITagRepository<Tag> repository;
 
         public TagServices()
         {
@@ -22,15 +22,7 @@ namespace Services
         {
             return repository.Delete(id);
         }
-        public IEnumerable<Tag> Filter(Tag t)
-        {
-            return null;
-        }
-        public IEnumerable<Tag> Filter(TagFillterModel t)
-        {
-            return repository.Filter(t);
-        }
-
+       
         public IEnumerable<Tag> GetAll()
         {
             return repository.GetAll();

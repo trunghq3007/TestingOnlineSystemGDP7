@@ -10,7 +10,7 @@ using Repository.Interfaces;
 
 namespace Repository
 {
-    public class CategoryRepository : Interfaces.IRepository<Category>, IDisposable
+    public class CategoryRepository : Interfaces.ICategoryRepository<Category>, IDisposable
     {
         private DBEntityContext context;
 
@@ -29,13 +29,6 @@ namespace Repository
             }
             return 0;
         }
-
-        public IEnumerable<Category> Filter(Category t)
-        {
-            throw new NotImplementedException();
-        }
-
-       
 
         public IEnumerable<Category> GetAll()
         {
@@ -82,9 +75,5 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<Question> Filter(object t)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

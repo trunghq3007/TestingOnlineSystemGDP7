@@ -1,13 +1,12 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model;
 
-namespace Repository.Interfaces
+namespace Services.Interfaces
 {
-    public interface IRepository<T> where T:class
+    public interface IQuestionServices<T> where T:class
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Search(string searchString);
@@ -16,5 +15,7 @@ namespace Repository.Interfaces
         int Update(T t);
         int Delete(int id);
         T GetById(int id);
+        IEnumerable<T> Filter(object t);
+
     }
 }

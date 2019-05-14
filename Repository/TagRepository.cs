@@ -10,7 +10,7 @@ using Repository.Interfaces;
 
 namespace Repository
 {
-    public class TagRepository : Interfaces.IRepository<Tag>, IDisposable
+    public class TagRepository : Interfaces.ITagRepository<Tag>, IDisposable
     {
         private DBEntityContext context;
 

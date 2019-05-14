@@ -41,12 +41,12 @@ namespace Repository
 
         public IEnumerable<SemesterExam> GetAll()
         {
-            return context.SemesterExams.ToList();
+            return (IEnumerable<SemesterExam>)context.SemesterExams.ToList();
         }
 
         public SemesterExam GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.SemesterExams.Find(id);
         }
 
         public int Insert(SemesterExam t)

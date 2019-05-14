@@ -65,5 +65,12 @@ namespace WebApi.Controllers
 
             return JsonConvert.SerializeObject(result);
         }
+        [Route("SemesterExam/detail/{id}")]
+        [HttpGet]
+        public string Get(int id)
+        {
+            var result = service.GetById(id);
+            return JsonConvert.SerializeObject(result);
+        }
     }
 }

@@ -72,13 +72,17 @@ namespace Repository
             
             int count = query.ToList().Count;
             ReportSemester reportSemester = new ReportSemester();
-            reportSemester.SemesterName = semesterExam.SemesterName;
+            
             User user= new User();
             //user.SemesterExam_Users.Where(S => S.ID == 1).ToList();
             //SemesterExam semesterExam= new SemesterExam();
             List<User> users = context.Users.ToList();
             List<SemesterExam> semesterExamsterExams = context.SemesterExams.ToList();
+            reportSemester.SemesterName = semesterExam.SemesterName;
             reportSemester.Creator = semesterExam_Users.User.FullName;
+            reportSemester.StartDay = semesterExam.StartDay.ToString();
+            reportSemester.EndDay = semesterExam.EndDay.ToString();
+            reportSemester.NumEXams = count;
 
 
 

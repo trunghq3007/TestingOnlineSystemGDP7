@@ -30,16 +30,6 @@ namespace Repository
             return 0;
         }
 
-        public IEnumerable<Tag> Filter(Tag t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Tag> Filter(object model)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Tag> GetAll()
         {
             return context.Tags.ToList();

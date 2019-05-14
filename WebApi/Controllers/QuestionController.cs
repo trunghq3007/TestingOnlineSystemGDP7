@@ -18,10 +18,35 @@ namespace WebApi.Controllers
             service = new QuestionServices();
         }
         [HttpGet]
+        public string Get([FromUri]string action,[FromBody]string value)
+        {
+            if( value != null && !"".Equals(value))
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.Search(value));
+                }
+                if ("fillter".Equals(action))
+                {
+                    try
+                    {
+                        var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value);
+                        return JsonConvert.SerializeObject(service.Filter(filterObject));
+                    }catch(Exception)
+                    {
+                        return "Object fillter not convert valid";
+                    }
+                }
+            }
+            var result = service.GetAll().ToList();
+            return JsonConvert.SerializeObject(result);
+
+        }
+        [HttpGet]
         public string Get()
         {
             var result = service.GetAll().ToList();
-           return JsonConvert.SerializeObject(result) ;      
+            return JsonConvert.SerializeObject(result);
         }
         [HttpGet]
         public string Get(int id)
@@ -29,7 +54,7 @@ namespace WebApi.Controllers
             var result = service.GetById(id);
             return JsonConvert.SerializeObject(result);
         }
-
+        
         [HttpPost]
         public string Post([FromBody]string value)
         {

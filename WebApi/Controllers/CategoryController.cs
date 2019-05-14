@@ -31,6 +31,21 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
+        [HttpGet]
+        public string Get([FromUri]string action, [FromBody]string value)
+        {
+            if (value != null && !"".Equals(value))
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.Search(value));
+                }
+            }
+            var result = service.GetAll().ToList();
+            return JsonConvert.SerializeObject(result);
+
+        }
+
         [HttpPost]
         public string Post([FromBody]string value)
         {

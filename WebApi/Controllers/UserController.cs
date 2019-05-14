@@ -23,5 +23,6 @@ namespace WebApi.Controllers
             var list = services.GetAll();
             return JsonConvert.SerializeObject(list);
         }
+
     }
 }

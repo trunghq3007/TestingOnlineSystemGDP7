@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Model;
 using DataAccessLayer;
+using System.Data.Entity;
 
 namespace Repository
 {
-    public class UserRepository : Interfaces.IGroupRepository<User>
+    public class UserRepository : Interfaces.IGroupRepository<User>,IDisposable
     {
         private DBEntityContext context;
         public UserRepository(DBEntityContext context)
@@ -17,7 +18,14 @@ namespace Repository
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            var item = context.Users.Where(s => s.UserId == id).SingleOrDefault();
+            if (item != null)
+            {
+                context.Users.Remove(item);
+                context.SaveChanges();
+
+            }
+            return 0;
         }
 
         public IEnumerable<User> Filter(User t)
@@ -32,7 +40,7 @@ namespace Repository
 
         public User GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Users.Where(s => s.UserId == id).SingleOrDefault();
         }
 
         public IEnumerable<User> GetUserInGroup(int id)
@@ -48,12 +56,30 @@ namespace Repository
 
         public IEnumerable<User> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return context.Users.Where(s => s.FullName.Contains(searchString));
         }
 
-        public int Update(User t)
+        public int Update(User user)
         {
-            throw new NotImplementedException();
+            context.Entry(user).State = EntityState.Modified;
+            return context.SaveChanges();
+        }
+        private bool disposed = false;
+        public void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

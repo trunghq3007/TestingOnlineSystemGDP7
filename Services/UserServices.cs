@@ -20,7 +20,7 @@ namespace Services
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            return userRepository.Delete(id);
         }
 
         public IEnumerable<User> Filter(User t)
@@ -35,7 +35,7 @@ namespace Services
 
         public User GetById(int id)
         {
-            throw new NotImplementedException();
+            return userRepository.GetById(id);
         }
 
         public IEnumerable<User> GetUserInGroup(int id)
@@ -50,12 +50,12 @@ namespace Services
 
         public IEnumerable<User> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return userRepository.Search(searchString);
         }
 
-        public int Update(User t)
+        public int Update(User user)
         {
-            throw new NotImplementedException();
+            return userRepository.Update(user);
         }
     }
 }

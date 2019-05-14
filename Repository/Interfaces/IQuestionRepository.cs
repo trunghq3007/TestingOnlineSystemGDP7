@@ -7,7 +7,7 @@ using Model;
 
 namespace Repository.Interfaces
 {
-    public interface IRepository<T> where T:class
+    public interface IQuestionRepository<T>
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Search(string searchString);
@@ -16,5 +16,6 @@ namespace Repository.Interfaces
         int Update(T t);
         int Delete(int id);
         T GetById(int id);
+        IEnumerable<T> Filter(object t);
     }
 }

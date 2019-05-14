@@ -1,69 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
-using Repository.Interfaces;
 
 namespace Repository
 {
-    public class TagRepository : Interfaces.ITagRepository<Tag>, IDisposable
+    public class AnswerRepository : Interfaces.IAnswerRepository<Answer>, IDisposable
     {
         private DBEntityContext context;
 
-        public TagRepository(DBEntityContext context)
+        public AnswerRepository(DBEntityContext context)
         {
             this.context = context;
         }
 
         public int Delete(int id)
         {
-            var item = context.Tags.Where(s => s.Id == id).SingleOrDefault();
+            var item = context.Answers.Where(s => s.Id == id).SingleOrDefault();
             if (item != null)
             {
-                context.Tags.Remove(item);
+                context.Answers.Remove(item);
                 return context.SaveChanges();
             }
+            else
+            {
+                //log
+            }
             return 0;
+
         }
 
-        public IEnumerable<Tag> Filter(Tag t)
+        public IEnumerable<Answer> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Answers.ToList();
         }
 
-        public IEnumerable<Tag> Filter(object model)
+        public Answer GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Answers.Where(s => s.Id == id).SingleOrDefault();
         }
 
-        public IEnumerable<Tag> GetAll()
+        public int Insert(Answer t)
         {
-            return context.Tags.ToList();
-        }
-
-        public Tag GetById(int id)
-        {
-            return context.Tags.Where(s => s.Id == id).SingleOrDefault();
-        }
-
-        public int Insert(Tag t)
-        {
-            context.Tags.Add(t);
+            context.Answers.Add(t);
             return context.SaveChanges();
         }
 
-        public IEnumerable<Tag> Search(string searchString)
+        public IEnumerable<Answer> Search(string searchString)
         {
-            return context.Tags.Where(s => s.Name.Contains(searchString));
+            return context.Answers.Where(s => s.Content == searchString).ToList ();
         }
 
-        public int Update(Tag t)
+        public int Update(Answer t)
         {
-            context.Entry(t).State = EntityState.Modified;
+            context.Entry(t).State = System.Data.Entity.EntityState.Modified;
             return context.SaveChanges();
         }
 

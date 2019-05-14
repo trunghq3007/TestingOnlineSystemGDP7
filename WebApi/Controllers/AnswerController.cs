@@ -9,19 +9,19 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
-    public class QuestionController : ApiController
+    public class AnswerController : ApiController
     {
-        private QuestionServices service;
+        private AnswerServices service;
 
-        public QuestionController()
+        public AnswerController()
         {
-            service = new QuestionServices();
+            service = new AnswerServices();
         }
         [HttpGet]
         public string Get()
         {
             var result = service.GetAll().ToList();
-           return JsonConvert.SerializeObject(result) ;      
+            return JsonConvert.SerializeObject(result);
         }
         [HttpGet]
         public string Get(int id)
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         {
             if (value.Count() > 0)
             {
-                var question = JsonConvert.DeserializeObject<Question>(value);
+                var question = JsonConvert.DeserializeObject<Answer>(value);
                 var result = service.Insert(question);
                 return JsonConvert.SerializeObject(result);
             }
@@ -43,11 +43,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public string Put(int id ,[FromBody]string value)
+        public string Put(int id, [FromBody]string value)
         {
             if (value.Count() > 0)
             {
-                var question = JsonConvert.DeserializeObject<Question>(value);
+                var question = JsonConvert.DeserializeObject<Answer>(value);
                 question.Id = id;
                 var result = service.Update(question);
                 return JsonConvert.SerializeObject(result);

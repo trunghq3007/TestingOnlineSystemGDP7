@@ -10,9 +10,9 @@ using Repository;
 
 namespace Services
 {
-    public class GroupServices : Interfaces.IServices<Group>
+    public class GroupServices : Interfaces.IGroupServices<Group>
     {
-        private IRepository<Group> groupRepository;
+        private IGroupRepository<Group> groupRepository;
 
         public GroupServices()
         {
@@ -30,7 +30,7 @@ namespace Services
 
         public IEnumerable<Group> GetAll()
         {
-            throw new NotImplementedException();
+            return groupRepository.GetAll();
         }
 
         public Group GetById(int id)
@@ -38,9 +38,14 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public int Insert(Group t)
+        public IEnumerable<Group> GetUserInGroup(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public int Insert(Group t)
+        {
+            return groupRepository.Insert(t);
         }
 
         public IEnumerable<Group> Search(string searchString)

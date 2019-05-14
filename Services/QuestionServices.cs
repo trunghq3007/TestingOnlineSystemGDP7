@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Repository;
-
+using Model;
 namespace Services
 {
     public class QuestionServices : Interfaces.IServices<Question>

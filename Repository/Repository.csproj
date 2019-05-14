@@ -48,8 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="AnswerRepository.cs" />
+    <Compile Include="CategoryRepository.cs" />
+    <Compile Include="GroupRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionRepository.cs" />
+    <Compile Include="SemesterExamRepository.cs" />
+    <Compile Include="TagRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -57,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commons\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">

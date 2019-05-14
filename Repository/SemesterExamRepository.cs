@@ -9,7 +9,7 @@ using Model;
 namespace Repository
 {
   public  class SemesterExamRepository : Interfaces.IRepository<SemesterExam>, IDisposable
-    {
+    { 
         private DBEntityContext context;
 
         public SemesterExamRepository(DBEntityContext context)
@@ -28,6 +28,11 @@ namespace Repository
         }
 
         public IEnumerable<SemesterExam> Filter(SemesterExam t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Question> Filter(object t)
         {
             throw new NotImplementedException();
         }

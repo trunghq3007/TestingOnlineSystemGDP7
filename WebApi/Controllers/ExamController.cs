@@ -8,9 +8,11 @@ using Services;
 using Model;
 using System.Web.Http;
 using RouteAttribute = System.Web.Http.RouteAttribute;
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class ExamController : ApiController
     {
         private ExamServices examServices;
@@ -21,18 +23,25 @@ namespace WebApi.Controllers
             questionServices = new QuestionServices();
         }
         //get question
-        [Route("Exams")]
+      
         [System.Web.Http.HttpGet]
         public string Index()
         {
             var result = questionServices.GetAll();
             return JsonConvert.SerializeObject(result);
         }
-        [Route("Exams")]
+        [System.Web.Http.HttpGet]
+        public string Index(int id)
+        {
+            var result = questionServices.GetById(2);
+            return JsonConvert.SerializeObject(result);
+        }
+        
         [System.Web.Http.HttpPost]
         
         public string Index (Exam exam)
         {
+            
             var result = examServices.Insert(exam);
             return JsonConvert.SerializeObject(result);
         }

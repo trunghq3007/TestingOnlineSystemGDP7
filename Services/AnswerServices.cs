@@ -10,42 +10,45 @@ using Repository;
 
 namespace Services
 {
-    public class TagServices : Interfaces.ITagServices<Tag>
+    public class AnswerServices : Interfaces.IAnswerServices<Answer>
     {
-        private ITagRepository<Tag> repository;
+        private IAnswerRepository<Answer> repository;
 
-        public TagServices()
+        public AnswerServices()
         {
-            repository = new TagRepository(new DBEntityContext());
+            repository = new AnswerRepository(new DBEntityContext());
         }
         public int Delete(int id)
         {
             return repository.Delete(id);
         }
-       
-        public IEnumerable<Tag> GetAll()
+
+        
+        public IEnumerable<Answer> GetAll()
         {
             return repository.GetAll();
         }
 
-        public Tag GetById(int id)
+        public Answer GetById(int id)
         {
             return repository.GetById(id);
         }
 
-        public int Insert(Tag t)
+        public int Insert(Answer t)
         {
             return repository.Insert(t);
         }
 
-        public IEnumerable<Tag> Search(string searchString)
+        public IEnumerable<Answer> Search(string searchString)
         {
             return repository.Search(searchString);
         }
 
-        public int Update(Tag t)
+        public int Update(Answer t)
         {
             return repository.Update(t);
         }
+
+        //public IEnumerable<Answer> GetAll()
     }
 }

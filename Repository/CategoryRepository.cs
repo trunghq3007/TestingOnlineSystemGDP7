@@ -10,58 +10,48 @@ using Repository.Interfaces;
 
 namespace Repository
 {
-    public class TagRepository : Interfaces.ITagRepository<Tag>, IDisposable
+    public class CategoryRepository : Interfaces.ICategoryRepository<Category>, IDisposable
     {
         private DBEntityContext context;
 
-        public TagRepository(DBEntityContext context)
+        public CategoryRepository(DBEntityContext context)
         {
             this.context = context;
         }
 
         public int Delete(int id)
         {
-            var item = context.Tags.Where(s => s.Id == id).SingleOrDefault();
+            var item = context.Categorys.Where(s => s.Id == id).SingleOrDefault();
             if (item != null)
             {
-                context.Tags.Remove(item);
+                context.Categorys.Remove(item);
                 return context.SaveChanges();
             }
             return 0;
         }
 
-        public IEnumerable<Tag> Filter(Tag t)
+        public IEnumerable<Category> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Categorys.ToList();
         }
 
-        public IEnumerable<Tag> Filter(object model)
+        public Category GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Categorys.Where(s => s.Id == id).SingleOrDefault();
         }
 
-        public IEnumerable<Tag> GetAll()
+        public int Insert(Category t)
         {
-            return context.Tags.ToList();
-        }
-
-        public Tag GetById(int id)
-        {
-            return context.Tags.Where(s => s.Id == id).SingleOrDefault();
-        }
-
-        public int Insert(Tag t)
-        {
-            context.Tags.Add(t);
+            context.Categorys.Add(t);
             return context.SaveChanges();
         }
 
-        public IEnumerable<Tag> Search(string searchString)
+        public IEnumerable<Category> Search(string searchString)
         {
-            return context.Tags.Where(s => s.Name.Contains(searchString));
+            return context.Categorys.Where(s => s.Name.Contains(searchString));
         }
 
-        public int Update(Tag t)
+        public int Update(Category t)
         {
             context.Entry(t).State = EntityState.Modified;
             return context.SaveChanges();
@@ -85,6 +75,5 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-       
     }
 }

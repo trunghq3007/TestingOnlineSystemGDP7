@@ -10,9 +10,9 @@ using Repository;
 
 namespace Services
 {
-    public class QuestionServices : Interfaces.IServices<Question>
+    public class QuestionServices : Interfaces.IQuestionServices<Question>
     {
-        private IRepository<Question> repository;
+        private IQuestionRepository<Question> repository;
 
         public QuestionServices()
         {
@@ -20,10 +20,18 @@ namespace Services
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            return repository.Delete(id);
+        }
+        public IEnumerable<Question> Filter(Question t)
+        {
+            return null;
+        }
+        public IEnumerable<Question> Filter(QuestionFillterModel t)
+        {
+            return repository.Filter(t);
         }
 
-        public IEnumerable<Question> Filter(Question t)
+        public IEnumerable<Question> Filter(object t)
         {
             throw new NotImplementedException();
         }
@@ -35,22 +43,22 @@ namespace Services
 
         public Question GetById(int id)
         {
-            throw new NotImplementedException();
+            return repository.GetById(id);
         }
 
         public int Insert(Question t)
         {
-            throw new NotImplementedException();
+            return repository.Insert(t);
         }
 
         public IEnumerable<Question> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return repository.Search(searchString);
         }
 
         public int Update(Question t)
         {
-            throw new NotImplementedException();
+            return repository.Update(t);
         }
     }
 }

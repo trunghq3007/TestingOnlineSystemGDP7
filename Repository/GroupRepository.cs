@@ -8,7 +8,7 @@ using Model;
 
 namespace Repository
 {
-    public class GroupRepository : Interfaces.IRepository<Group>, IDisposable
+    public class GroupRepository : Interfaces.IGroupRepository<Group>, IDisposable
     {
         private DBEntityContext context;
 
@@ -28,7 +28,7 @@ namespace Repository
 
         public IEnumerable<Group> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Groups.ToList();
         }
 
         public Group GetById(int id)
@@ -69,6 +69,11 @@ namespace Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public IEnumerable<Group> GetUserInGroup(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

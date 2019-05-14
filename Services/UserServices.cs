@@ -11,9 +11,9 @@ using Repository.Interfaces;
 
 namespace Services
 {
-    public class UserSevices : Interfaces.IServices<User>
+    public class UserSevices : Interfaces.IGroupServices<User>
     {
-        private IRepository<User> userRepository;
+        private IGroupRepository<User> userRepository;
         public UserSevices()
         {
             userRepository = new UserRepository(new DBEntityContext());
@@ -34,6 +34,11 @@ namespace Services
         }
 
         public User GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetUserInGroup(int id)
         {
             throw new NotImplementedException();
         }

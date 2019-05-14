@@ -8,7 +8,7 @@ using DataAccessLayer;
 
 namespace Repository
 {
-    public class UserRepository : Interfaces.IRepository<User>
+    public class UserRepository : Interfaces.IGroupRepository<User>
     {
         private DBEntityContext context;
         public UserRepository(DBEntityContext context)
@@ -31,6 +31,11 @@ namespace Repository
         }
 
         public User GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetUserInGroup(int id)
         {
             throw new NotImplementedException();
         }

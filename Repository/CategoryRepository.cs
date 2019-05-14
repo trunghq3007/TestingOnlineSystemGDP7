@@ -1,62 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Repository.Interfaces;
 
 namespace Repository
 {
-    public class AnswerRepository : Interfaces.IAnswerRepository<Answer>, IDisposable
+    public class CategoryRepository : Interfaces.ICategoryRepository<Category>, IDisposable
     {
         private DBEntityContext context;
 
-        public AnswerRepository(DBEntityContext context)
+        public CategoryRepository(DBEntityContext context)
         {
             this.context = context;
         }
 
         public int Delete(int id)
         {
-            var item = context.Answers.Where(s => s.Id == id).SingleOrDefault();
+            var item = context.Categorys.Where(s => s.Id == id).SingleOrDefault();
             if (item != null)
             {
-                context.Answers.Remove(item);
+                context.Categorys.Remove(item);
                 return context.SaveChanges();
             }
-            else
-            {
-                //log
-            }
             return 0;
-
         }
 
-        public IEnumerable<Answer> GetAll()
+        public IEnumerable<Category> GetAll()
         {
-            return context.Answers.ToList();
+            return context.Categorys.ToList();
         }
 
-        public Answer GetById(int id)
+        public Category GetById(int id)
         {
-            return context.Answers.Where(s => s.Id == id).SingleOrDefault();
+            return context.Categorys.Where(s => s.Id == id).SingleOrDefault();
         }
 
-        public int Insert(Answer t)
+        public int Insert(Category t)
         {
-            context.Answers.Add(t);
+            context.Categorys.Add(t);
             return context.SaveChanges();
         }
 
-        public IEnumerable<Answer> Search(string searchString)
+        public IEnumerable<Category> Search(string searchString)
         {
-            return context.Answers.Where(s => s.Content == searchString).ToList ();
+            return context.Categorys.Where(s => s.Name.Contains(searchString));
         }
 
-        public int Update(Answer t)
+        public int Update(Category t)
         {
-            context.Entry(t).State = System.Data.Entity.EntityState.Modified;
+            context.Entry(t).State = EntityState.Modified;
             return context.SaveChanges();
         }
 
@@ -78,6 +75,5 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-       
     }
 }

@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Services;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using Model;
 using Newtonsoft.Json;
-using System.Web.Http;
+using Services;
 
 namespace WebApi.Controllers
 {
-    [AllowCrossSite]
-    public class TagController : ApiController
+    public class CategoryController : ApiController
     {
-        private TagServices service;
+        private CategoryService service;
 
-        public TagController()
+        public CategoryController()
         {
-            service = new TagServices();
+            service = new CategoryService();
         }
         [HttpGet]
         public string Get()
@@ -43,6 +43,7 @@ namespace WebApi.Controllers
             }
             var result = service.GetAll().ToList();
             return JsonConvert.SerializeObject(result);
+
         }
 
         [HttpPost]
@@ -50,8 +51,8 @@ namespace WebApi.Controllers
         {
             if (value.Count() > 0)
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
-                var result = service.Insert(question);
+                var category = JsonConvert.DeserializeObject<Category>(value);
+                var result = service.Insert(category);
                 return JsonConvert.SerializeObject(result);
             }
             return "FALSE";
@@ -62,9 +63,9 @@ namespace WebApi.Controllers
         {
             if (value.Count() > 0)
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
-                question.Id = id;
-                var result = service.Update(question);
+                var category = JsonConvert.DeserializeObject<Category>(value);
+                category.Id = id;
+                var result = service.Update(category);
                 return JsonConvert.SerializeObject(result);
             }
             return "FALSE";
@@ -75,7 +76,5 @@ namespace WebApi.Controllers
             var result = service.Delete(id);
             return JsonConvert.SerializeObject(result);
         }
-
-
     }
 }

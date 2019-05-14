@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using Services;
 using Model;
 using Newtonsoft.Json;
 using System.Web.Http;
-using RouteAttribute = System.Web.Http.RouteAttribute;
 
-namespace WebApi.Controllers 
+namespace WebApi.Controllers
 {
-    
+    [AllowCrossSite]
     public class AnswerController : ApiController
     {
         private AnswerServices service;
@@ -20,37 +18,64 @@ namespace WebApi.Controllers
         {
             service = new AnswerServices();
         }
-        [Route("Answers")]
-        [System.Web.Http.HttpGet]
-        public string GetAll()
+        [HttpGet]
+        public string Get()
         {
             var result = service.GetAll().ToList();
-           return JsonConvert.SerializeObject(result) ;      
+            return JsonConvert.SerializeObject(result);
         }
-        [Route("Answers")]
-        [System.Web.Http.HttpPost]
-        public string Insert(Answer question)
+        [HttpGet]
+        public string Get(int id)
         {
-            var result = service.Insert(question);
+            var result = service.GetById(id);
             return JsonConvert.SerializeObject(result);
         }
 
-        [Route("Answers/{id}")]
-        [System.Web.Http.HttpPut]
-        public string Update(Answer question,int id)
+        [HttpGet]
+        public string Get([FromUri]string action, [FromBody]string value)
         {
-            question.Id = id;
-            var result = service.Update(question);
+            if (value != null && !"".Equals(value))
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.Search(value));
+                }
+            }
+            var result = service.GetAll().ToList();
             return JsonConvert.SerializeObject(result);
         }
 
-        [Route("Answers/{id}")]
-        [System.Web.Http.HttpPut]
-        public string Delete(int id)
+        [HttpPost]
+        public string Post([FromBody]string value)
+        {
+            if (value.Count() > 0)
+            {
+                var question = JsonConvert.DeserializeObject<Answer>(value);
+                var result = service.Insert(question);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
+        }
+
+        [HttpPut]
+        public string Put(int id, [FromBody]string value)
+        {
+            if (value.Count() > 0)
+            {
+                var question = JsonConvert.DeserializeObject<Answer>(value);
+                question.Id = id;
+                var result = service.Update(question);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
+        }
+        [HttpDelete]
+        public string Put(int id)
         {
             var result = service.Delete(id);
             return JsonConvert.SerializeObject(result);
         }
+
 
     }
 }

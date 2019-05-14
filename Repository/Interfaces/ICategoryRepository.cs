@@ -7,11 +7,10 @@ using Model;
 
 namespace Repository.Interfaces
 {
-    public interface IRepository<T> where T:class
+    public interface ICategoryRepository<T>
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Search(string searchString);
-        IEnumerable<T> Filter(T t);
         int Insert(T t);
         int Update(T t);
         int Delete(int id);

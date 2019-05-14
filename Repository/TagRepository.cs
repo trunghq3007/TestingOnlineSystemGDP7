@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Repository.Interfaces;
 
 namespace Repository
 {
-    public class TagRepository : Interfaces.IRepository<Tag>, IDisposable
+    public class TagRepository : Interfaces.ITagRepository<Tag>, IDisposable
     {
         private DBEntityContext context;
 
@@ -16,14 +18,16 @@ namespace Repository
         {
             this.context = context;
         }
+
         public int Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Tag> Filter(Tag t)
-        {
-            throw new NotImplementedException();
+            var item = context.Tags.Where(s => s.Id == id).SingleOrDefault();
+            if (item != null)
+            {
+                context.Tags.Remove(item);
+                return context.SaveChanges();
+            }
+            return 0;
         }
 
         public IEnumerable<Tag> GetAll()
@@ -33,7 +37,7 @@ namespace Repository
 
         public Tag GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Tags.Where(s => s.Id == id).SingleOrDefault();
         }
 
         public int Insert(Tag t)
@@ -42,15 +46,15 @@ namespace Repository
             return context.SaveChanges();
         }
 
-
         public IEnumerable<Tag> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return context.Tags.Where(s => s.Name.Contains(searchString));
         }
 
         public int Update(Tag t)
         {
-            throw new NotImplementedException();
+            context.Entry(t).State = EntityState.Modified;
+            return context.SaveChanges();
         }
 
         private bool disposed = false;
@@ -71,9 +75,6 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<Question> Filter(object t)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

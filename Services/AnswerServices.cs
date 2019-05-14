@@ -10,9 +10,9 @@ using Repository;
 
 namespace Services
 {
-    public class AnswerServices : Interfaces.IServices<Answer>
+    public class AnswerServices : Interfaces.IAnswerServices<Answer>
     {
-        private IRepository<Answer> repository;
+        private IAnswerRepository<Answer> repository;
 
         public AnswerServices()
         {
@@ -23,11 +23,7 @@ namespace Services
             return repository.Delete(id);
         }
 
-        public IEnumerable<Answer> Filter(Answer t)
-        {
-            return repository.Filter(t);
-        }
-
+        
         public IEnumerable<Answer> GetAll()
         {
             return repository.GetAll();

@@ -10,7 +10,7 @@ using Repository.Interfaces;
 
 namespace Repository
 {
-    public class QuestionRepository : Interfaces.IRepository<Question>, IDisposable
+    public class QuestionRepository : Interfaces.IQuestionRepository<Question>, IDisposable
     {
         private DBEntityContext context;
 

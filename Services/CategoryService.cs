@@ -10,9 +10,9 @@ using Repository.Interfaces;
 
 namespace Services
 {
-    public class CategoryService : Interfaces.IServices<Category>
+    public class CategoryService : Interfaces.ICategoryServices<Category>
     {
-        private IRepository<Category> repository;
+        private ICategoryRepository<Category> repository;
         public CategoryService()
         {
             repository = new CategoryRepository(new DBEntityContext());

@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Model.ViewModel;
 using Repository;
 using Repository.Interfaces;
 
 namespace Services
 {
-  public  class SemesterExamServices : Interfaces.IServices<SemesterExam>
-    {
-        private IRepository<SemesterExam> SemesterExamRepository;
+  public  class SemesterExamServices : Interfaces.ISemesterExamServices<SemesterExam>
+  {
+      private ISemesterExamRepository<SemesterExam> SemesterExamRepository;
         public SemesterExamServices()
         {
             SemesterExamRepository = new SemesterExamRepository(new DBEntityContext());
@@ -40,6 +41,11 @@ namespace Services
         public int Insert(SemesterExam t)
         {
             return SemesterExamRepository.Insert(t);
+        }
+
+        public ReportSemester Report(int id)
+        {
+            return SemesterExamRepository.Report(id);
         }
 
         public IEnumerable<SemesterExam> Search(string searchString)

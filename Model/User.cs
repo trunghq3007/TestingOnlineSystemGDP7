@@ -10,6 +10,10 @@ namespace Model
 {
     public class User
     {
+        public User()
+        {
+            this.SemesterExam_Users = new HashSet<SemesterExam_User>();
+        }
         [Key]       
         public int UserId { get; set; }
         [ForeignKey("Role")]

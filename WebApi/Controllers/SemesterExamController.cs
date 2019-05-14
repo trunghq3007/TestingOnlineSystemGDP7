@@ -52,5 +52,18 @@ namespace WebApi.Controllers
             var result = service.Delete(id);
             return JsonConvert.SerializeObject(result);
         }
+        [System.Web.Http.HttpGet]
+        public string Report(int id)
+        {
+            var result = service.Report(id);
+            //string a = "";
+            //foreach (SemesterExam_User item in result)
+            //{
+            //     a = item.SemesterExam.SemesterName;
+            //}
+            //string b = a;
+
+            return JsonConvert.SerializeObject(result);
+        }
     }
 }

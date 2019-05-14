@@ -6,7 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Services;
-using System.Web.Http;
+
 using Model;
 namespace WebApi.Controllers
 {

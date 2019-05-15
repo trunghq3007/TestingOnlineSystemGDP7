@@ -12,10 +12,8 @@ using System.Web.Http.Cors;
 namespace WebApi.Controllers
 {
 
-    //[EnableCors("*", "*", "*")]
 
     [AllowCrossSite]
-
     public class ExamController : ApiController
     {
         private ExamServices services;
@@ -28,10 +26,10 @@ namespace WebApi.Controllers
 
       
    
-        [System.Web.Http.HttpGet]
-        public string Index(int id)
+        [HttpGet]
+        public string Index()
         {
-            var result = QuestionServices.GetById(2);
+            var result = QuestionServices.GetAll();
             return JsonConvert.SerializeObject(result);
         }
 

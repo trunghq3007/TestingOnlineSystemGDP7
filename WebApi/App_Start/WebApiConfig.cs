@@ -19,13 +19,16 @@ namespace WebApi
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
+            config.EnableCors();
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
+
 
             var constraints = new { httpMethod = new HttpMethodConstraint(HttpMethod.Options) };
             config.Routes.IgnoreRoute("OPTIONS", "*pathInfo", constraints);
 
-
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             //config.EnableCors(new EnableCorsAttribute(origins: "*", headers: "*", methods: "*"));
             // Web API routes
             config.MapHttpAttributeRoutes();

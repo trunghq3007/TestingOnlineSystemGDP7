@@ -15,6 +15,7 @@ namespace Repository.Interfaces
         int Delete(int id);
         T GetById(int id);
         IEnumerable<T> GetCandidatesOfASemester(int id);
+      List<Model.ViewModel.Candidates>   candidates(int id);
 
     }
 }

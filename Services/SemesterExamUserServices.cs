@@ -47,5 +47,9 @@ namespace Services
         {
             throw new NotImplementedException();
         }
+        public List<Model.ViewModel.Candidates> candidates(int id)
+        {
+            return repository.candidates(id);
+        }
     }
 }

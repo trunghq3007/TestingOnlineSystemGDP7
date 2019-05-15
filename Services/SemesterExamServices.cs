@@ -36,7 +36,7 @@ namespace Services
 
         public SemesterExam GetById(int id)
         {
-            throw new NotImplementedException();
+            return SemesterExamRepository.GetById(id);
         }
 
         public int Insert(SemesterExam t)

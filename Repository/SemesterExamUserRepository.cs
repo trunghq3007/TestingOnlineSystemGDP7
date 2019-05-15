@@ -62,7 +62,10 @@ namespace Repository
 
         public IEnumerable<SemesterExam_User> GetCandidatesOfASemester(int id)
         {
+            //List<User> users = context.Users.ToList();
+            //List<SemesterExam> semesterExamsterExams = context.SemesterExams.ToList();
             return context.SemesterExamUsers.Where(S => S.SemesterExam.ID == id && S.Type == 2).ToList();
+           
         }
 
         public List<Model.ViewModel.Candidates> candidates(int id)

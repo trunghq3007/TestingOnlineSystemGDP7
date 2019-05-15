@@ -34,7 +34,7 @@ namespace Services
             return SemesterExamRepository.GetAll();
         }
 
-        public SemesterExam GetById(int id)
+        public SemesterDetail GetById(int id)
         {
             return SemesterExamRepository.GetById(id);
         }

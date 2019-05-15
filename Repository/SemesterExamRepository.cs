@@ -51,13 +51,47 @@ namespace Repository
         }
 
         public IEnumerable<SemesterExam> GetAll()
+
         {
             return (IEnumerable<SemesterExam>)context.SemesterExams.ToList();
         }
 
-        public SemesterExam GetById(int id)
+        public SemesterDetail GetById(int id)
         {
-            return context.SemesterExams.Find(id);
+
+            //SemesterExam semesterExam = context.SemesterExams.Include(SE => SE.);
+            //var query = from SE in context.SemesterExams.Include(SE.)
+            //            where SE.ID == id
+            //            select SE;
+            context.Configuration.LazyLoadingEnabled = false;
+            List<User> users = context.Users.ToList();
+            List<SemesterExam> semesterExams = context.SemesterExams.ToList();
+            SemesterExam_User semesterExam_Users =
+            context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).First();
+            SemesterExam semesterExam= context.SemesterExams.Find(id);
+            SemesterDetail semesterDetail = new SemesterDetail();
+            semesterDetail.ID = semesterExam.ID;
+            semesterDetail.SemesterName = semesterExam.SemesterName;
+            if (semesterExam.StartDay !=null)
+            {
+
+            }
+            semesterDetail.StartDay = semesterExam.StartDay.ToString().Substring(0,9);
+            semesterDetail.EndDay = semesterExam.EndDay.ToString();
+            semesterDetail.Creator = semesterExam_Users.User.FullName;
+            semesterDetail.Code = semesterExam.Code;
+            if (semesterExam.status == 1)
+                semesterDetail.status = "Public";
+            if (semesterExam.status == 2)
+                semesterDetail.status = "Draft";
+            else
+            semesterDetail.status = "Done";
+
+
+
+
+            return semesterDetail;
+
         }
 
         public int Insert(SemesterExam t)
@@ -72,7 +106,8 @@ namespace Repository
         }
 
         public Model.ViewModel.ReportSemester Report(int id)
-        { 
+        {
+            
             SemesterExam semesterExam = context.SemesterExams.Find(id);
             SemesterExam_User semesterExam_Users =
             context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).First();
@@ -129,7 +164,7 @@ namespace Repository
             //user.SemesterExam_Users.Where(S => S.ID == 1).ToList();
             //SemesterExam semesterExam= new SemesterExam();
             List<User> users = context.Users.ToList();
-            List<SemesterExam> semesterExamsterExams = context.SemesterExams.ToList();
+            List<SemesterExam> semesterExams = context.SemesterExams.ToList();
             reportSemester.SemesterName = semesterExam.SemesterName;
             reportSemester.Creator = semesterExam_Users.User.FullName;
             reportSemester.StartDay = semesterExam.StartDay.ToString();

@@ -32,13 +32,13 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public string Get([FromUri]string action, [FromBody]string value)
+        public string Get([FromUri]string action, [FromBody]object value)
         {
-            if (value != null && !"".Equals(value))
+            if (value != null )
             {
                 if ("search".Equals(action))
                 {
-                    return JsonConvert.SerializeObject(service.Search(value));
+                    return JsonConvert.SerializeObject(service.Search(value.ToString()));
                 }
             }
             var result = service.GetAll().ToList();
@@ -46,11 +46,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public string Post([FromBody]string value)
+        public string Post([FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
+                var question = JsonConvert.DeserializeObject<Tag>(value.ToString());
                 var result = service.Insert(question);
                 return JsonConvert.SerializeObject(result);
             }
@@ -58,11 +58,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public string Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
+                var question = JsonConvert.DeserializeObject<Tag>(value.ToString());
                 question.Id = id;
                 var result = service.Update(question);
                 return JsonConvert.SerializeObject(result);

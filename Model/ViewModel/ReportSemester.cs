@@ -27,5 +27,12 @@ namespace Model.ViewModel
         public  string StartDay { get; set; }
         public string EndDay { get; set; }
         public int  NumEXams { get; set; }
+        public int NumQuestions { get; set; }
+        public int  NumCandiates { get; set; }
+        public int NotParticipation { get; set; }
+        public float AvgScore { get; set; }
+        public int Low { get; set; }
+        public int Good { get; set; }
+        public int Medium { get; set; }
     }
 }

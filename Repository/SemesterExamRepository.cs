@@ -22,7 +22,17 @@ namespace Repository
 
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            var item = context.SemesterExams.Where(s => s.ID == id).SingleOrDefault();
+            if (item != null)
+            {
+                context.SemesterExams.Remove(item);
+                return context.SaveChanges();
+            }
+            else
+            {
+                //log
+            }
+            return 0;
         }
 
         public void Dispose()
@@ -139,7 +149,8 @@ namespace Repository
 
         public int Update(SemesterExam t)
         {
-            throw new NotImplementedException();
+            context.Entry(t).State = System.Data.Entity.EntityState.Modified;
+            return context.SaveChanges();
         }
     }
 }

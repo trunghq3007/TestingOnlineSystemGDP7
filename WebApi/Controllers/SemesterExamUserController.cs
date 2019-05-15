@@ -21,7 +21,7 @@ namespace WebApi.Controllers
         [System.Web.Http.HttpGet]
         public string Get(int id)
         {
-            var result = service.GetCandidatesOfASemester(id);
+            var result = service.candidates(id);
             //string a = "";
             //foreach (SemesterExam_User item in result)
             //{

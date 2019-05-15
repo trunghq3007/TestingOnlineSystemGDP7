@@ -8,6 +8,7 @@ using Model;
 using Model.ViewModel;
 using Repository;
 using Repository.Interfaces;
+using Services.Interfaces;
 
 namespace Services
 {

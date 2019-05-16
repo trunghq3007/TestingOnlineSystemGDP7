@@ -18,14 +18,15 @@ namespace WebApi.Controllers
         {
             service = new QuestionServices();
         }
-        [HttpGet]
+        [HttpPost]
         public string Get([FromUri]string action,[FromBody]object value)
         {
             if( value != null)
             {
                 if ("search".Equals(action))
                 {
-                    return JsonConvert.SerializeObject(service.Search(value.ToString()));
+                    var searchObj = JsonConvert.DeserializeObject<SearchPaging>(value.ToString());
+                    return JsonConvert.SerializeObject(service.Search(searchObj));
                 }
                 if ("fillter".Equals(action))
                 {
@@ -43,6 +44,41 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
 
         }
+        //[HttpGet]
+        //public string Get([FromUri]string action, [FromUri]string pageIndex, [FromUri]string pageSize, [FromUri]string search)
+        //{
+        //    SearchPaging searchItem = new SearchPaging { PageIndex = 1, PageSize = 10 };
+        //    if( int.TryParse(pageIndex,out int pageIndexNumber))
+        //    {
+        //        if(pageIndexNumber>1) searchItem.PageIndex = pageIndexNumber;
+        //    }
+        //    if (int.TryParse(pageIndex, out int pageSizeNumber))
+        //    {
+        //        if (pageSizeNumber > 1) searchItem.PageSize = pageSizeNumber;
+        //    }
+        //    if ("search".Equals(action))
+        //        {
+                   
+        //            return JsonConvert.SerializeObject(service.Search(searchItem));
+        //        }
+        //        if ("fillter".Equals(action))
+        //        {
+        //            try
+        //            {
+        //                var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value.ToString());
+        //                return JsonConvert.SerializeObject(service.Filter(filterObject));
+        //            }
+        //            catch (Exception)
+        //            {
+        //                return "Object fillter not convert valid";
+        //            }
+        //        }
+        //    }
+        //    var result = service.GetAll().ToList();
+        //    return JsonConvert.SerializeObject(result);
+
+        //}
+
         [HttpGet]
         public string Get()
         {

@@ -31,10 +31,6 @@ namespace Services
             return repository.Filter(t);
         }
 
-        public IEnumerable<Question> Filter(object t)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<Question> GetAll()
         {
@@ -51,9 +47,9 @@ namespace Services
             return repository.Insert(t);
         }
 
-        public IEnumerable<Question> Search(string searchString)
+        public IEnumerable<Question> Search(SearchPaging item)
         {
-            return repository.Search(searchString);
+            return repository.Search(item);
         }
 
         public int Update(Question t)

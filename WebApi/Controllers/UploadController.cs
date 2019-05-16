@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Web.Http;
 using System.IO;
 using System.Web.Mvc;
+using System.Dynamic;
 
 namespace WebApi.Controllers
 {
@@ -15,7 +16,11 @@ namespace WebApi.Controllers
     public class UploadController : Controller
     {
 
-        public UploadController()
+
+
+
+
+    public UploadController()
         {
         }
         public ActionResult Index()
@@ -27,7 +32,6 @@ namespace WebApi.Controllers
 
         public string UploadSingle()
         {
-           var a = HttpContext.Request.Files;
             string result = "";
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -39,7 +43,7 @@ namespace WebApi.Controllers
                         string _FileName = Path.GetFileName(file.FileName);
                         string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
                         file.SaveAs(_path);
-                        result += "---" + "~/UploadedFiles/" + _FileName;
+                        result += "http://localhost:65170" + "/UploadedFiles/" + _FileName;
                     }
                     
                 }
@@ -50,7 +54,7 @@ namespace WebApi.Controllers
             return result;
         }
       
-    public string UploadMuitiple()
+        public string UploadMuitiple()
     {
         try
         {
@@ -66,5 +70,32 @@ namespace WebApi.Controllers
             return "ERROR";
         }
     }
+
+        public string ImageUpload()
+        {
+            dynamic result = new ExpandoObject();
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                try
+                {
+                    if (file.ContentLength > 0)
+                    {
+                        string _FileName = Path.GetFileName(file.FileName); 
+                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
+                        file.SaveAs(_path);
+                        result.uploaded = "true";
+                        result.url = "http://localhost:65170" + "/UploadedFiles/" + _FileName;
+                    }
+                    return JsonConvert.SerializeObject(result);
+                }
+                catch
+                {
+                }
+            }
+            result.uploaded = "false";
+            result.url = "";
+            return JsonConvert.SerializeObject(result);
+        }
 }
 }

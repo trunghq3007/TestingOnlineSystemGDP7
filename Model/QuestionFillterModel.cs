@@ -23,5 +23,7 @@ namespace Model
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int TagsId { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
     }
 }

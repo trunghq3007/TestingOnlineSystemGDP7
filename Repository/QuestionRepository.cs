@@ -34,41 +34,54 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Question> Filter(object model)
+        public IEnumerable<Question> Filter(QuestionFillterModel model)
         {
-            var fillterModel = (QuestionFillterModel)model;
             var result = context.Questions.ToList();
 
-            if (fillterModel.CategoryId > 0)
+            if (model.CategoryId > 0)
             {
-                result = result.Where(s => s.Category.Id == fillterModel.CategoryId).ToList();
+                result = result.Where(s => s.Category.Id == model.CategoryId).ToList();
             }
-            if (fillterModel.TagsId > 0)
+            if (model.TagsId > 0)
             {
-                result = result.Where(s => s.Tags.Where(item => item.Id == fillterModel.TagsId).Count() > 0).ToList();
+                result = result.Where(s => s.Tags.Where(item => item.Id == model.TagsId).Count() > 0).ToList();
             }
-            if (fillterModel.CreatedBy.Count() > 0)
+            if (model.CreatedBy.Count() > 0)
             {
-                result = result.Where(s =>fillterModel.CreatedBy.Equals(s.CreatedBy)).ToList();
+                result = result.Where(s =>model.CreatedBy.Equals(s.CreatedBy)).ToList();
             }
-            if (fillterModel.Type > 0)
+            if (model.Type > 0)
             {
-                result = result.Where(s => s.Type == fillterModel.Type).ToList();
+                result = result.Where(s => s.Type == model.Type).ToList();
             }
-            if (fillterModel.Level > 0)
+            if (model.Level > 0)
             {
-                result = result.Where(s => s.Level == fillterModel.Level).ToList();
+                result = result.Where(s => s.Level == model.Level).ToList();
             }
-            if (fillterModel.StartDate != null)
+            if (model.StartDate != null)
             {
-                result = result.Where(s => s.CreatedDate >= fillterModel.StartDate).ToList();
+                result = result.Where(s => s.CreatedDate >= model.StartDate).ToList();
             }
-            if (fillterModel.EndDate != null)
+            if (model.EndDate != null)
             {
-                result = result.Where(s => s.CreatedDate >= fillterModel.EndDate).ToList();
+                result = result.Where(s => s.CreatedDate >= model.EndDate).ToList();
             }
 
-            return result;
+            var size = 10;
+            var maxSize = result.Count();
+            if (model.PageSize <= 0)
+            {
+                size = maxSize < 10 ? maxSize : 10;
+            }
+            else
+            {
+                size = maxSize < model.PageSize ? maxSize : model.PageSize;
+            }
+            var index = model.PageIndex <= 0 ? model.PageIndex = 1 : model.PageIndex;
+
+            var start = (index - 1) * size;
+            var end = index * size - 1;
+            return result.GetRange(start, end);
         }
 
         public IEnumerable<Question> GetAll()
@@ -87,9 +100,24 @@ namespace Repository
             return context.SaveChanges();
         }
 
-        public IEnumerable<Question> Search(string searchString)
+        public IEnumerable<Question> Search(SearchPaging item)
         {
-            return context.Questions.Where(s => s.Content.Contains(searchString));
+            var result = context.Questions.Where(s => s.Content.Contains(item.SearchString)).ToList();
+            var size = 10;
+            var maxSize = result.Count();
+            if (item.PageSize <= 0)
+            {
+                size = maxSize < 10 ? maxSize : 10;
+            }
+            else
+            {
+                size = maxSize < item.PageSize ? maxSize : item.PageSize;
+            }
+            var index = item.PageIndex <= 0 ? item.PageIndex = 1 : item.PageIndex;
+
+            var start = (index - 1) * size;
+            var end = index * size - 1;
+            return result.GetRange(start, end);
         }
 
         public int Update(Question t)

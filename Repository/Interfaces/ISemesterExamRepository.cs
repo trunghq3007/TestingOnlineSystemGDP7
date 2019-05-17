@@ -17,7 +17,13 @@ namespace Repository.Interfaces
         //T GetById(int id);
         Model.ViewModel.SemesterDetail GetById(int id);
         Model.ViewModel.ReportSemester Report(int id);
+
         int Update(T T, int id);
+
+        IEnumerable<T> GetExams(int id);
+
+
+
 
 
     }

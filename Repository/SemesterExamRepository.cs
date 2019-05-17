@@ -22,7 +22,12 @@ namespace Repository
 
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            SemesterExam item = context.SemesterExams.Where(s => s.ID == id).SingleOrDefault();
+            SemesterExam olditem = item;
+            item.status = 0;
+            
+            context.Entry(item).CurrentValues.SetValues(olditem);
+            return context.SaveChanges();
         }
 
         public void Dispose()
@@ -42,7 +47,7 @@ namespace Repository
 
         public IEnumerable<SemesterExam> GetAll()
         {
-            return (IEnumerable<SemesterExam>)context.SemesterExams.ToList();
+            return (IEnumerable<SemesterExam>)context.SemesterExams.Where(SE=>SE.status != 0).ToList();
         }
 
         public SemesterExam GetById(int id)
@@ -58,7 +63,25 @@ namespace Repository
 
         public IEnumerable<SemesterExam> Search(string searchString)
         {
-            throw new NotImplementedException();
+            //List<SemesterExam> semesterExams = new List<SemesterExam>();
+            //try {
+            //    if (!string.IsNullOrEmpty(searchString))
+            //    {
+            //        semesterExams = context.SemesterExams.Where(SE => SE.SemesterName.Contains(searchString)).ToList();
+            //    }
+            //    return context.SemesterExams.ToList();
+            //}
+            //catch
+            //{
+
+            //    semesterExams = new List<SemesterExam>();
+            //}
+            //return semesterExams;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return context.SemesterExams.Where(SE => SE.SemesterName.Contains(searchString) && SE.status !=0).ToList();
+            }
+            return context.SemesterExams.Where(SE => SE.status != 0).ToList();
         }
 
         public Model.ViewModel.ReportSemester Report(int id)

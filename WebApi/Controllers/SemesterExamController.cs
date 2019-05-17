@@ -21,7 +21,7 @@ namespace WebApi.Controllers
         }
 
         // GET: SemesterExam
-        [Route("SemesterExams")]
+        [Route("SemesterExam")]
         [System.Web.Http.HttpGet]
         public string Index()
         {
@@ -29,12 +29,24 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-        [Route("SemesterExams")]
-        [System.Web.Http.HttpPost]
-        public string Insert(SemesterExam semesterExam)
+        //[Route("SemesterExams")]
+        //[System.Web.Http.HttpPost]
+        //public string Insert(SemesterExam semesterExam)
+        //{
+        //    var result = service.Insert(semesterExam);
+        //    return JsonConvert.SerializeObject(result);
+        //}
+        [Route("SemesterExam/Post/")]
+        [HttpPost]
+        public string Post([FromBody]object value)
         {
-            var result = service.Insert(semesterExam);
-            return JsonConvert.SerializeObject(result);
+            if (value != null)
+            {
+                var E= JsonConvert.DeserializeObject<SemesterExam>(value.ToString());
+                var result = service.Insert(E);
+                return JsonConvert.SerializeObject(result);
+            }
+            return "FALSE";
         }
 
         [Route("SemesterExam/{id}")]
@@ -46,7 +58,7 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
         [Route("SemesterExam/{id}")]
-        [System.Web.Http.HttpPut]
+        [System.Web.Http.HttpDelete]
         public string Delete( int id)
         {
             var result = service.Delete(id);
@@ -70,6 +82,12 @@ namespace WebApi.Controllers
         public string Get(int id)
         {
             var result = service.GetById(id);
+            return JsonConvert.SerializeObject(result);
+        }
+        [HttpGet]
+        public string Get(string searchString)
+        {
+            var result = service.Search(searchString).ToList();
             return JsonConvert.SerializeObject(result);
         }
     }

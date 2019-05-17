@@ -21,7 +21,7 @@ namespace Services
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            return SemesterExamRepository.Delete(id);
         }
 
         public IEnumerable<SemesterExam> Filter(SemesterExam t)
@@ -51,7 +51,7 @@ namespace Services
 
         public IEnumerable<SemesterExam> Search(string searchString)
         {
-            throw new NotImplementedException();
+            return SemesterExamRepository.Search(searchString);
         }
 
         public int Update(SemesterExam t)

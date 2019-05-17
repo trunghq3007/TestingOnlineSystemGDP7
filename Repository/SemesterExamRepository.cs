@@ -49,6 +49,7 @@ namespace Repository
         public SemesterDetail GetById(int id)
         {
 
+
             //SemesterExam semesterExam = context.SemesterExams.Include(SE => SE.);
             //var query = from SE in context.SemesterExams.Include(SE.)
             //            where SE.ID == id
@@ -58,15 +59,15 @@ namespace Repository
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
             SemesterExam_User semesterExam_Users =
             context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).First();
-            SemesterExam semesterExam= context.SemesterExams.Find(id);
+            SemesterExam semesterExam = context.SemesterExams.Find(id);
             SemesterDetail semesterDetail = new SemesterDetail();
             semesterDetail.ID = semesterExam.ID;
             semesterDetail.SemesterName = semesterExam.SemesterName;
-            if (semesterExam.StartDay !=null)
+            if (semesterExam.StartDay != null)
             {
 
             }
-            semesterDetail.StartDay = semesterExam.StartDay.ToString().Substring(0,9);
+            semesterDetail.StartDay = semesterExam.StartDay.ToString().Substring(0, 9);
             semesterDetail.EndDay = semesterExam.EndDay.ToString();
             semesterDetail.Creator = semesterExam_Users.User.FullName;
             semesterDetail.Code = semesterExam.Code;
@@ -75,7 +76,7 @@ namespace Repository
             if (semesterExam.status == 2)
                 semesterDetail.status = "Draft";
             else
-            semesterDetail.status = "Done";
+                semesterDetail.status = "Done";
 
 
 
@@ -170,6 +171,16 @@ namespace Repository
             //ReportSemester reportSemester = new ReportSemester(semesterExam.SemesterName,semesterExam_Users.User.UserName,semesterExam.StartDay.ToString(),semesterExam.EndDay.ToString(),count);
             return reportSemester;
 
+        }
+
+        public int Update(SemesterExam t, int id)
+        {
+            SemesterExam oldItem = context.SemesterExams.Where(s => s.ID == id).SingleOrDefault();
+            
+           
+
+            context.Entry(oldItem).CurrentValues.SetValues(t);
+            return context.SaveChanges();
         }
 
         public int Update(SemesterExam t)

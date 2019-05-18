@@ -50,6 +50,12 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
         [HttpGet]
+        public string Get(string searchString)
+        {
+            var result = service.Search(searchString);
+            return JsonConvert.SerializeObject(result);
+        }
+        [HttpGet]
         public string Get(int id)
         {
             var result = service.GetById(id);

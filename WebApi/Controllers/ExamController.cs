@@ -18,10 +18,12 @@ namespace WebApi.Controllers
     {
         private ExamServices services;
 		private QuestionServices QuestionServices;
+        private ExamQuestionServices examQuestion;
         public ExamController()
         {
             services = new ExamServices();
 			QuestionServices = new QuestionServices();
+            examQuestion=new ExamQuestionServices();
         }
 
       
@@ -29,7 +31,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public string Index()
         {
-            var result = QuestionServices.GetAll();
+            var result = services.GetAll();
             return JsonConvert.SerializeObject(result);
         }
 
@@ -41,15 +43,41 @@ namespace WebApi.Controllers
 		{
 
 
-			var result = QuestionServices.GetById(id);
+			var result = examQuestion.GetListQuestionById(id);
 
 
 			return JsonConvert.SerializeObject(result);
 		}
-            
 
-           
-        
+
+        [HttpGet]
+        public string Get([FromUri]string action, [FromBody]object value)
+        {
+            if (value != null)
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(QuestionServices.Search(value.ToString()));
+                }
+                if ("fillter".Equals(action))
+                {
+                    try
+                    {
+                        var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value.ToString());
+                        return JsonConvert.SerializeObject(QuestionServices.Filter(filterObject));
+                    }
+                    catch (Exception)
+                    {
+                        return "Object fillter not convert valid";
+                    }
+                }
+            }
+            var result = QuestionServices.GetAll().ToList();
+            return JsonConvert.SerializeObject(result);
+
+        }
+
+
         [HttpPost]
         public string InsertExam([FromBody] string value)
         {

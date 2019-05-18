@@ -29,7 +29,7 @@ namespace Repository
 
         public IEnumerable<Exam> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Exams.ToList();
         }
 
         

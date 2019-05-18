@@ -33,7 +33,7 @@ namespace Services
 
         public IEnumerable<Question> Filter(object t)
         {
-            throw new NotImplementedException();
+            return repository.Filter(t);
         }
 
         public IEnumerable<Question> GetAll()

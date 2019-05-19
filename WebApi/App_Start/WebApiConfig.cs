@@ -34,6 +34,8 @@ namespace WebApi
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            //config upload
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("multipart/form-data"));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

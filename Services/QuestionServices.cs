@@ -56,5 +56,13 @@ namespace Services
         {
             return repository.Update(t);
         }
+        public Category getCategoryByName(string cateName)
+        {
+            return repository.getCategoryByName(cateName);
+        }
+        public string Import(List<Question> list)
+        {
+            return repository.Import(list);
+        }
     }
 }

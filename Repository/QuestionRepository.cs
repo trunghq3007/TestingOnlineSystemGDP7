@@ -126,6 +126,35 @@ namespace Repository
             return context.SaveChanges();
         }
 
+        public Category getCategoryByName(string cateName)
+        {
+            return context.Categorys.Where(s => s.Name.Equals(cateName)).FirstOrDefault();
+        }
+
+        public string Import(List<Question> list)
+        {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var question in list)
+                    {
+                        context.Questions.Add(question);
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                    return "OK";
+                }
+                catch(Exception e)
+                {
+                    transaction.Rollback();
+                    return e.Message;
+                }
+              
+            }
+        }
+
+
         private bool disposed = false;
         public void Dispose(bool disposing)
         {

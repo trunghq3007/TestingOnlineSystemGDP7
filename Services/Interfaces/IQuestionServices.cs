@@ -17,5 +17,7 @@ namespace Services.Interfaces
         int Delete(int id);
         T GetById(int id);
         IEnumerable<T> Filter(QuestionFillterModel t);
+        Category getCategoryByName(string cateName);
+        string Import(List<T> list);
     }
 }

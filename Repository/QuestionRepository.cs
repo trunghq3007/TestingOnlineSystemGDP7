@@ -38,25 +38,27 @@ namespace Repository
         {
             var result = context.Questions.ToList();
 
-            if (model.CategoryId > 0)
+            if (model.CategoryId != null)
             {
-                result = result.Where(s => s.Category.Id == model.CategoryId).ToList();
+                if (int.TryParse(model.Level, out int categoryId))  result = result.Where(s => s.Category.Id == categoryId).ToList();
             }
-            if (model.TagsId > 0)
+            if (model.TagsId != null)
             {
-                result = result.Where(s => s.Tags.Where(item => item.Id == model.TagsId).Count() > 0).ToList();
+                if (int.TryParse(model.Level, out int tagId))  result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
             }
             if (model.CreatedBy.Count() > 0)
             {
                 result = result.Where(s =>model.CreatedBy.Equals(s.CreatedBy)).ToList();
             }
-            if (model.Type > 0)
+
+            if (model.Type != null)
             {
-                result = result.Where(s => s.Type == model.Type).ToList();
+                if (int.TryParse(model.Level, out int type))  result = result.Where(s => s.Type == type).ToList();
             }
-            if (model.Level > 0)
+            
+            if (model.Level != null)
             {
-                result = result.Where(s => s.Level == model.Level).ToList();
+                if(int.TryParse(model.Level,out int level)) result = result.Where(s => s.Level == level).ToList();
             }
             if (model.StartDate != null)
             {
@@ -69,15 +71,24 @@ namespace Repository
 
             var size = 10;
             var maxSize = result.Count();
-            if (model.PageSize <= 0)
+            if (model.PageSize != null)
             {
                 size = maxSize < 10 ? maxSize : 10;
             }
             else
             {
-                size = maxSize < model.PageSize ? maxSize : model.PageSize;
+                if(int.TryParse(model.PageSize, out int pageSize))
+                {
+                    size = maxSize < pageSize ? maxSize : pageSize;
+                }
             }
-            var index = model.PageIndex <= 0 ? model.PageIndex = 1 : model.PageIndex;
+            var index = 1;
+            if (model.PageIndex!= null)
+            {
+                if (int.TryParse(model.PageIndex, out int pageIndex))
+                    index = pageIndex <= 0 ? 1 : pageIndex;
+            }
+           
 
             var start = (index - 1) * size;
             var end = index * size - 1;

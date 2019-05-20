@@ -122,7 +122,7 @@ namespace Repository
 
         public int Update(Question t)
         {
-            context.Database.BeginTransaction();
+             var transaction=context.Database.BeginTransaction();
             var anserList = t.Answers.ToList();
             t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
             if(anserList != null)
@@ -135,19 +135,23 @@ namespace Repository
                         item.UpdatedDate = DateTime.Now;
                         context.Entry(item).State = EntityState.Modified;
                     }
-                    else
-                    {
-                        item.CreatedBy = "anonymous user";
-                        item.CreatedDate = DateTime.Now;
-                        context.Answers.Add(item);
-                    }
+                    //else
+                    //{
+                    //    item.CreatedBy = "anonymous user";
+                    //    item.CreatedDate = DateTime.Now;
+                    //    item.Question = context.;
+                    //    context.Answers.Add(item);
+                    //}
                 }
-                t.Answers = context.Answers.Where(s => s.Question.Id == t.Id).ToList();
-                t.UpdatedDate = DateTime.Now;
-                t.UpdatedBy = "anonymous user";
+                context.SaveChanges();
+                //t.Answers = context.Answers.Where(s => s.Question.Id == t.Id).ToList();
             }
+            t.UpdatedDate = DateTime.Now;
+            t.UpdatedBy = "anonymous user";
             context.Entry(t).State = EntityState.Modified;
-            return context.SaveChanges();
+            var result = context.SaveChanges();
+            transaction.Commit();
+            return result;
         }
 
         public Category getCategoryByName(string cateName)

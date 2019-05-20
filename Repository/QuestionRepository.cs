@@ -122,6 +122,30 @@ namespace Repository
 
         public int Update(Question t)
         {
+            context.Database.BeginTransaction();
+            var anserList = t.Answers.ToList();
+            t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
+            if(anserList != null)
+            {
+                foreach(var item in anserList)
+                {
+                    if (context.Answers.Where(s => s.Id == item.Id).Count() > 0)
+                    {
+                        item.UpdatedBy = "anonymous user";
+                        item.UpdatedDate = DateTime.Now;
+                        context.Entry(item).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        item.CreatedBy = "anonymous user";
+                        item.CreatedDate = DateTime.Now;
+                        context.Answers.Add(item);
+                    }
+                }
+                t.Answers = context.Answers.Where(s => s.Question.Id == t.Id).ToList();
+                t.UpdatedDate = DateTime.Now;
+                t.UpdatedBy = "anonymous user";
+            }
             context.Entry(t).State = EntityState.Modified;
             return context.SaveChanges();
         }

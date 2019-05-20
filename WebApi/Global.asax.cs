@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,17 +19,6 @@ namespace WebApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            json.SerializerSettings.PreserveReferencesHandling =
-                Newtonsoft.Json.PreserveReferencesHandling.All;
-
-
-            HttpConfiguration config = GlobalConfiguration.Configuration;
-
-            config.Formatters.JsonFormatter
-                        .SerializerSettings
-                        .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-
         }
     }
 }

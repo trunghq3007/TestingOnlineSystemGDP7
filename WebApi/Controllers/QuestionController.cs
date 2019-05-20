@@ -47,7 +47,6 @@ namespace WebApi.Controllers
                 }
             }
             string _path = "";
-
             if ("import".Equals(action.ToLower()))
             {
                 if (HttpContext.Current.Request.Files.Count < 1) return ClearFile(_path, "Content file null");
@@ -106,7 +105,7 @@ namespace WebApi.Controllers
                             }
                             if ("1".Equals(flag))
                             {
-                               
+
                                 string err = "";
                                 if (ques != null) listFromFiles.Add(ques);
                                 var hasIsTrue = false;
@@ -145,7 +144,9 @@ namespace WebApi.Controllers
                                         Status = status,
                                         Category = category,
                                         Suggestion = suggestion,
-                                        Answers = new List<Answer>()
+                                        Answers = new List<Answer>(),
+                                        CreatedBy = "anonymous user import",
+                                        CreatedDate = DateTime.Now
                                     };
                                 }
                                 else
@@ -167,7 +168,7 @@ namespace WebApi.Controllers
                                     {
                                         Content = content,
                                         Status = status,
-                                        CreatedBy = "import user",
+                                        CreatedBy = "anonymous user import",
                                         CreatedDate = DateTime.Now,
                                         IsTrue = isTrue
                                     });
@@ -177,7 +178,7 @@ namespace WebApi.Controllers
                                     FILEERROR = "Row " + rowIndex + ": " + err + "\n";
                                 }
                             }
-                           
+
 
                         }
                         if ("".Equals(FILEERROR))
@@ -186,7 +187,7 @@ namespace WebApi.Controllers
                         }
                         else
                         {
-                            return ClearFile(_path,FILEERROR);
+                            return ClearFile(_path, FILEERROR);
                         }
 
                     }
@@ -200,8 +201,7 @@ namespace WebApi.Controllers
                     return ClearFile(_path, "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace);
                 }
             }
-            var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
+            return "action not support";
 
         }
 
@@ -209,13 +209,19 @@ namespace WebApi.Controllers
         public string Get()
         {
             var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
         [HttpGet]
         public string Get(int id)
         {
             var result = service.GetById(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         [HttpPost]
@@ -224,6 +230,8 @@ namespace WebApi.Controllers
             if (value != null)
             {
                 var question = JsonConvert.DeserializeObject<Question>(value.ToString());
+                question.CreatedBy = "anonymous user";
+                question.CreatedDate = DateTime.Now;
                 var result = service.Insert(question);
                 return JsonConvert.SerializeObject(result);
             }
@@ -237,6 +245,8 @@ namespace WebApi.Controllers
             {
                 var question = JsonConvert.DeserializeObject<Question>(value.ToString());
                 question.Id = id;
+                question.UpdatedBy = "anonymous user";
+                question.UpdatedDate = DateTime.Now;
                 var result = service.Update(question);
                 return JsonConvert.SerializeObject(result);
             }
@@ -246,7 +256,10 @@ namespace WebApi.Controllers
         public string Put(int id)
         {
             var result = service.Delete(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         private string ClearFile(string _path, string result)

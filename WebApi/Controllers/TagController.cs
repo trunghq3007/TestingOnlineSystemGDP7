@@ -28,13 +28,16 @@ namespace WebApi.Controllers
         public string Get(int id)
         {
             var result = service.GetById(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         [HttpGet]
         public string Get([FromUri]string action, [FromBody]object value)
         {
-            if (value != null )
+            if (value != null)
             {
                 if ("search".Equals(action))
                 {
@@ -42,7 +45,10 @@ namespace WebApi.Controllers
                 }
             }
             var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         [HttpPost]
@@ -73,7 +79,10 @@ namespace WebApi.Controllers
         public string Put(int id)
         {
             var result = service.Delete(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
 

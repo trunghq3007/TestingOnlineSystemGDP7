@@ -52,6 +52,8 @@ namespace WebApi.Controllers
             if (value != null)
             {
                 var category = JsonConvert.DeserializeObject<Category>(value.ToString());
+                category.CreatedBy = "anonymous user";
+                category.CreatedDate = DateTime.Now;
                 var result = service.Insert(category);
                 return JsonConvert.SerializeObject(result);
             }
@@ -65,6 +67,8 @@ namespace WebApi.Controllers
             {
                 var category = JsonConvert.DeserializeObject<Category>(value.ToString());
                 category.Id = id;
+                category.CreatedBy = "anonymous user";
+                category.CreatedDate = DateTime.Now;
                 var result = service.Update(category);
                 return JsonConvert.SerializeObject(result);
             }

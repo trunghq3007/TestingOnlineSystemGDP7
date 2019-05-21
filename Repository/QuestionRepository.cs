@@ -38,25 +38,27 @@ namespace Repository
         {
             var result = context.Questions.ToList();
 
-            if (model.CategoryId > 0)
+            if (model.CategoryId != null)
             {
-                result = result.Where(s => s.Category.Id == model.CategoryId).ToList();
+                if (int.TryParse(model.Level, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
             }
-            if (model.TagsId > 0)
+            if (model.TagsId != null)
             {
-                result = result.Where(s => s.Tags.Where(item => item.Id == model.TagsId).Count() > 0).ToList();
+                if (int.TryParse(model.Level, out int tagId)) result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
             }
             if (model.CreatedBy.Count() > 0)
             {
-                result = result.Where(s =>model.CreatedBy.Equals(s.CreatedBy)).ToList();
+                result = result.Where(s => model.CreatedBy.Equals(s.CreatedBy)).ToList();
             }
-            if (model.Type > 0)
+
+            if (model.Type != null)
             {
-                result = result.Where(s => s.Type == model.Type).ToList();
+                if (int.TryParse(model.Level, out int type)) result = result.Where(s => s.Type == type).ToList();
             }
-            if (model.Level > 0)
+
+            if (model.Level != null)
             {
-                result = result.Where(s => s.Level == model.Level).ToList();
+                if (int.TryParse(model.Level, out int level)) result = result.Where(s => s.Level == level).ToList();
             }
             if (model.StartDate != null)
             {
@@ -69,15 +71,24 @@ namespace Repository
 
             var size = 10;
             var maxSize = result.Count();
-            if (model.PageSize <= 0)
+            if (model.PageSize != null)
             {
                 size = maxSize < 10 ? maxSize : 10;
             }
             else
             {
-                size = maxSize < model.PageSize ? maxSize : model.PageSize;
+                if (int.TryParse(model.PageSize, out int pageSize))
+                {
+                    size = maxSize < pageSize ? maxSize : pageSize;
+                }
             }
-            var index = model.PageIndex <= 0 ? model.PageIndex = 1 : model.PageIndex;
+            var index = 1;
+            if (model.PageIndex != null)
+            {
+                if (int.TryParse(model.PageIndex, out int pageIndex))
+                    index = pageIndex <= 0 ? 1 : pageIndex;
+            }
+
 
             var start = (index - 1) * size;
             var end = index * size - 1;
@@ -97,6 +108,8 @@ namespace Repository
         public int Insert(Question t)
         {
             context.Questions.Add(t);
+            t.CreatedBy = "anonymous user";
+            t.CreatedDate = DateTime.Now;
             return context.SaveChanges();
         }
 
@@ -122,35 +135,30 @@ namespace Repository
 
         public int Update(Question t)
         {
-             var transaction=context.Database.BeginTransaction();
+            var trans = context.Database.BeginTransaction();
+            var currenQuestion = context.Questions.Where(s => s.Id == t.Id).SingleOrDefault();
             var anserList = t.Answers.ToList();
             t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
-            if(anserList != null)
-            {
-                foreach(var item in anserList)
-                {
-                    if (context.Answers.Where(s => s.Id == item.Id).Count() > 0)
-                    {
-                        item.UpdatedBy = "anonymous user";
-                        item.UpdatedDate = DateTime.Now;
-                        context.Entry(item).State = EntityState.Modified;
-                    }
-                    //else
-                    //{
-                    //    item.CreatedBy = "anonymous user";
-                    //    item.CreatedDate = DateTime.Now;
-                    //    item.Question = context.;
-                    //    context.Answers.Add(item);
-                    //}
-                }
-                context.SaveChanges();
-                //t.Answers = context.Answers.Where(s => s.Question.Id == t.Id).ToList();
-            }
-            t.UpdatedDate = DateTime.Now;
-            t.UpdatedBy = "anonymous user";
-            context.Entry(t).State = EntityState.Modified;
+
+            currenQuestion.Answers = null;
+            currenQuestion.Category = t.Category;
+            currenQuestion.Content = t.Content;
+            currenQuestion.CreatedBy = t.CreatedBy;
+            currenQuestion.CreatedDate = t.CreatedDate;
+            currenQuestion.Exams = t.Exams;
+            currenQuestion.Level = t.Level;
+            currenQuestion.Media = t.Media;
+            currenQuestion.Tags = t.Tags;
+            currenQuestion.Type = t.Type;
+            currenQuestion.Suggestion = t.Suggestion;
+            currenQuestion.UpdatedBy = "anonymous user";
+            currenQuestion.UpdatedDate = DateTime.Now;
+            context.Entry(currenQuestion).State = EntityState.Modified;
+            context.Answers.RemoveRange(context.Answers.Where(s => s.Question.Id == t.Id));
             var result = context.SaveChanges();
-            transaction.Commit();
+            currenQuestion.Answers = t.Answers;
+            context.SaveChanges();
+            trans.Commit();
             return result;
         }
 
@@ -173,15 +181,14 @@ namespace Repository
                     transaction.Commit();
                     return "OK";
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     return e.Message;
                 }
-              
+
             }
         }
-
 
         private bool disposed = false;
         public void Dispose(bool disposing)

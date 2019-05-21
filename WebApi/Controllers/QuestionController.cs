@@ -230,8 +230,6 @@ namespace WebApi.Controllers
             if (value != null)
             {
                 var question = JsonConvert.DeserializeObject<Question>(value.ToString());
-                question.CreatedBy = "anonymous user";
-                question.CreatedDate = DateTime.Now;
                 var result = service.Insert(question);
                 return JsonConvert.SerializeObject(result);
             }
@@ -245,8 +243,6 @@ namespace WebApi.Controllers
             {
                 var question = JsonConvert.DeserializeObject<Question>(value.ToString());
                 question.Id = id;
-                question.UpdatedBy = "anonymous user";
-                question.UpdatedDate = DateTime.Now;
                 var result = service.Update(question);
                 return JsonConvert.SerializeObject(result);
             }

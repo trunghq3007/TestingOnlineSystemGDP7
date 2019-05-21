@@ -145,7 +145,7 @@ namespace Repository
             currenQuestion.Content = t.Content;
             currenQuestion.CreatedBy = t.CreatedBy;
             currenQuestion.CreatedDate = t.CreatedDate;
-            currenQuestion.Exams = t.Exams;
+            currenQuestion.ExamQuestions = t.ExamQuestions;
             currenQuestion.Level = t.Level;
             currenQuestion.Media = t.Media;
             currenQuestion.Tags = t.Tags;

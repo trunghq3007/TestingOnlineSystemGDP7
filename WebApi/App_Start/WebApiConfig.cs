@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Routing;
+using System.Web.Cors;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
@@ -28,14 +29,13 @@ namespace WebApi
             var constraints = new { httpMethod = new HttpMethodConstraint(HttpMethod.Options) };
             config.Routes.IgnoreRoute("OPTIONS", "*pathInfo", constraints);
 
-            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
             //config.EnableCors(new EnableCorsAttribute(origins: "*", headers: "*", methods: "*"));
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            
-
+            //config upload
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("multipart/form-data"));
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

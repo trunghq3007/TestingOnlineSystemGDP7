@@ -21,11 +21,10 @@ namespace Model
         public int QuestionNumber { get; set; }
         [Required(ErrorMessage = "status is not null")]
         public bool Status { get; set; }
-        [Required(ErrorMessage = " exam type is not null ")]
-        public string TypeExam { get; set; }
+       
         public DateTime? CreateAt { get; set; }
         public string Note { get; set; }
         public virtual ICollection<Test> Tests { get; set; }
-        public virtual ICollection<Question> Questions { get; set; }
+        public virtual ICollection<ExamQuestion> ExamQuestions { get; set; }
     }
 }

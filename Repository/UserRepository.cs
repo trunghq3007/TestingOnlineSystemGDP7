@@ -19,11 +19,10 @@ namespace Repository
         public int Delete(int id)
         {
             var item = context.Users.Where(s => s.UserId == id).SingleOrDefault();
-            if (item != null)
+            if (item.Status == false)
             {
                 context.Users.Remove(item);
-                context.SaveChanges();
-
+                return context.SaveChanges();
             }
             return 0;
         }
@@ -50,9 +49,27 @@ namespace Repository
 
         public int Insert(User user)
         {
-            context.Users.Add(user);
+            user.Role = context.Roles.Where(s => s.RoleId == user.RoleId).SingleOrDefault();
+            context.Users.Add(new User()
+            {
+                UserName = user.UserName,
+                RoleId = user.RoleId,
+                Password = user.Password,
+                CreatedDate = DateTime.Now,
+                EditedDate = DateTime.Now,
+                FullName = user.FullName,
+                Phone = user.Phone,
+                Email = user.Email,
+                Address = user.Address,
+                Department = user.Department,
+                Position = user.Position,
+                Avatar = user.Avatar,
+                Note = user.Note,
+                Status = user.Status
+            });
             return context.SaveChanges();
         }
+
 
         public IEnumerable<User> Search(string searchString)
         {
@@ -80,6 +97,50 @@ namespace Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public IEnumerable<User> SearchUserInGroup(int id, string searchString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterGroup(GroupFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterUserInGroup(GroupFilterModel model, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetUserOutGroup(int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterUser(UserFilterModel model)
+        {
+            var result = context.Users.ToList();
+            if (model.Department != null)
+            {
+                result = result.Where(s => s.Department == model.Department).ToList();
+            }
+            if (model.Position != null)
+            {
+                result = result.Where(s => s.Position == model.Position).ToList();
+            }
+            return result;
         }
     }
 }

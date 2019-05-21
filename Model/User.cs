@@ -16,7 +16,7 @@ namespace Model
         public int RoleId { get; set; }
         [Required(ErrorMessage ="User Name is required"),MinLength(5),MaxLength(15)]
         public string UserName { get; set; }
-        [Required(ErrorMessage ="Password is required"),MinLength(5), MaxLength(25)]
+        [Required(ErrorMessage ="Password is required"),MinLength(5), MaxLength(100)]
         public string Password { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? EditedDate { get; set; }

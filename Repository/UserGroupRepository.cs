@@ -9,7 +9,7 @@ using Model;
 using DataAccessLayer;
 namespace Repository
 {
-    public class UserGroupRepository : Interfaces.IGroupRepository<User>
+    public class UserGroupRepository : Interfaces.IGroupRepository<User>, IDisposable
     {
         private DBEntityContext context;
         public UserGroupRepository(DBEntityContext context)
@@ -47,12 +47,8 @@ namespace Repository
 
         public IEnumerable<User> GetUserInGroup(int id)
         {
-            var UserGroup = (from a in context.UserGroups
-                join b in context.Users on a.UserId equals b.UserId
-                where a.GroupId == id
-                select b
-                );
-            return UserGroup.ToList();
+            var result = context.Users.Where(s => s.UserGroups.Where(x => x.GroupId == id).Count() > 0);
+            return result;
         }
 
         public int Insert(User t)
@@ -62,10 +58,85 @@ namespace Repository
 
         public IEnumerable<User> Search(string searchString)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();          
         }
 
         public int Update(User t)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool disposed = false;
+        public void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public IEnumerable<User> SearchUserInGroup(int id, string searchString)
+        {
+            var result = context.Users.Where(s => s.UserGroups.Where(x => x.GroupId == id).Count() > 0);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return result.Where(s => s.FullName.Contains(searchString));
+            }            
+            return context.Users.Where(s => s.UserGroups.Where(x => x.GroupId == id).Count() > 0);
+        }
+
+        public IEnumerable<User> FilterGroup(GroupFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterUserInGroup(GroupFilterModel model, int id)
+        {
+            var result = context.Users.Where(s => s.UserGroups.Where(x => x.GroupId == id).Count() > 0);
+            //var result2=context.UserGroups.Where(s=>s.CreatedOn==model.AddedEndDate)
+            if (model.Position != null)
+            {
+                result = result.Where(s => s.Position == model.Position);
+            }
+            if (model.Department != null)
+            {
+                result = result.Where(s => s.Department == model.Department);
+            }
+            return result;
+        }
+
+        public IEnumerable<User> GetUserOutGroup(int idgroup)
+        {
+            var userInGroup = context.Users.Where(s => s.UserGroups.Where(x => x.GroupId == idgroup).Count() > 0);
+            var user = new List<User>(context.Users);
+            foreach (var item in userInGroup)
+            {
+                var t = user.Remove(item);
+            }
+            var userss = user.ToList();
+            return user;
+        }
+
+        public int InsertUserGroup(int iduser, int idgroup)
+        {
+            UserGroup item = new UserGroup();
+            item.UserId = iduser;
+            item.GroupId = idgroup;
+            item.CreatedOn = DateTime.Now;
+            context.UserGroups.Add(item);
+            return context.SaveChanges();
+        }
+
+        public IEnumerable<User> FilterUser(UserFilterModel model)
         {
             throw new NotImplementedException();
         }

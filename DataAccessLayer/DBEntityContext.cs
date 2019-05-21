@@ -12,6 +12,7 @@ namespace DataAccessLayer
     {
         public DBEntityContext() : base("name=defaultConnection")
         {
+            Configuration.ProxyCreationEnabled = false;
             Database.SetInitializer<DBEntityContext>(new DbInitializer());
         }
         public virtual DbSet<Model.Action> Actions { get; set; }
@@ -29,6 +30,7 @@ namespace DataAccessLayer
         public virtual DbSet<TestResult> TestResults { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserGroup> UserGroups { get; set; }
+        public virtual DbSet<ExamQuestion> ExamQuestions { get; set; }
 
     }
 }

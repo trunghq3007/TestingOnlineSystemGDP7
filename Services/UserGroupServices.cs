@@ -33,6 +33,21 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<User> FilterGroup(GroupFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterUser(UserFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterUserInGroup(GroupFilterModel model, int id)
+        {
+            return usergroupRepository.FilterUserInGroup(model, id);
+        }
+
         public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();
@@ -48,14 +63,29 @@ namespace Services
             return usergroupRepository.GetUserInGroup(id);
         }
 
+        public IEnumerable<User> GetUserOutGroup(int idgroup)
+        {
+            return usergroupRepository.GetUserOutGroup(idgroup);
+        }
+
         public int Insert(User t)
         {
             throw new NotImplementedException();
         }
 
+        public int InsertUserGroup(int iduser, int idgroup)
+        {
+            return usergroupRepository.InsertUserGroup(iduser, idgroup);
+        }
+
         public IEnumerable<User> Search(string searchString)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> SearchUserInGroup(int id, string searchString)
+        {
+            return usergroupRepository.SearchUserInGroup(id, searchString);
         }
 
         public int Update(User t)

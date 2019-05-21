@@ -15,9 +15,10 @@ namespace Model
         public int Id { get; set; }
         [Required]
         public int ExamId { get; set; }
-        //[Required]
-        //public int SemasterExamId { get; set; }
-        
+        [Required]
+        [ForeignKey("SemesterExam")]
+        public int SemasterExamId { get; set; }
+
         public int Status { get; set; }
         public DateTime? StartDate { get; set; }
        
@@ -28,8 +29,8 @@ namespace Model
         public float PassScore { get; set; }
         [Required(ErrorMessage = "test name is not null")]
         public string TestName  { get; set; }
-        [Required(ErrorMessage = "number of time is not null")]
-        public int NumberTime { get; set; }
+        [Required(ErrorMessage = "TotalTest is not null")]
+        public int TotalTest { get; set; }
         [Required(ErrorMessage = "test time is not null")]
         public float TestTime { get; set; }
         public virtual ICollection<TestResult> TestResults { get; set; }

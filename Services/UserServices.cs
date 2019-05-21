@@ -23,7 +23,27 @@ namespace Services
             return userRepository.Delete(id);
         }
 
+        public int DeleteUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> Filter(User t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterGroup(GroupFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FilterUser(UserFilterModel model)
+        {
+            return userRepository.FilterUser(model);
+        }
+
+        public IEnumerable<User> FilterUserInGroup(GroupFilterModel model, int id)
         {
             throw new NotImplementedException();
         }
@@ -43,14 +63,29 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<User> GetUserOutGroup(int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Insert(User user)
         {
             return userRepository.Insert(user);
         }
 
+        public int InsertUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> Search(string searchString)
         {
             return userRepository.Search(searchString);
+        }
+
+        public IEnumerable<User> SearchUserInGroup(int id, string searchString)
+        {
+            throw new NotImplementedException();
         }
 
         public int Update(User user)

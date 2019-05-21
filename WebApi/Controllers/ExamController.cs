@@ -11,30 +11,73 @@ using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
+
+
     [AllowCrossSite]
     public class ExamController : ApiController
     {
         private ExamServices services;
-
+		private QuestionServices QuestionServices;
+        private ExamQuestionServices examQuestion;
         public ExamController()
         {
             services = new ExamServices();
+			QuestionServices = new QuestionServices();
+            examQuestion=new ExamQuestionServices();
         }
+
+      
+   
         [HttpGet]
-        // GET: User
-        public string GetExam()
+        public string Index()
         {
             var result = services.GetAll();
             return JsonConvert.SerializeObject(result);
         }
 
+
+
+		[HttpGet]
+		// GETID : User
+		public string GetExam(int id)
+		{
+
+
+			var result = examQuestion.GetListQuestionById(id);
+
+
+			return JsonConvert.SerializeObject(result);
+		}
+
+
         [HttpGet]
-        // GETID : User
-        public string GetExam(int id)
+        public string Get([FromUri]string action, [FromBody]object value)
         {
-            var result = services.GetById(id);
+            if (value != null)
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(QuestionServices.Search(value.ToString()));
+                }
+                if ("fillter".Equals(action))
+                {
+                    try
+                    {
+                        var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value.ToString());
+                        return JsonConvert.SerializeObject(QuestionServices.Filter(filterObject));
+                    }
+                    catch (Exception)
+                    {
+                        return "Object fillter not convert valid";
+                    }
+                }
+            }
+            var result = QuestionServices.GetAll().ToList();
             return JsonConvert.SerializeObject(result);
+
         }
+
+
         [HttpPost]
         public string InsertExam([FromBody] string value)
         {

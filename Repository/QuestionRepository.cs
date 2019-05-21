@@ -97,6 +97,7 @@ namespace Repository
 
         public IEnumerable<Question> GetAll()
         {
+            
             return context.Questions.ToList();
         }
 

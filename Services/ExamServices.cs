@@ -12,7 +12,7 @@ namespace Services
 {
     public class ExamServices : Interfaces.IServices<Exam>
     {
-        private DBEntityContext context;
+        
         private IRepository<Exam> examRepository;
 
         public ExamServices()
@@ -31,13 +31,13 @@ namespace Services
 
         public IEnumerable<Exam> GetAll()
         {
-            return context.Exams.ToList();
+            return examRepository.GetAll();
             
         }
 
         public Exam GetById(int id)
         {
-            throw new NotImplementedException();
+            return examRepository.GetById(id);
         }
 
         public int Insert(Exam t)
@@ -49,7 +49,10 @@ namespace Services
         {
             throw new NotImplementedException();
         }
-
+        public IEnumerable<Question> SearchQuestion(string searchString)
+        {
+            throw new NotImplementedException();
+        }
         public int Update(Exam t)
         {
             throw new NotImplementedException();

@@ -11,7 +11,7 @@ namespace Repository
 {
     public class ExamRepository : Interfaces.IRepository<Exam>, IDisposable
     {
-        private DBEntityContext context;
+        public DBEntityContext context;
 
         public ExamRepository(DBEntityContext context)
         {
@@ -29,7 +29,7 @@ namespace Repository
 
         public IEnumerable<Exam> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Exams.ToList();
         }
 
         
@@ -41,11 +41,7 @@ namespace Repository
         }
 
 
-        public IEnumerable<Exam> Search(string searchString)
-        {
-            throw new NotImplementedException();
-        }
-
+      
         public int Update(Exam t)
         {
             throw new NotImplementedException();
@@ -69,14 +65,22 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-        public Exam GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public IEnumerable<Question> Filter(object t)
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Exam> Search(string searchString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Exam GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+      
     }
 }

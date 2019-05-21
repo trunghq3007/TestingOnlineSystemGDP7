@@ -134,24 +134,36 @@ namespace Repository
         public int Update(Question t)
         {
             context.Database.BeginTransaction();
+            var currenQuestion = context.Questions.Where(s => s.Id == t.Id).SingleOrDefault();
             var anserList = t.Answers.ToList();
             t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
             if(anserList != null)
             {
-                foreach(var item in anserList)
+                var oldAnswers = context.Answers.Where(s => s.Question.Id == t.Id).ToList();
+                var newAnswers = new List<Answer>();
+                foreach (var item in anserList)
                 {
-                    if (context.Answers.Where(s => s.Id == item.Id).Count() > 0)
+                    var tempList = oldAnswers.Where(s => s.Id == item.Id);
+                    if (tempList.Count() > 0)
                     {
                         item.UpdatedBy = "anonymous user";
                         item.UpdatedDate = DateTime.Now;
                         context.Entry(item).State = EntityState.Modified;
+                        newAnswers.Add(anserList.SingleOrDefault());
+                        oldAnswers.Remove(anserList.SingleOrDefault());
                     }
                     else
                     {
                         item.CreatedBy = "anonymous user";
                         item.CreatedDate = DateTime.Now;
-                        context.Answers.Add(item);
+                        item.Question = currenQuestion;
+                        newAnswers.Add(context.Answers.Add(item));
                     }
+                    anserList.Remove(item);
+                }
+                foreach(var item in oldAnswers)
+                {
+                    context.Answers.Remove(item);
                 }
                 t.Answers = context.Answers.Where(s => s.Question.Id == t.Id).ToList();
                 t.UpdatedDate = DateTime.Now;
@@ -188,7 +200,6 @@ namespace Repository
               
             }
         }
-
 
         private bool disposed = false;
         public void Dispose(bool disposing)

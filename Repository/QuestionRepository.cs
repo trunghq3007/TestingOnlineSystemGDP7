@@ -20,13 +20,21 @@ namespace Repository
 
         public int Delete(int id)
         {
-            var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
-            if (item != null)
+            try
             {
-                context.Questions.Remove(item);
-                return context.SaveChanges();
+                var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
+                if (item != null)
+                {
+                    context.Questions.Remove(item);
+                    return context.SaveChanges();
+                }
+                return 0;
             }
-            return 0;
+            catch
+            {
+                return -1;
+            }
+           
         }
 
         public IEnumerable<Question> Filter(Question t)
@@ -107,10 +115,18 @@ namespace Repository
 
         public int Insert(Question t)
         {
-            context.Questions.Add(t);
-            t.CreatedBy = "anonymous user";
-            t.CreatedDate = DateTime.Now;
-            return context.SaveChanges();
+            try
+            {
+                context.Questions.Add(t);
+                t.CreatedBy = "anonymous user";
+                t.CreatedDate = DateTime.Now;
+                return context.SaveChanges();
+            }
+            catch
+            {
+                return -1;
+            }
+           
         }
 
         public IEnumerable<Question> Search(SearchPaging item)

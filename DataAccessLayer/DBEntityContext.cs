@@ -12,7 +12,7 @@ namespace DataAccessLayer
     {
         public DBEntityContext() : base("name=defaultConnection")
         {
-            Configuration.ProxyCreationEnabled = false;
+            //Configuration.ProxyCreationEnabled = false;
             Database.SetInitializer<DBEntityContext>(new DbInitializer());
         }
         public virtual DbSet<Model.Action> Actions { get; set; }

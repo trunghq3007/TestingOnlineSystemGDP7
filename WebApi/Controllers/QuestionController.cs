@@ -16,7 +16,7 @@ namespace WebApi.Controllers
 {
     [AllowCrossSite]
     public class QuestionController : ApiController
-    {
+    { 
         private QuestionServices service;
 
         public QuestionController()

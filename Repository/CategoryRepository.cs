@@ -22,7 +22,7 @@ namespace Repository
         public int Delete(int id)
         {
             var item = context.Categorys.Where(s => s.Id == id).SingleOrDefault();
-            if (item != null)
+            if (item.Status==0)
             {
                 context.Categorys.Remove(item);
                 return context.SaveChanges();

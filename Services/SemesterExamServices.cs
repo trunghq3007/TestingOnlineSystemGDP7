@@ -26,7 +26,7 @@ namespace Services
 
         public IEnumerable<SemesterExam> Filter(SemesterExam t)
         {
-            throw new NotImplementedException();
+            return SemesterExamRepository.Filter(t);
         }
 
         public IEnumerable<SemesterExam> GetAll()
@@ -34,7 +34,7 @@ namespace Services
             return SemesterExamRepository.GetAll();
         }
 
-        public SemesterExam GetById(int id)
+        public SemesterDetail GetById(int id)
         {
             return SemesterExamRepository.GetById(id);
         }
@@ -56,7 +56,40 @@ namespace Services
 
         public int Update(SemesterExam t)
         {
+            return SemesterExamRepository.Update(t);
+        }
+
+        SemesterExam ISemesterExamServices<SemesterExam>.GetById(int id)
+        {
             throw new NotImplementedException();
         }
+        public IEnumerable<Exam> GetExamsNotAdd(int id)
+        {
+            return SemesterExamRepository.GetExamsNotAdd(id);
+        }
+
+        public int AddMany(int[] listId, int semesterId)
+        {
+            return SemesterExamRepository.AddMany(listId, semesterId);
+        }
+        public IEnumerable<Exam> GetExams(int id)
+        {
+            return SemesterExamRepository.GetExams(id);
+        }
+
+        public IEnumerable<Test> GetTests(int id)
+        {
+            return SemesterExamRepository.GetTests(id);
+        }
+
+        public IEnumerable<SemesterExam> InputCode(string code)
+        {
+            return SemesterExamRepository.InputCode(code);
+        }
+        public IEnumerable<SemesterExam> GetByCandidateId(int candidateId)
+        {
+            return SemesterExamRepository.GetByCandidateId(candidateId);
+        }
+
     }
 }

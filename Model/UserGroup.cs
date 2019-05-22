@@ -17,7 +17,6 @@ namespace Model
         [ForeignKey("Group")]
         public int GroupId { get; set; }
         public DateTime? CreatedOn { get; set; }
-        public bool IsManaged { get; set; }
         public virtual Group Group { get; set; }
         public virtual User User { get; set; }
     }

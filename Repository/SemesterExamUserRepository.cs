@@ -9,7 +9,7 @@ using Model.ViewModel;
 
 namespace Repository
 {
-   public class SemesterExamUserRepository : Repository.Interfaces.ISemesterExamUserRepository<SemesterExam_User>
+   public class SemesterExamUserRepository : Interfaces.ISemesterExamUserRepository<SemesterExam_User>
     {
         private DBEntityContext context;
 
@@ -108,6 +108,64 @@ namespace Repository
             //ReportSemester reportSemester = new ReportSemester(semesterExam.SemesterName,semesterExam_Users.User.UserName,semesterExam.StartDay.ToString(),semesterExam.EndDay.ToString(),count);
             return candidates;
 
+        }
+
+        public IEnumerable<SemesterExam_User> Filter(Candidates t)
+        {
+            var result = context.SemesterExamUsers.ToList();
+
+            //if (!string.IsNullOrEmpty(t.UserName))
+            //{
+            //    result = result.Where(x => x.User.UserName.Contains(t.UserName)).ToList();
+            //}
+
+            if (t.Department != null)
+            {
+                result = result.Where(x => x.User.Department == t.Department).ToList();
+            }
+            if (t.Department != null)
+            {
+                result = result.Where(x => x.User.Position == t.Position).ToList();
+            }
+
+            return result;
+        
+        }
+
+        public IEnumerable<Candidates> Search(string searchString, int id, int type)
+        {
+            var query = from U in context.Users
+                        join SEU in context.SemesterExamUsers
+                        on U.UserId equals SEU.User.UserId
+                        where U.UserName.Contains(searchString)
+                        && SEU.SemesterExam.ID == id && SEU.Type == type
+                        select U;
+            List<User> list = query.ToList();
+            List<Candidates> candidates = new List<Candidates>();
+            foreach (User item in list)
+            {
+                Candidates a = new Candidates();
+                a.UserId = item.UserId;
+                a.UserName = item.UserName;
+                a.FullName = item.FullName;
+                a.Department = item.Department;
+                a.Email = item.Email;
+                a.Position = item.Position;
+                candidates.Add(a);
+            }
+            int b = 0;
+
+            return candidates;
+        }
+
+        public int DeleteUserInSemester(int userId, int semesterId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteAllUserInSemester(int semesterId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

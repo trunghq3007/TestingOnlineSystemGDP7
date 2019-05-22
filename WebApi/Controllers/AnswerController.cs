@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class AnswerController : ApiController
     {
         private AnswerServices service;
@@ -27,6 +28,20 @@ namespace WebApi.Controllers
         public string Get(int id)
         {
             var result = service.GetById(id);
+            return JsonConvert.SerializeObject(result);
+        }
+
+        [HttpGet]
+        public string Get([FromUri]string action, [FromBody]string value)
+        {
+            if (value != null && !"".Equals(value))
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.Search(value));
+                }
+            }
+            var result = service.GetAll().ToList();
             return JsonConvert.SerializeObject(result);
         }
 

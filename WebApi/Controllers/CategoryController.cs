@@ -31,12 +31,29 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-        [HttpPost]
-        public string Post([FromBody]string value)
+        [HttpGet]
+        public string Get([FromUri]string action, [FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var category = JsonConvert.DeserializeObject<Category>(value);
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.Search(value.ToString()));
+                }
+            }
+            var result = service.GetAll().ToList();
+            return JsonConvert.SerializeObject(result);
+
+        }
+
+        [HttpPost]
+        public string Post([FromBody]object value)
+        {
+            if (value != null)
+            {
+                var category = JsonConvert.DeserializeObject<Category>(value.ToString());
+                category.CreatedBy = "anonymous user";
+                category.CreatedDate = DateTime.Now;
                 var result = service.Insert(category);
                 return JsonConvert.SerializeObject(result);
             }
@@ -44,12 +61,14 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public string Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var category = JsonConvert.DeserializeObject<Category>(value);
+                var category = JsonConvert.DeserializeObject<Category>(value.ToString());
                 category.Id = id;
+                category.CreatedBy = "anonymous user";
+                category.CreatedDate = DateTime.Now;
                 var result = service.Update(category);
                 return JsonConvert.SerializeObject(result);
             }

@@ -18,7 +18,9 @@ namespace Repository
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            var group = context.Groups.Find(id);
+            context.Groups.Remove(group);           
+            return context.SaveChanges();
         }
 
         public IEnumerable<Group> Filter(Group t)
@@ -33,19 +35,30 @@ namespace Repository
 
         public Group GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Groups.Where(s => s.GroupId == id).SingleOrDefault();
         }
 
         public int Insert(Group t)
         {
-            context.Groups.Add(t);
+            context.Groups.Add(new Group()
+            {
+                CreatedDate =DateTime.Now,
+                GroupName = t.GroupName,
+                Creator = t.Creator,
+                Description = t.Description
+            });
             return context.SaveChanges();
         }
 
 
         public IEnumerable<Group> Search(string searchString)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return context.Groups.Where(s => s.GroupName.Contains(searchString));
+            }
+
+            return context.Groups.ToList();
         }
 
         public int Update(Group t)
@@ -72,6 +85,56 @@ namespace Repository
         }
 
         public IEnumerable<Group> GetUserInGroup(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> FilterGroup(GroupFilterModel model)
+        {
+            var result = context.Groups.ToList();
+            if (model.GroupId > 0)
+            {
+                result = result.Where(x => x.GroupId == model.GroupId).ToList();
+            }
+
+            if (model.StartDate != null)
+            {
+                result = result.Where(x => x.CreatedDate >= model.StartDate).ToList();
+            }
+
+            if (model.EndDate != null)
+            {
+                result = result.Where(x => x.CreatedDate <= model.EndDate).ToList();
+            }
+            return result;
+        }
+
+        public IEnumerable<Group> SearchUserInGroup(int id, string searchString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> FilterUserInGroup(GroupFilterModel model, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> GetUserOutGroup(int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> FilterUser(UserFilterModel model)
         {
             throw new NotImplementedException();
         }

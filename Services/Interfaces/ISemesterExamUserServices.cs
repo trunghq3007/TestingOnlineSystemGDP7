@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,10 @@ namespace Services.Interfaces
         int Delete(int id);
         T GetById(int id);
         IEnumerable<T> GetCandidatesOfASemester(int id);
+        IEnumerable<Model.ViewModel.Candidates> Search(string searchString, int id, int type);
+        int DeleteUserInSemester(int userId, int semesterId);
+        int DeleteAllUserInSemester(int semesterId);
+
+        IEnumerable<Model.SemesterExam_User> Filter(Candidates t);
     }
 }

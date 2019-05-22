@@ -7,6 +7,7 @@ using Model;
 using Repository.Interfaces;
 using Repository;
 using DataAccessLayer;
+using Model.ViewModel;
 
 namespace Services
 {
@@ -51,5 +52,24 @@ namespace Services
         {
             return repository.candidates(id);
         }
+        public int DeleteUserInSemester(int userId, int semesterId)
+        {
+            return repository.DeleteUserInSemester(userId, semesterId);
+        }
+
+        
+        public int DeleteAllUserInSemester(int semesterId)
+        {
+            return repository.DeleteAllUserInSemester(semesterId);
+        }
+        public IEnumerable<Candidates> Search(string searchString, int id, int type)
+        {
+            return repository.Search(searchString, id, type);
+        }
+        public IEnumerable<SemesterExam_User> Filter(Candidates t)
+        {
+            return repository.Filter(t);
+        }
+
     }
 }

@@ -30,6 +30,7 @@ namespace DataAccessLayer
         public virtual DbSet<TestResult> TestResults { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserGroup> UserGroups { get; set; }
+        public virtual DbSet<ExamQuestion> ExamQuestions { get; set; }
 
     }
 }

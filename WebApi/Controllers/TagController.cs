@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class TagController : ApiController
     {
         private TagServices service;
@@ -27,15 +28,35 @@ namespace WebApi.Controllers
         public string Get(int id)
         {
             var result = service.GetById(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+
+        [HttpGet]
+        public string Get([FromUri]string action, [FromBody]object value)
+        {
+            if (value != null)
+            {
+                if ("search".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.Search(value.ToString()));
+                }
+            }
+            var result = service.GetAll().ToList();
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         [HttpPost]
-        public string Post([FromBody]string value)
+        public string Post([FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
+                var question = JsonConvert.DeserializeObject<Tag>(value.ToString());
                 var result = service.Insert(question);
                 return JsonConvert.SerializeObject(result);
             }
@@ -43,11 +64,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public string Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
+                var question = JsonConvert.DeserializeObject<Tag>(value.ToString());
                 question.Id = id;
                 var result = service.Update(question);
                 return JsonConvert.SerializeObject(result);
@@ -58,7 +79,10 @@ namespace WebApi.Controllers
         public string Put(int id)
         {
             var result = service.Delete(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
 

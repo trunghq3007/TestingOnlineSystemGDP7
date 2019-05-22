@@ -16,5 +16,6 @@ namespace Services.Interfaces
         int Delete(int id);
         T GetById(int id);
         Model.ViewModel.ReportSemester Report(int id);
+        IEnumerable<T> Filter(T t);
     }
 }

@@ -8,24 +8,24 @@ using DataAccessLayer;
 using Model;
 using Repository.Interfaces;
 
-
 namespace Services
 {
-    public class UserSevices : Interfaces.IGroupServices<User>
+    public class UserGroupServices : Interfaces.IGroupServices<User>
     {
-        private IGroupRepository<User> userRepository;
-        public UserSevices()
+        private IGroupRepository<User> usergroupRepository;
+
+        public UserGroupServices()
         {
-            userRepository = new UserRepository(new DBEntityContext());
+           usergroupRepository = new UserGroupRepository(new DBEntityContext());
         }
         public int Delete(int id)
         {
-            return userRepository.Delete(id);
+            throw new NotImplementedException();
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
         {
-            throw new NotImplementedException();
+            return usergroupRepository.DeleteUserGroup(iduser, idgroup);
         }
 
         public IEnumerable<User> Filter(User t)
@@ -40,57 +40,57 @@ namespace Services
 
         public IEnumerable<User> FilterUser(UserFilterModel model)
         {
-            return userRepository.FilterUser(model);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<User> FilterUserInGroup(GroupFilterModel model, int id)
         {
-            throw new NotImplementedException();
+            return usergroupRepository.FilterUserInGroup(model, id);
         }
 
         public IEnumerable<User> GetAll()
         {
-            return userRepository.GetAll();
+            throw new NotImplementedException();
         }
 
         public User GetById(int id)
         {
-            return userRepository.GetById(id);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetUserInGroup(int id)
         {
-            throw new NotImplementedException();
+            return usergroupRepository.GetUserInGroup(id);
         }
 
         public IEnumerable<User> GetUserOutGroup(int idgroup)
         {
-            throw new NotImplementedException();
+            return usergroupRepository.GetUserOutGroup(idgroup);
         }
 
-        public int Insert(User user)
+        public int Insert(User t)
         {
-            return userRepository.Insert(user);
+            throw new NotImplementedException();
         }
 
         public int InsertUserGroup(int iduser, int idgroup)
         {
-            throw new NotImplementedException();
+            return usergroupRepository.InsertUserGroup(iduser, idgroup);
         }
 
         public IEnumerable<User> Search(string searchString)
         {
-            return userRepository.Search(searchString);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<User> SearchUserInGroup(int id, string searchString)
         {
-            throw new NotImplementedException();
+            return usergroupRepository.SearchUserInGroup(id, searchString);
         }
 
-        public int Update(User user)
+        public int Update(User t)
         {
-            return userRepository.Update(user);
+            throw new NotImplementedException();
         }
     }
 }

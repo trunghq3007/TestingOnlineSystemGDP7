@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
 using Model.ViewModel;
+using Repository.Interfaces;
 
 namespace Repository
 {
@@ -37,7 +38,20 @@ namespace Repository
 
         public IEnumerable<SemesterExam> Filter(SemesterExam t)
         {
-            throw new NotImplementedException();
+            var result = context.SemesterExams.ToList();
+            if (t.ID > 0)
+            {
+                result = result.Where(x => x.ID == t.ID).ToList();
+            }
+            if (t.StartDay != null)
+            {
+                result = result.Where(x => x.StartDay >= t.StartDay).ToList();
+            }
+            if (t.EndDay != null)
+            {
+                result = result.Where(x => x.EndDay <= t.EndDay).ToList();
+            }
+            return result;
         }
 
         public IEnumerable<Question> Filter(object t)
@@ -50,9 +64,48 @@ namespace Repository
             return (IEnumerable<SemesterExam>)context.SemesterExams.Where(SE=>SE.status != 0).ToList();
         }
 
-        public SemesterExam GetById(int id)
+        public SemesterDetail GetById(int id)
         {
-            return context.SemesterExams.Find(id);
+            //SemesterExam semesterExam = context.SemesterExams.Include(SE => SE.);
+            //var query = from SE in context.SemesterExams.Include(SE.)
+            //            where SE.ID == id
+            //            select SE;
+            context.Configuration.LazyLoadingEnabled = false;
+            List<User> users = context.Users.ToList();
+            List<SemesterExam> semesterExams = context.SemesterExams.ToList();
+            SemesterExam_User semesterExam_Users =
+            context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).FirstOrDefault();
+            SemesterExam semesterExam = context.SemesterExams.Find(id);
+            SemesterDetail semesterDetail = new SemesterDetail();
+            semesterDetail.ID = semesterExam.ID;
+            semesterDetail.SemesterName = semesterExam.SemesterName;
+            if (semesterExam.StartDay != null)
+            {
+
+            }
+            semesterDetail.StartDay = semesterExam.StartDay.ToString().Substring(0, 9);
+            semesterDetail.EndDay = semesterExam.EndDay.ToString();
+            if(semesterExam_Users != null)
+            semesterDetail.Creator = semesterExam_Users.User.FullName ;
+            semesterDetail.Code = semesterExam.Code;
+            if (semesterExam.status == 1)
+                semesterDetail.status = "Public";
+            if (semesterExam.status == 2)
+                semesterDetail.status = "Draft";
+            else
+                semesterDetail.status = "Done";
+
+            var QT = from TR in context.TestResults
+                     join U in context.Users on TR.UserId equals U.UserId
+                     join SU in context.SemesterExamUsers on U.UserId equals SU.User.UserId
+                     where SU.Type == 2 && SU.SemesterExam.ID == id
+                     select TR;
+            int participation = QT.ToList().Count;
+            semesterDetail.NumberInvite = Convert.ToString(participation);
+
+
+            return semesterDetail;
+
         }
 
         public int Insert(SemesterExam t)
@@ -88,7 +141,7 @@ namespace Repository
         { 
             SemesterExam semesterExam = context.SemesterExams.Find(id);
             SemesterExam_User semesterExam_Users =
-            context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).First();
+            context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).FirstOrDefault();
             var query = from E in context.Exams
                         join T in context.Tests on E.Id equals T.ExamId
                         join SE in context.SemesterExamUsers on T.ExamId equals SE.ID
@@ -133,8 +186,15 @@ namespace Repository
             avgScore = avgScore / QT.ToList().Count;
             int participation = QT.ToList().Count;
             int count = query.ToList().Count;
-            Exam exam = query.ToList().First();
-            int numQuestion = exam.QuestionNumber;
+            Exam exam = query.ToList().FirstOrDefault();
+            int numQuestion = 0;
+            if (exam!= null)
+            {
+                numQuestion = exam.QuestionNumber;
+
+            }
+            
+           
           
             ReportSemester reportSemester = new ReportSemester();
             
@@ -144,7 +204,8 @@ namespace Repository
             List<User> users = context.Users.ToList();
             List<SemesterExam> semesterExamsterExams = context.SemesterExams.ToList();
             reportSemester.SemesterName = semesterExam.SemesterName;
-            reportSemester.Creator = semesterExam_Users.User.FullName;
+            if(semesterExam_Users != null)
+            reportSemester.Creator = semesterExam_Users.User.FullName ;
             reportSemester.StartDay = semesterExam.StartDay.ToString();
             reportSemester.EndDay = semesterExam.EndDay.ToString();
             reportSemester.NumEXams = count;
@@ -162,7 +223,106 @@ namespace Repository
 
         public int Update(SemesterExam t)
         {
-            throw new NotImplementedException();
+            SemesterExam oldItem = context.SemesterExams.Where(s => s.ID == t.ID).SingleOrDefault();
+
+
+
+            context.Entry(oldItem).CurrentValues.SetValues(t);
+            return context.SaveChanges();
+        }
+        public IEnumerable<Exam> GetExams(int id)
+        {
+            var query = from E in context.Exams
+                        join T in context.Tests on E.Id equals T.ExamId
+                        where T.SemesterExam.ID == id
+                        select E;
+            List<Exam> list = query.ToList();
+            int a = 0;
+            return query.ToList();
+        }
+
+        public IEnumerable<SemesterExam> InputCode(string code)
+        {
+            return context.SemesterExams.Where(SE => SE.Code.Equals(code));
+        }
+
+        public IEnumerable<SemesterExam> GetByCandidateId(int candidateId)
+        {
+            var query = from SE in context.SemesterExams
+                        join
+SEU in context.SemesterExamUsers on
+SE.ID equals SEU.SemesterExam.ID
+                        where SEU.Type == 2 && SEU.User.UserId == candidateId
+                        select SE;
+            return query.ToList();
+        }
+
+        public IEnumerable<Test> GetTests(int id)
+        {
+            return context.Tests.Where(T => T.SemesterExam.ID == id).ToList();
+        }
+        public IEnumerable<Exam> GetExamsNotAdd(int id)
+        {
+            var query = from E in context.Exams
+                        join T in context.Tests on E.Id equals T.ExamId
+                        where T.SemesterExam.ID == id
+                        select E;
+            List<Exam> list1 = query.ToList();
+            //var query2 = from E in context.Exams
+            //             where !E.Equals(from Ex in context.Exams
+            //                             join T in context.Tests on Ex.Id equals T.ExamId
+            //                             where T.SemesterExam.ID == id
+            //                             select Ex)
+            //             select E;
+            //var query2 = from E in context.Exams
+            //             where !E.Equals(from Ex in context.Exams
+            //                             //join T in context.Tests on Ex.Id equals T.ExamId
+            //                             //where T.SemesterExam.ID == id
+            //                             select Ex)
+            //             select E;
+            var query2 = from Ex in context.Exams select Ex;
+            List<Exam> list2 = query2.ToList();
+            //List<Exam> list3 = (from E in list2 where ! E.Id.c (from EX in list1 select EX.Id) select E).ToList();
+
+            foreach (Exam item in list1)
+            {
+                if (list2.Contains(item))
+                    list2.Remove(item);
+
+            }
+
+
+            //List<Exam> list2 = query2.ToList();z
+
+            //List<Exam> list3=
+
+            //var query3 = from E in context.Exams
+            //             join T in context.Tests on person equals pet.Owner into gj
+            //             from subpet in gj.DefaultIfEmpty()
+            //             select new { person.FirstName, PetName = subpet?.Name ?? String.Empty };
+            int a = 0;
+
+            return list2;
+
+        }
+
+        public int AddMany(int[] listId, int semesterId)
+        {
+            int a = 0;
+            List<Test> list = context.Tests.Where(T => T.SemesterExam.ID == semesterId).ToList();
+            foreach (Test item in list)
+            {
+                foreach (int item2 in listId)
+                {
+
+                    item.ExamId = item2;
+
+                    context.Entry(context.Tests.Find(item.Id)).CurrentValues.SetValues(item);
+                    a = context.SaveChanges();
+                }
+            }
+            return a;
         }
     }
+
 }

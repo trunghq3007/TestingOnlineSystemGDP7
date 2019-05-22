@@ -46,29 +46,29 @@ namespace Repository
         {
             var result = context.Questions.ToList();
 
-            if (model.CategoryId != null)
+            if (model.CategoryId != null && !"".Equals(model.CategoryId))
             {
-                if (int.TryParse(model.Level, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
+                if (int.TryParse(model.CategoryId, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
             }
-            if (model.TagsId != null)
+            if (model.TagsId != null && !"".Equals(model.TagsId))
             {
-                if (int.TryParse(model.Level, out int tagId)) result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
+                if (int.TryParse(model.TagsId, out int tagId)) result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
             }
-            if (model.CreatedBy.Count() > 0)
+            if (model.CreatedBy != null && !"".Equals(model.CreatedBy))
             {
                 result = result.Where(s => model.CreatedBy.Equals(s.CreatedBy)).ToList();
             }
 
-            if (model.Type != null)
+            if (model.Type != null && !"".Equals(model.Type))
             {
-                if (int.TryParse(model.Level, out int type)) result = result.Where(s => s.Type == type).ToList();
+                if (int.TryParse(model.Type, out int type)) result = result.Where(s => s.Type == type).ToList();
             }
 
-            if (model.Level != null)
+            if (model.Level != null && !"".Equals(model.Level))
             {
                 if (int.TryParse(model.Level, out int level)) result = result.Where(s => s.Level == level).ToList();
             }
-            if (model.StartDate != null)
+            if (model.StartDate != null )
             {
                 result = result.Where(s => s.CreatedDate >= model.StartDate).ToList();
             }
@@ -100,7 +100,8 @@ namespace Repository
 
             var start = (index - 1) * size;
             var end = index * size - 1;
-            return result.GetRange(start, end);
+            //return result.GetRange(start, end);
+            return result;
         }
 
         public IEnumerable<Question> GetAll()

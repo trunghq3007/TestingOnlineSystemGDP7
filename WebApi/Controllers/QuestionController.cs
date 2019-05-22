@@ -35,13 +35,16 @@ namespace WebApi.Controllers
             }
             if ("fillter".Equals(action))
             {
-                if (value != null) return "Data null";
+                if (value == null) return "Data null";
                 try
                 {
                     var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value.ToString());
-                    return JsonConvert.SerializeObject(service.Filter(filterObject));
+                    return JsonConvert.SerializeObject(service.Filter(filterObject), Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     return "Object fillter not convert valid";
                 }

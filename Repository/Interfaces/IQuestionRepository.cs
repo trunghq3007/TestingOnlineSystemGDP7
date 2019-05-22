@@ -18,6 +18,6 @@ namespace Repository.Interfaces
         T GetById(int id);
         IEnumerable<T> Filter(QuestionFillterModel t);
         Category getCategoryByName(string cateName);
-        string Import(List<T> list);
+        int Import(List<T> list);
     }
 }

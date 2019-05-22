@@ -20,8 +20,6 @@ namespace Repository
 
         public int Delete(int id)
         {
-            try
-            {
                 var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
                 if (item != null)
                 {
@@ -29,12 +27,6 @@ namespace Repository
                     return context.SaveChanges();
                 }
                 return 0;
-            }
-            catch
-            {
-                return -1;
-            }
-           
         }
 
         public IEnumerable<Question> Filter(Question t)
@@ -106,7 +98,7 @@ namespace Repository
 
         public IEnumerable<Question> GetAll()
         {
-            return context.Questions.ToList();
+                return context.Questions.ToList();
         }
 
         public Question GetById(int id)
@@ -116,17 +108,11 @@ namespace Repository
 
         public int Insert(Question t)
         {
-            try
-            {
                 context.Questions.Add(t);
                 t.CreatedBy = "anonymous user";
                 t.CreatedDate = DateTime.Now;
                 return context.SaveChanges();
-            }
-            catch
-            {
-                return -1;
-            }
+            
         }
 
         public IEnumerable<Question> Search(SearchPaging item)
@@ -183,7 +169,7 @@ namespace Repository
             return context.Categorys.Where(s => s.Name.Equals(cateName)).FirstOrDefault();
         }
 
-        public string Import(List<Question> list)
+        public int Import(List<Question> list)
         {
             using (var transaction = context.Database.BeginTransaction())
             {
@@ -193,14 +179,14 @@ namespace Repository
                     {
                         context.Questions.Add(question);
                     }
-                    context.SaveChanges();
+                    var result = context.SaveChanges();
                     transaction.Commit();
-                    return "OK";
+                    return result;
                 }
                 catch (Exception e)
                 {
                     transaction.Rollback();
-                    return e.Message;
+                    throw e;
                 }
 
             }

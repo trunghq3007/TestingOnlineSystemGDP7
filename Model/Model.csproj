@@ -52,6 +52,7 @@
     <Compile Include="Group.cs" />
     <Compile Include="GroupFilterModel.cs" />
     <Compile Include="QuestionFillterModel.cs" />
+    <Compile Include="ResultObject.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RoleAction.cs" />
     <Compile Include="SearchPaging.cs" />

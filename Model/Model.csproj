@@ -48,10 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExamQuestion.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="GroupFilterModel.cs" />
     <Compile Include="QuestionFillterModel.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RoleAction.cs" />
+    <Compile Include="SearchPaging.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Action.cs" />
     <Compile Include="Answer.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Tag.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestResult.cs" />
+    <Compile Include="UserFilterModel.cs" />
     <Compile Include="UserGroup.cs" />
   </ItemGroup>
   <ItemGroup>

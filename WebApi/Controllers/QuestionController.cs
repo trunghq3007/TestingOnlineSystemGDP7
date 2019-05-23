@@ -393,6 +393,7 @@ namespace WebApi.Controllers
 
         private string Export(List<Question> questions)
         {
+            var result = new ResultObject();
             var workbook = new HSSFWorkbook();
             var sheet = workbook.CreateSheet("Data");
             var headerRow = sheet.CreateRow(0);
@@ -422,15 +423,14 @@ namespace WebApi.Controllers
             }
             var stream = new MemoryStream();
             workbook.Write(stream);
-
-            string FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"),
-                "Export_Question_" + DateTime.Now.ToString("ddmmyyyy") + ".xls");
+            string fileName = "Export_Question_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+            string FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"),fileName);
             //Write to file using file stream  
             FileStream file = new FileStream(FilePath, FileMode.CreateNew, FileAccess.Write);
             stream.WriteTo(file);
             file.Close();
             stream.Close();
-            return FilePath;
+            return "http://localhost:65170" + "/UploadedFiles/" + fileName;
         }
     }
 }

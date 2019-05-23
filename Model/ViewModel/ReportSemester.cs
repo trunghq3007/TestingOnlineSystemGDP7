@@ -34,5 +34,7 @@ namespace Model.ViewModel
         public int Low { get; set; }
         public int Good { get; set; }
         public int Medium { get; set; }
+        public string Status { get; set; }
+             
     }
 }

@@ -16,7 +16,7 @@ namespace Services
         private IGroupRepository<User> userRepository;
         public UserSevices()
         {
-            userRepository = new UserRepository(new DBEntityContext());
+            userRepository= new UserRepository(new DBEntityContext());
         }
         public int Delete(int id)
         {

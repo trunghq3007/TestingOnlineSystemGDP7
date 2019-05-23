@@ -15,6 +15,8 @@ namespace Model
     {
         public SemesterExam()
         {
+            this.semesterExam_Users = new HashSet<SemesterExam_User>();
+            this.Tests = new HashSet<Test>();
         }
 
         public SemesterExam(string semesterName, DateTime? startDay, DateTime? endDay, string code, int status)

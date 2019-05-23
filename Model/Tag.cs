@@ -19,5 +19,6 @@ namespace Model
         public string Description { get; set; }
         public int Status { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
+
     }
 }

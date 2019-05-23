@@ -59,10 +59,10 @@ namespace Services
             return SemesterExamRepository.Update(t);
         }
 
-        SemesterExam ISemesterExamServices<SemesterExam>.GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //SemesterExam ISemesterExamServices<SemesterExam>.GetById(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
         public IEnumerable<Exam> GetExamsNotAdd(int id)
         {
             return SemesterExamRepository.GetExamsNotAdd(id);

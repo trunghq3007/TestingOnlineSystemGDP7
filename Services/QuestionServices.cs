@@ -60,7 +60,7 @@ namespace Services
         {
             return repository.getCategoryByName(cateName);
         }
-        public string Import(List<Question> list)
+        public int Import(List<Question> list)
         {
             return repository.Import(list);
         }

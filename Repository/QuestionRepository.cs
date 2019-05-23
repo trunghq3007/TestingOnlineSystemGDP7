@@ -20,13 +20,13 @@ namespace Repository
 
         public int Delete(int id)
         {
-            var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
-            if (item != null)
-            {
-                context.Questions.Remove(item);
-                return context.SaveChanges();
-            }
-            return 0;
+                var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
+                if (item != null)
+                {
+                    context.Questions.Remove(item);
+                    return context.SaveChanges();
+                }
+                return 0;
         }
 
         public IEnumerable<Question> Filter(Question t)
@@ -38,29 +38,29 @@ namespace Repository
         {
             var result = context.Questions.ToList();
 
-            if (model.CategoryId != null)
+            if (model.CategoryId != null && !"".Equals(model.CategoryId))
             {
-                if (int.TryParse(model.Level, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
+                if (int.TryParse(model.CategoryId, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
             }
-            if (model.TagsId != null)
+            if (model.TagsId != null && !"".Equals(model.TagsId))
             {
-                if (int.TryParse(model.Level, out int tagId)) result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
+                if (int.TryParse(model.TagsId, out int tagId)) result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
             }
-            if (model.CreatedBy.Count() > 0)
+            if (model.CreatedBy != null && !"".Equals(model.CreatedBy))
             {
                 result = result.Where(s => model.CreatedBy.Equals(s.CreatedBy)).ToList();
             }
 
-            if (model.Type != null)
+            if (model.Type != null && !"".Equals(model.Type))
             {
-                if (int.TryParse(model.Level, out int type)) result = result.Where(s => s.Type == type).ToList();
+                if (int.TryParse(model.Type, out int type)) result = result.Where(s => s.Type == type).ToList();
             }
 
-            if (model.Level != null)
+            if (model.Level != null && !"".Equals(model.Level))
             {
                 if (int.TryParse(model.Level, out int level)) result = result.Where(s => s.Level == level).ToList();
             }
-            if (model.StartDate != null)
+            if (model.StartDate != null )
             {
                 result = result.Where(s => s.CreatedDate >= model.StartDate).ToList();
             }
@@ -92,12 +92,13 @@ namespace Repository
 
             var start = (index - 1) * size;
             var end = index * size - 1;
-            return result.GetRange(start, end);
+            //return result.GetRange(start, end);
+            return result;
         }
 
         public IEnumerable<Question> GetAll()
         {
-            return context.Questions.ToList();
+                return context.Questions.ToList();
         }
 
         public Question GetById(int id)
@@ -107,10 +108,11 @@ namespace Repository
 
         public int Insert(Question t)
         {
-            context.Questions.Add(t);
-            t.CreatedBy = "anonymous user";
-            t.CreatedDate = DateTime.Now;
-            return context.SaveChanges();
+                context.Questions.Add(t);
+                t.CreatedBy = "anonymous user";
+                t.CreatedDate = DateTime.Now;
+                return context.SaveChanges();
+            
         }
 
         public IEnumerable<Question> Search(SearchPaging item)
@@ -167,7 +169,7 @@ namespace Repository
             return context.Categorys.Where(s => s.Name.Equals(cateName)).FirstOrDefault();
         }
 
-        public string Import(List<Question> list)
+        public int Import(List<Question> list)
         {
             using (var transaction = context.Database.BeginTransaction())
             {
@@ -177,14 +179,14 @@ namespace Repository
                     {
                         context.Questions.Add(question);
                     }
-                    context.SaveChanges();
+                    var result = context.SaveChanges();
                     transaction.Commit();
-                    return "OK";
+                    return result;
                 }
                 catch (Exception e)
                 {
                     transaction.Rollback();
-                    return e.Message;
+                    throw e;
                 }
 
             }

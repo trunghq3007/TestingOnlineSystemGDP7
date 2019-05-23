@@ -77,8 +77,15 @@ namespace WebApi.Controllers
         [HttpDelete]
         public string Put(int id)
         {
-            var result = service.Delete(id);
-            return JsonConvert.SerializeObject(result);
+            try
+            {
+                var result = service.Delete(id);
+                return JsonConvert.SerializeObject(result);
+            }
+           catch
+            {
+                return "0";
+            }
         }
     }
 }

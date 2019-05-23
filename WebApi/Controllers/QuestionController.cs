@@ -23,45 +23,66 @@ namespace WebApi.Controllers
         {
             service = new QuestionServices();
         }
-        [HttpPost]
-        public string Get([FromUri]string action, [FromBody]object value)
-        {
 
-            if ("search".Equals(action))
+        [HttpPost]
+        public string Post([FromUri]string action, [FromBody]object value)
+        {
+            var jsonSetting = new JsonSerializerSettings
             {
-                if (value != null) return "Data null";
-                var searchObj = JsonConvert.DeserializeObject<SearchPaging>(value.ToString());
-                return JsonConvert.SerializeObject(service.Search(searchObj));
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            ResultObject result = new ResultObject();
+            if (value == null)
+            {
+                result.Message = "Data null";
+                return JsonConvert.SerializeObject(result);
             }
-            if ("fillter".Equals(action))
-            {
-                if (value != null) return "Data null";
-                try
+
+            try
+            { 
+                if ("search".Equals(action))
+                {
+                    var searchObj = JsonConvert.DeserializeObject<SearchPaging>(value.ToString());
+                    result.Data = service.Search(searchObj);
+                    if (result.Data != null) result.Success = 1;
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                }
+                if ("fillter".Equals(action))
                 {
                     var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value.ToString());
-                    return JsonConvert.SerializeObject(service.Filter(filterObject));
+                    result.Data = service.Filter(filterObject);
+                    if (result.Data != null) result.Success = 1;
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
                 }
-                catch (Exception)
+
+                if ("import".Equals(action.ToLower()))
                 {
-                    return "Object fillter not convert valid";
-                }
-            }
-            string _path = "";
-            if ("import".Equals(action.ToLower()))
-            {
-                if (HttpContext.Current.Request.Files.Count < 1) return ClearFile(_path, "Content file null");
-                HttpPostedFile file = HttpContext.Current.Request.Files[0];
-                List<Question> listFromFiles = new List<Question>();
-                try
-                {
-                    if (file.ContentLength > 0)
+                    string _path = "";
+                    if (HttpContext.Current.Request.Files.Count < 1)
+                    {
+                        result.Message = "Not file upload";
+                        return JsonConvert.SerializeObject(result);
+                    }
+                    HttpPostedFile file = HttpContext.Current.Request.Files[0];
+                    List<Question> listFromFiles = new List<Question>();
+
+                    if (file.ContentLength <= 0)
+                    {
+                        result.Message = "content file null";
+                        return JsonConvert.SerializeObject(result);
+                    }
+                    else
                     {
                         string _FileName = Path.GetFileName(file.FileName);
                         _path = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"), _FileName);
                         file.SaveAs(_path);
                         string extension = Path.GetExtension(_path);
-                        if (!".xls".Equals(extension.ToLower()) && !".xlsx".Equals(extension.ToLower())) return ClearFile(_path, "File extenstion not valid excel file (.xls, .xlsx)");
-
+                        if (!".xls".Equals(extension.ToLower()) && !".xlsx".Equals(extension.ToLower()))
+                        {
+                            result.Message = "File extenstion not valid excel file (.xls, .xlsx)";
+                            ClearFile(_path);
+                            return JsonConvert.SerializeObject(result);
+                        }
                         IWorkbook workbook = null;
                         using (FileStream fs = new FileStream(_path, FileMode.Open, FileAccess.Read))
                         {
@@ -73,9 +94,7 @@ namespace WebApi.Controllers
                             {
                                 workbook = new HSSFWorkbook(fs);
                             }
-                            else return ClearFile(_path, "File extenstion not valid excel file (.xls, .xlsx)");
                         }
-
                         ISheet sheet = workbook.GetSheetAt(1);
                         Question ques = null;
                         string FILEERROR = "";
@@ -178,94 +197,148 @@ namespace WebApi.Controllers
                                     FILEERROR = "Row " + rowIndex + ": " + err + "\n";
                                 }
                             }
-
-
                         }
                         if ("".Equals(FILEERROR))
                         {
-                            return ClearFile(_path, service.Import(listFromFiles));
+                            result.Success = service.Import(listFromFiles);
+                            ClearFile(_path);
+                            return JsonConvert.SerializeObject(result);
                         }
                         else
                         {
-                            return ClearFile(_path, FILEERROR);
+                            result.Success = 0;
+                            ClearFile(_path);
+                            result.Message = FILEERROR;
+                            return JsonConvert.SerializeObject(result);
                         }
-
                     }
-                    else
-                    {
-                        return ClearFile(_path, "CONTENT LENGTH FILE NULL");
-                    }
-                }
-                catch (Exception e)
-                {
-                    return ClearFile(_path, "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace);
                 }
             }
-            return "action not support";
-
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+            result.Message = "Action not allow";
+            return JsonConvert.SerializeObject(result);
         }
 
         [HttpGet]
         public string Get()
         {
-            var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            var jsonSetting = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                result.Data = service.GetAll().ToList();
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
         }
+
         [HttpGet]
         public string Get(int id)
         {
-            var result = service.GetById(id);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            var jsonSetting = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                result.Data = service.GetById(id);
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
         }
 
         [HttpPost]
         public string Post([FromBody]object value)
         {
-            if (value != null)
+
+            ResultObject result = new ResultObject();
+            try
             {
-                var question = JsonConvert.DeserializeObject<Question>(value.ToString());
-                var result = service.Insert(question);
+                if (value != null)
+                {
+                    var question = JsonConvert.DeserializeObject<Question>(value.ToString());
+                    result.Success = service.Insert(question);
+                    return JsonConvert.SerializeObject(result);
+                }
+                else
+                {
+                    result.Message = "Null content";
+                    return JsonConvert.SerializeObject(result);
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                 return JsonConvert.SerializeObject(result);
             }
-            return "FALSE";
+            //  return JsonConvert.SerializeObject(result);
         }
 
         [HttpPut]
         public string Put(int id, [FromBody]object value)
         {
+            ResultObject result = new ResultObject();
             if (value != null)
             {
-                var question = JsonConvert.DeserializeObject<Question>(value.ToString());
-                question.Id = id;
-                var result = service.Update(question);
-                return JsonConvert.SerializeObject(result);
+                try
+                {
+                    var question = JsonConvert.DeserializeObject<Question>(value.ToString());
+                    question.Id = id;
+                    result.Success = service.Update(question);
+                    return JsonConvert.SerializeObject(result);
+                }catch(Exception e)
+                {
+                    result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(result);
+                }
+
             }
-            return "FALSE";
+            result.Message = "Null content";
+            return JsonConvert.SerializeObject(result);
         }
+
         [HttpDelete]
         public string Put(int id)
         {
-            var result = service.Delete(id);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            ResultObject result = new ResultObject();
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                result.Success = service.Delete(id);
+                return JsonConvert.SerializeObject(result);
+            }
+            catch(Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+            
+
         }
 
-        private string ClearFile(string _path, string result)
+        private void ClearFile(string _path)
         {
             if (File.Exists(_path))
             {
                 File.Delete(_path);
             }
-
-            return result;
         }
 
         private string GetValueCell(ICell cell)
@@ -281,3 +354,4 @@ namespace WebApi.Controllers
         }
     }
 }
+

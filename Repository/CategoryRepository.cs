@@ -22,11 +22,19 @@ namespace Repository
         public int Delete(int id)
         {
             var item = context.Categorys.Where(s => s.Id == id).SingleOrDefault();
-            if (item.Status==0)
+            try
             {
-                context.Categorys.Remove(item);
-                return context.SaveChanges();
+                if (item.Status == 0)
+                {
+                    context.Categorys.Remove(item);
+                    return context.SaveChanges();
+                }
             }
+            catch
+            {
+                return 0;
+            }
+           
             return 0;
         }
 

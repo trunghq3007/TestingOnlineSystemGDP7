@@ -23,8 +23,9 @@ namespace WebApi.Controllers
         {
             service = new QuestionServices();
         }
+
         [HttpPost]
-        public string Get([FromUri]string action, [FromBody]object value)
+        public string Post([FromUri]string action, [FromBody]object value)
         {
             var jsonSetting = new JsonSerializerSettings
             {
@@ -38,7 +39,7 @@ namespace WebApi.Controllers
             }
 
             try
-            {
+            { 
                 if ("search".Equals(action))
                 {
                     var searchObj = JsonConvert.DeserializeObject<SearchPaging>(value.ToString());
@@ -242,6 +243,7 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
+
         [HttpGet]
         public string Get(int id)
         {
@@ -296,22 +298,38 @@ namespace WebApi.Controllers
             ResultObject result = new ResultObject();
             if (value != null)
             {
-                var question = JsonConvert.DeserializeObject<Question>(value.ToString());
-                question.Id = id;
-                result.Success = service.Update(question);
-                return JsonConvert.SerializeObject(result);
+                try
+                {
+                    var question = JsonConvert.DeserializeObject<Question>(value.ToString());
+                    question.Id = id;
+                    result.Success = service.Update(question);
+                    return JsonConvert.SerializeObject(result);
+                }catch(Exception e)
+                {
+                    result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(result);
+                }
+
             }
             result.Message = "Null content";
             return JsonConvert.SerializeObject(result);
         }
+
         [HttpDelete]
         public string Put(int id)
         {
-            ResultObject result = new ResultObject
+            ResultObject result = new ResultObject();
+            try
             {
-                Success = service.Delete(id)
-            };
-            return JsonConvert.SerializeObject(result);
+                result.Success = service.Delete(id);
+                return JsonConvert.SerializeObject(result);
+            }
+            catch(Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+            
 
         }
 
@@ -336,3 +354,4 @@ namespace WebApi.Controllers
         }
     }
 }
+

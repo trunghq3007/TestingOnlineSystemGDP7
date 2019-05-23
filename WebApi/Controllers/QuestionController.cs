@@ -57,6 +57,7 @@ namespace WebApi.Controllers
                 if ("export".Equals(action.ToLower()))
                 {
                     result.Message = Export(service.GetAll().ToList());
+                    if("".Equals(result.Message))result.Success = 1;
                     return JsonConvert.SerializeObject(result);
                 }
                 if ("import".Equals(action.ToLower()))

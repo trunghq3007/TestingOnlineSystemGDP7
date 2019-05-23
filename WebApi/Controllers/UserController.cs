@@ -27,9 +27,17 @@ namespace WebApi.Controllers
         }
         [HttpGet]
         // GETID : User
-        public string GetUser(int id)
+        public string GetUser(int userid)
         {
-            var result = services.GetById(id);
+            var result = services.GetById(userid);
+            return JsonConvert.SerializeObject(result);
+        }
+
+        [HttpGet]
+        // GET DETAIL USER
+        public string GET(int id)
+        {
+            var result = services.GetDetailUser(id);
             return JsonConvert.SerializeObject(result);
         }
         [HttpPost]
@@ -90,6 +98,12 @@ namespace WebApi.Controllers
                 }
             }
             var result = services.GetAll().ToList();
+            return JsonConvert.SerializeObject(result);
+        }
+        [HttpPost]
+        public string Login(string userName, string passWord, bool rememberMe)
+        {
+            var result = services.Login(userName, passWord, rememberMe);
             return JsonConvert.SerializeObject(result);
         }
 

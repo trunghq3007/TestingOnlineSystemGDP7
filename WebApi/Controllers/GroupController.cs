@@ -78,5 +78,18 @@ namespace WebApi.Controllers
             var result = services.GetAll().ToList();
             return JsonConvert.SerializeObject(result);
         }
+        [HttpPut]
+        public string Put(int id, string groupname)
+        {
+
+            if (groupname != null)
+            {
+
+                var result = services.Update(id, groupname);
+                return JsonConvert.SerializeObject(result);
+            }
+
+            return "False";
+        }
     }
 }

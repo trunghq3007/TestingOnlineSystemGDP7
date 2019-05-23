@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,6 +136,29 @@ namespace Repository
         }
 
         public IEnumerable<Group> FilterUser(UserFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Login(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Group GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+        public int Update(int id, string groupname)
+        {
+            var group = context.Groups.Where(s => s.GroupId == id).SingleOrDefault();
+            group.EditedDate=DateTime.Now;
+            group.GroupName = groupname;
+            context.Entry(group).State = EntityState.Modified;
+            return context.SaveChanges();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
         {
             throw new NotImplementedException();
         }

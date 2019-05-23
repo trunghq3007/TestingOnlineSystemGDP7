@@ -58,6 +58,16 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public User GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> GetUserInGroup(int id)
         {
             return usergroupRepository.GetUserInGroup(id);
@@ -78,6 +88,16 @@ namespace Services
             return usergroupRepository.InsertUserGroup(iduser, idgroup);
         }
 
+        public bool Login(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> Search(string searchString)
         {
             throw new NotImplementedException();
@@ -89,6 +109,11 @@ namespace Services
         }
 
         public int Update(User t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(int id, string groupname)
         {
             throw new NotImplementedException();
         }

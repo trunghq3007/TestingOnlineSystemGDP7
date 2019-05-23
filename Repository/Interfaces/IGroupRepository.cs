@@ -24,5 +24,9 @@ namespace Repository.Interfaces
         int InsertUserGroup(int iduser, int idgroup);
         int DeleteUserGroup(int iduser, int idgroup);
         IEnumerable<T> FilterUser(UserFilterModel model);
+        bool Login(string userName, string passWord);
+        T GetByUsername(string userName);
+        int Update(int id, string groupname);
+        List<UserDetail> GetDetailUser(int id);
     }
 }

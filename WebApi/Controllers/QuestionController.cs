@@ -424,7 +424,7 @@ namespace WebApi.Controllers
             workbook.Write(stream);
 
             string FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"),
-                "Export_Question_" + DateTime.Now.ToString("ddmmyyyy"));
+                "Export_Question_" + DateTime.Now.ToString("ddmmyyyy") + ".xls");
             //Write to file using file stream  
             FileStream file = new FileStream(FilePath, FileMode.CreateNew, FileAccess.Write);
             stream.WriteTo(file);

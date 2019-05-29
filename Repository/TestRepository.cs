@@ -5,76 +5,182 @@ using System.Text;
 using System.Threading.Tasks;
 using Model;
 using DataAccessLayer;
+using Model.ViewModel;
+using Repository.Interfaces;
+using System.Data.Entity;
+
 namespace Repository
 {
-    public class TestRepository : Interfaces.IRepository<Test>, IDisposable
-    {
-        private DBEntityContext context;
+    public class TestRepository : Interfaces.ITestRepository<Test>, IDisposable
+	{
+		private DBEntityContext context;
 
-        public TestRepository(DBEntityContext context)
-        {
-            this.context = context;
+		public TestRepository(DBEntityContext context)
+		{
+			this.context = context;
+		}
+		public int Delete(int id)
+		{
+            var item = context.Tests.Where(s => s.Id == id).SingleOrDefault();
+            if (item != null)
+            {
+                if (item.Status == 0)
+                {
+                    context.Tests.Remove(item);
+                    return context.SaveChanges();
+                }
+                else
+                {
+
+                }
+
+
+            }
+
+            return 0;
         }
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public IEnumerable<Test> Filter(Test t)
-        {
-            throw new NotImplementedException();
-        }
+		public IEnumerable<Test> Filter(Test t)
+		{
+			throw new NotImplementedException();
+		}
 
-        public IEnumerable<Test> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-
+       
 
         public int Insert(Test t)
-        {
-            context.Tests.Add(t);
-            return context.SaveChanges();
-        }
-
-
-        public IEnumerable<Test> Search(string searchString)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(Test t)
-        {
-            throw new NotImplementedException();
-        }
-
-        private bool disposed = false;
-        public void Dispose(bool disposing)
-        {
-            if (!this.disposed)
+		{
+			context.Tests.Add(new Test()
             {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
+                ExamId=t.ExamId,
+                SemasterExamId = t.SemasterExamId,
+                Status = t.Status,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now,
+                CreateBy = t.CreateBy,
+                PassScore = t.PassScore,
+                TestName = t.TestName,
+                TotalTest = t.TotalTest,
+                TestTime = t.TestTime
+            });
+			return context.SaveChanges();
+		}
+
+
+		public IEnumerable<Test> Search(string searchString)
+		{
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				return context.Tests.Where(s => s.TestName.Contains(searchString));
+			}
+
+			return context.Tests.ToList();
+		}
+
+		public int Update(Test test)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            // var item = context.Tests.Where(s => s.Id == test.Id).SingleOrDefault();
+            var currentTest = context.Tests.Where(s => s.Id == test.Id).SingleOrDefault();
+            var semasterList = test.SemesterExam;
+            
+            test.Exam = context.Exams.Where(s => s.Id == test.ExamId).SingleOrDefault();
+            currentTest.SemesterExam = null;
+            currentTest.Exam = test.Exam;
+            currentTest.SemasterExamId = test.SemasterExamId;
+            currentTest.ExamId = test.ExamId;
+            currentTest.Status = test.Status;
+            currentTest.CreateBy = test.CreateBy;
+            currentTest.PassScore = test.PassScore;
+            currentTest.TestName = test.TestName;
+            currentTest.TotalTest = test.TotalTest;
+            currentTest.TestTime = test.TestTime;
+            
+            context.Entry(currentTest).State = EntityState.Modified;
+            return context.SaveChanges();
+            //throw new NotImplementedException();
         }
 
-        public Test GetById(int id)
+		private bool disposed = false;
+		public void Dispose(bool disposing)
+		{
+			if (!this.disposed)
+			{
+				if (disposing)
+				{
+					context.Dispose();
+				}
+			}
+			this.disposed = true;
+		}
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		public Test GetById(int id)
+		{
+			return context.Tests.Where(s => s.Id == id).SingleOrDefault();
+		}
+
+		public IEnumerable<Question> Filter(object t)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Test Export_exam(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		
+
+		List<ViewDetailTest> ITestRepository<Test>.GetById(int id)
+		{
+
+			var listdetail =
+			(from t in context.Tests
+			 join e in context.Exams on t.ExamId equals e.Id
+			 join r in context.TestResults on t.Id equals r.TestId
+			 join u in context.Users on r.UserId equals u.UserId
+			 join a in context.Answers on r.QuestionId equals a.Id
+			 join q in context.Questions on r.AnwserId equals q.Id
+
+			 select new
+			 {
+				 NameExam = e.NameExam,
+				 UserName = u.UserName,
+
+				 TestTime = t.TestTime,
+				 Score = r.Score,
+				 ContentQuestion = q.Content,
+				 ContentAnswer = a.Content
+			 });
+			List<ViewDetailTest> list = new List<ViewDetailTest>();
+			foreach (var item in listdetail)
+			{
+				ViewDetailTest viewDetailTest = new ViewDetailTest();
+				viewDetailTest.NameExam = item.NameExam;
+				viewDetailTest.UserName = item.UserName;
+				viewDetailTest.TestTime = item.TestTime;
+				viewDetailTest.Sorce = item.Score;
+				viewDetailTest.QuesTionContent = item.ContentQuestion;
+				viewDetailTest.AnswerContent = item.ContentAnswer;
+				list.Add(viewDetailTest);
+			}
+			return list;
+
+		}
+
+        public IEnumerable<ViewTest> GetAll()
         {
-            throw new NotImplementedException();
+            var ques = context.Database.SqlQuery<ViewTest>
+                ("select t.Id,t.TestName,t.CreateBy,PassScore, e.NameExam,s.SemesterName,t.Status from Tests t join Exams e on t.ExamId = e.Id join SemesterExam s on t.SemasterExamId = s.ID").ToList();
+            return ques.ToList();
         }
 
-        public IEnumerable<Question> Filter(object t)
+        public Test GetByTestId(int id)
         {
-            throw new NotImplementedException();
+            return context.Tests.Where(s => s.Id == id).SingleOrDefault();
         }
     }
 }

@@ -39,6 +39,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,16 +52,21 @@
   <ItemGroup>
     <Compile Include="AnswerRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
+    <Compile Include="ExamQuestionResponsitory.cs" />
     <Compile Include="ExamRepository.cs" />
     <Compile Include="Interfaces\IAnswerRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
+    <Compile Include="Interfaces\IExamQuestion.cs" />
+    <Compile Include="Interfaces\IExamRepository.cs" />
     <Compile Include="Interfaces\IGroupRepository.cs" />
     <Compile Include="Interfaces\ISemesterExamRepository.cs" />
     <Compile Include="Interfaces\ISemesterExamUserRepository.cs" />
     <Compile Include="Interfaces\ITagRepository.cs" />
     <Compile Include="Interfaces\IQuestionRepository.cs" />
+    <Compile Include="Interfaces\ITestRepository.cs" />
     <Compile Include="QuestionRepository.cs" />
     <Compile Include="RoleRepository.cs" />
+    <Compile Include="SemasterExamResponsitory.cs" />
     <Compile Include="SemesterExamRepository.cs" />
     <Compile Include="SemesterExamUserRepository.cs" />
     <Compile Include="TagRepository.cs" />
@@ -69,6 +76,7 @@
     <Compile Include="TestRepository.cs" />
     <Compile Include="UserGroupRepository.cs" />
     <Compile Include="UserRepository.cs" />
+    <Compile Include="ViewTestRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,6 +94,9 @@
       <Project>{f71235e0-1e7a-4535-8f18-2ba7830a5936}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme_exporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

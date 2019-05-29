@@ -11,9 +11,9 @@ namespace Model
     {
         [Key]
         public int GroupId { get; set; }
-        [Required(ErrorMessage ="Group Name is required"), MinLength(2), MaxLength(20)]
+        [Required(ErrorMessage = "Group Name is required"), MinLength(2), MaxLength(20)]
         public string GroupName { get; set; }
-        [Required(ErrorMessage ="Creator is required"), MinLength(2), MaxLength(50)]
+        [Required(ErrorMessage = "Creator is required"), MinLength(2), MaxLength(50)]
         public string Creator { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? EditedDate { get; set; }

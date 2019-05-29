@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-  public  class ResultObject
+    public class ResultObject
     {
         public int Status { get; set; }
         public string Message { get; set; }

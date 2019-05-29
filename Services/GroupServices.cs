@@ -20,10 +20,30 @@ namespace Services
         }
         public int Delete(int id)
         {
+            return groupRepository.Delete(id);
+        }
+
+        public int DeleteUserGroup(int iduser, int idgroup)
+        {
             throw new NotImplementedException();
         }
 
         public IEnumerable<Group> Filter(Group t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> FilterGroup(GroupFilterModel model)
+        {
+            return groupRepository.FilterGroup(model);
+        }
+
+        public IEnumerable<Group> FilterUser(UserFilterModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> FilterUserInGroup(GroupFilterModel model, int id)
         {
             throw new NotImplementedException();
         }
@@ -35,10 +55,25 @@ namespace Services
 
         public Group GetById(int id)
         {
+            return groupRepository.GetById(id);
+        }
+
+        public Group GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
+        {
             throw new NotImplementedException();
         }
 
         public IEnumerable<Group> GetUserInGroup(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> GetUserOutGroup(int idgroup)
         {
             throw new NotImplementedException();
         }
@@ -48,7 +83,27 @@ namespace Services
             return groupRepository.Insert(t);
         }
 
+        public int InsertUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Login(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Group Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Group> Search(string searchString)
+        {
+            return groupRepository.Search(searchString);
+        }
+
+        public IEnumerable<Group> SearchUserInGroup(int id, string searchString)
         {
             throw new NotImplementedException();
         }
@@ -56,6 +111,10 @@ namespace Services
         public int Update(Group t)
         {
             throw new NotImplementedException();
+        }
+        public int Update(int id, string groupname)
+        {
+            return groupRepository.Update(id, groupname);
         }
     }
 }

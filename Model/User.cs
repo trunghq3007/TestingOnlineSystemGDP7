@@ -10,27 +10,31 @@ namespace Model
 {
     public class User
     {
-        [Key]
+        public User()
+        {
+            this.SemesterExam_Users = new HashSet<SemesterExam_User>();
+        }
+        [Key]       
         public int UserId { get; set; }
         [ForeignKey("Role")]
         public int RoleId { get; set; }
-        [Required(ErrorMessage = "User Name is required"), MinLength(5), MaxLength(15)]
+        [Required(ErrorMessage ="User Name is required"),MinLength(5),MaxLength(15)]
         public string UserName { get; set; }
-        [Required(ErrorMessage = "Password is required"), MinLength(5), MaxLength(100)]
+        [Required(ErrorMessage ="Password is required"),MinLength(5), MaxLength(100)]
         public string Password { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? EditedDate { get; set; }
-        [Required(ErrorMessage = "Full Name is required"), MinLength(6), MaxLength(50)]
+        [Required(ErrorMessage ="Full Name is required"),MinLength(6), MaxLength(50)]
         public string FullName { get; set; }
-        [Required(ErrorMessage = "Phone is required")]
+        [Required(ErrorMessage ="Phone is required")]
         public string Phone { get; set; }
-        [Required(ErrorMessage = "Email is required"), EmailAddress]
+        [Required(ErrorMessage ="Email is required"),EmailAddress]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Address is required"), MinLength(6), MaxLength(50)]
+        [Required(ErrorMessage ="Address is required"),MinLength(6), MaxLength(50)]
         public String Address { get; set; }
-        [Required(ErrorMessage = "Department is required"), MinLength(2), MaxLength(30)]
+        [Required(ErrorMessage = "Department is required"),MinLength(2), MaxLength(30)]
         public string Department { get; set; }
-        [Required(ErrorMessage = "Position is required"), MinLength(2), MaxLength(30)]
+        [Required(ErrorMessage = "Position is required"),MinLength(2), MaxLength(30)]
         public string Position { get; set; }
         public string Avatar { get; set; }
         public string Note { get; set; }

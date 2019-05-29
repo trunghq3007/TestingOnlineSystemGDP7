@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Repository;
-using Model.ViewModel;
 
 namespace Services
 {
@@ -32,10 +31,6 @@ namespace Services
             return repository.Filter(t);
         }
 
-        public IEnumerable<Question> Filter(object t)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<Question> GetAll()
         {
@@ -52,19 +47,22 @@ namespace Services
             return repository.Insert(t);
         }
 
-        public GetFill listFilters()
+        public IEnumerable<Question> Search(SearchPaging item)
         {
-            return repository.listFilters();
-        }
-
-        public IEnumerable<Question> Search(string searchString)
-        {
-            return repository.Search(searchString);
+            return repository.Search(item);
         }
 
         public int Update(Question t)
         {
             return repository.Update(t);
+        }
+        public Category getCategoryByName(string cateName)
+        {
+            return repository.getCategoryByName(cateName);
+        }
+        public int Import(List<Question> list)
+        {
+            return repository.Import(list);
         }
     }
 }

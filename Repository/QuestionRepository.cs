@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
-using Model.ViewModel;
 
 namespace Repository
 {
@@ -21,13 +20,13 @@ namespace Repository
 
         public int Delete(int id)
         {
-            var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
-            if (item != null)
-            {
-                context.Questions.Remove(item);
-                return context.SaveChanges();
-            }
-            return 0;
+                var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
+                if (item != null)
+                {
+                    context.Questions.Remove(item);
+                    return context.SaveChanges();
+                }
+                return 0;
         }
 
         public IEnumerable<Question> Filter(Question t)
@@ -35,47 +34,71 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Question> Filter(QuestionFillterModel fillterModel)
+        public IEnumerable<Question> Filter(QuestionFillterModel model)
         {
             var result = context.Questions.ToList();
 
-            //if (fillterModel.CategoryId > 0)
-            //{
-            //    result = result.Where(s => s.Category.Id == fillterModel.CategoryId).ToList();
-            //}
-            //if (fillterModel.TagsId > 0)
-            //{
-            //    result = result.Where(s => s.Tags.Where(item => item.Id == fillterModel.TagsId).Count() > 0).ToList();
-            //}
-            if (fillterModel.CreatedBy != null && !"".Equals(fillterModel.CreatedBy))
+            if (model.CategoryId != null && !"".Equals(model.CategoryId))
             {
-                result = result.Where(s => fillterModel.CreatedBy.Equals(s.CreatedBy)).ToList();
+                if (int.TryParse(model.CategoryId, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
             }
-            if (fillterModel.Type !=null && !"".Equals(fillterModel.Type))
+            if (model.TagsId != null && !"".Equals(model.TagsId))
             {
-                result = result.Where(s => s.Type.ToString().Equals(fillterModel.Type)).ToList();
+                if (int.TryParse(model.TagsId, out int tagId)) result = result.Where(s => s.Tags.Where(item => item.Id == tagId).Count() > 0).ToList();
             }
-            if (fillterModel.Level != null && !"".Equals(fillterModel.Level))
+            if (model.CreatedBy != null && !"".Equals(model.CreatedBy))
             {
-                result = result.Where(s => s.Level.ToString().Equals(fillterModel.Level)).ToList();
-             
+                result = result.Where(s => model.CreatedBy.Equals(s.CreatedBy)).ToList();
             }
-            //if (fillterModel.StartDate != null)
-            //{
-            //    result = result.Where(s => s.CreatedDate >= fillterModel.StartDate).ToList();
-            //}
-            //if (fillterModel.EndDate != null)
-            //{
-            //    result = result.Where(s => s.CreatedDate >= fillterModel.EndDate).ToList();
-            //}
 
+            if (model.Type != null && !"".Equals(model.Type))
+            {
+                if (int.TryParse(model.Type, out int type)) result = result.Where(s => s.Type == type).ToList();
+            }
+
+            if (model.Level != null && !"".Equals(model.Level))
+            {
+                if (int.TryParse(model.Level, out int level)) result = result.Where(s => s.Level == level).ToList();
+            }
+            if (model.StartDate != null )
+            {
+                result = result.Where(s => s.CreatedDate >= model.StartDate).ToList();
+            }
+            if (model.EndDate != null)
+            {
+                result = result.Where(s => s.CreatedDate >= model.EndDate).ToList();
+            }
+
+            var size = 10;
+            var maxSize = result.Count();
+            if (model.PageSize != null)
+            {
+                size = maxSize < 10 ? maxSize : 10;
+            }
+            else
+            {
+                if (int.TryParse(model.PageSize, out int pageSize))
+                {
+                    size = maxSize < pageSize ? maxSize : pageSize;
+                }
+            }
+            var index = 1;
+            if (model.PageIndex != null)
+            {
+                if (int.TryParse(model.PageIndex, out int pageIndex))
+                    index = pageIndex <= 0 ? 1 : pageIndex;
+            }
+
+
+            var start = (index - 1) * size;
+            var end = index * size - 1;
+            //return result.GetRange(start, end);
             return result;
         }
 
         public IEnumerable<Question> GetAll()
         {
-            
-            return context.Questions.ToList();
+                return context.Questions.ToList();
         }
 
         public Question GetById(int id)
@@ -85,25 +108,88 @@ namespace Repository
 
         public int Insert(Question t)
         {
-            context.Questions.Add(t);
-            return context.SaveChanges();
+                context.Questions.Add(t);
+                t.CreatedBy = "anonymous user";
+                t.CreatedDate = DateTime.Now;
+                return context.SaveChanges();
+            
         }
 
-        public IEnumerable<Question> Search(string searchString)
+        public IEnumerable<Question> Search(SearchPaging item)
         {
-            if (!string.IsNullOrWhiteSpace(searchString)&& searchString !="undefined")
+            var result = context.Questions.Where(s => s.Content.Contains(item.SearchString)).ToList();
+            var size = 10;
+            var maxSize = result.Count();
+            if (item.PageSize <= 0)
             {
-                return context.Questions.Where(s => s.Content.Contains(searchString)).ToList();
-
+                size = maxSize < 10 ? maxSize : 10;
             }
+            else
+            {
+                size = maxSize < item.PageSize ? maxSize : item.PageSize;
+            }
+            var index = item.PageIndex <= 0 ? item.PageIndex = 1 : item.PageIndex;
 
-            return context.Questions.ToList();
+            var start = (index - 1) * size;
+            var end = index * size - 1;
+            return result.GetRange(start, end);
         }
 
         public int Update(Question t)
         {
-            context.Entry(t).State = EntityState.Modified;
-            return context.SaveChanges();
+            var trans = context.Database.BeginTransaction();
+            var currenQuestion = context.Questions.Where(s => s.Id == t.Id).SingleOrDefault();
+            var anserList = t.Answers.ToList();
+            t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
+
+            currenQuestion.Answers = null;
+            currenQuestion.Category = t.Category;
+            currenQuestion.Content = t.Content;
+            currenQuestion.CreatedBy = t.CreatedBy;
+            currenQuestion.CreatedDate = t.CreatedDate;
+            currenQuestion.ExamQuestions = t.ExamQuestions;
+            currenQuestion.Level = t.Level;
+            currenQuestion.Media = t.Media;
+            currenQuestion.Tags = t.Tags;
+            currenQuestion.Type = t.Type;
+            currenQuestion.Suggestion = t.Suggestion;
+            currenQuestion.UpdatedBy = "anonymous user";
+            currenQuestion.UpdatedDate = DateTime.Now;
+            context.Entry(currenQuestion).State = EntityState.Modified;
+            context.Answers.RemoveRange(context.Answers.Where(s => s.Question.Id == t.Id));
+            var result = context.SaveChanges();
+            currenQuestion.Answers = t.Answers;
+            context.SaveChanges();
+            trans.Commit();
+            return result;
+        }
+
+        public Category getCategoryByName(string cateName)
+        {
+            return context.Categorys.Where(s => s.Name.Equals(cateName)).FirstOrDefault();
+        }
+
+        public int Import(List<Question> list)
+        {
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var question in list)
+                    {
+                        context.Questions.Add(question);
+                    }
+                    var result = context.SaveChanges();
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+
+            }
         }
 
         private bool disposed = false;
@@ -122,28 +208,6 @@ namespace Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public GetFill listFilters()
-        {
-            GetFill item = new GetFill()
-            {
-                
-                ListLevel=new HashSet<string>(),
-                ListType = new HashSet<string>(),
-                ListCreateBy = new HashSet<string>()
-       
-    };
-            foreach (var it in context.Questions)
-            {
-                item.ListLevel.Add(it.Level.ToString());
-                item.ListType.Add(it.Type.ToString());
-                item.ListCreateBy.Add(it.CreatedBy);
-            }
-            
-          
-
-            return item;
         }
     }
 }

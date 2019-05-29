@@ -19,7 +19,15 @@ namespace Services
         }
         public int Delete(int id)
         {
-            return repository.Delete(id);
+            try
+            {
+                return repository.Delete(id);
+            }
+            catch
+            {
+                return 0;
+            }
+           
         }
 
         public IEnumerable<Category> Filter(Category t)

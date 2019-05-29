@@ -13,6 +13,21 @@ namespace Model
     [Table("SemesterExam",Schema ="dbo")]
     public class SemesterExam
     {
+        public SemesterExam()
+        {
+            this.semesterExam_Users = new HashSet<SemesterExam_User>();
+            this.Tests = new HashSet<Test>();
+        }
+
+        public SemesterExam(string semesterName, DateTime? startDay, DateTime? endDay, string code, int status)
+        {
+            SemesterName = semesterName;
+            StartDay = startDay;
+            EndDay = endDay;
+            Code = code;
+            this.status = status;
+        }
+
         [Key]
         public int ID { get; set; }
         [Required(ErrorMessage ="Semester Name is required")]

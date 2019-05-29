@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,21 @@ namespace Services.Interfaces
         IEnumerable<T> Search(string searchString);
         IEnumerable<T> Filter(T t);
         IEnumerable<T> GetUserInGroup(int id);
+        IEnumerable<T> SearchUserInGroup(int id, string searchString);
         int Insert(T t);
         int Update(T t);
         int Delete(int id);
         T GetById(int id);
+        IEnumerable<T> FilterGroup(GroupFilterModel model);
+        IEnumerable<T> FilterUserInGroup(GroupFilterModel model, int id);
+        IEnumerable<T> GetUserOutGroup(int idgroup);
+        int InsertUserGroup(int iduser, int idgroup);
+        int DeleteUserGroup(int iduser, int idgroup);
+        IEnumerable<T> FilterUser(UserFilterModel model);
+        bool Login(string userName, string passWord);
+        T GetByUsername(string userName);
+        T Login(string userName, string passWord, bool rememberMe);
+        int Update(int id, string groupname);
+        List<UserDetail> GetDetailUser(int id);
     }
 }

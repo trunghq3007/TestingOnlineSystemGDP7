@@ -54,10 +54,14 @@
     <Compile Include="Interfaces\IAnswerRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IGroupRepository.cs" />
+    <Compile Include="Interfaces\ISemesterExamRepository.cs" />
+    <Compile Include="Interfaces\ISemesterExamUserRepository.cs" />
     <Compile Include="Interfaces\ITagRepository.cs" />
     <Compile Include="Interfaces\IQuestionRepository.cs" />
     <Compile Include="QuestionRepository.cs" />
     <Compile Include="RoleRepository.cs" />
+    <Compile Include="SemesterExamRepository.cs" />
+    <Compile Include="SemesterExamUserRepository.cs" />
     <Compile Include="TagRepository.cs" />
     <Compile Include="GroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />

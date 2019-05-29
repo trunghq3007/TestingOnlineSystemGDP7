@@ -39,7 +39,7 @@ namespace WebApi.Controllers
             }
 
             try
-            { 
+            {
                 if ("search".Equals(action))
                 {
                     var searchObj = JsonConvert.DeserializeObject<SearchPaging>(value.ToString());
@@ -54,7 +54,12 @@ namespace WebApi.Controllers
                     if (result.Data != null) result.Success = 1;
                     return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
                 }
-
+                if ("export".Equals(action.ToLower()))
+                {
+                    result.Message = Export(service.GetAll().ToList());
+                    if(!"".Equals(result.Message))result.Success = 1;
+                    return JsonConvert.SerializeObject(result);
+                }
                 if ("import".Equals(action.ToLower()))
                 {
                     string _path = "";
@@ -95,7 +100,7 @@ namespace WebApi.Controllers
                                 workbook = new HSSFWorkbook(fs);
                             }
                         }
-                        ISheet sheet = workbook.GetSheetAt(1);
+                        ISheet sheet = workbook.GetSheetAt(0);
                         Question ques = null;
                         string FILEERROR = "";
                         int questionRow = 0;
@@ -304,7 +309,8 @@ namespace WebApi.Controllers
                     question.Id = id;
                     result.Success = service.Update(question);
                     return JsonConvert.SerializeObject(result);
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                     return JsonConvert.SerializeObject(result);
@@ -315,6 +321,7 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
+
         [HttpDelete]
         public string Put(int id)
         {
@@ -324,12 +331,12 @@ namespace WebApi.Controllers
                 result.Success = service.Delete(id);
                 return JsonConvert.SerializeObject(result);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                 return JsonConvert.SerializeObject(result);
             }
-            
+
 
         }
 
@@ -351,6 +358,80 @@ namespace WebApi.Controllers
             {
                 return "";
             }
+        }
+
+        private IRow FilltoRow(IRow row, Question q)
+        {
+            row.CreateCell(0);
+            row.CreateCell(1);
+            row.CreateCell(2);
+            row.CreateCell(3);
+            row.CreateCell(4);
+            row.CreateCell(5);
+            row.CreateCell(6);
+            row.GetCell(0).SetCellValue("1");
+            row.GetCell(1).SetCellValue(q.Content);
+            row.GetCell(2).SetCellValue(q.Level.ToString());
+            row.GetCell(3).SetCellValue(q.Type.ToString());
+            row.GetCell(4).SetCellValue(q.Status.ToString());
+            row.GetCell(5).SetCellValue(q.Category == null ? "" : q.Category.Name);
+            row.GetCell(6).SetCellValue(q.Suggestion);
+            return row;
+        }
+
+        private IRow FilltoRow(IRow row, Answer a)
+        {
+            row.CreateCell(0);
+            row.CreateCell(1);
+            row.CreateCell(4);
+            row.CreateCell(7);
+            row.GetCell(0).SetCellValue("2");
+            row.GetCell(1).SetCellValue(a.Content);
+            row.GetCell(4).SetCellValue(a.Status.ToString());
+            row.GetCell(7).SetCellValue(a.IsTrue ? "1" : "0");
+            return row;
+        }
+
+        private string Export(List<Question> questions)
+        {
+            var result = new ResultObject();
+            var workbook = new HSSFWorkbook();
+            var sheet = workbook.CreateSheet("Data");
+            var headerRow = sheet.CreateRow(0);
+            // fill header
+            var headers = new[] { "Type", "Content", "Level", "Type Question", "Status", "Category Name", "Suggestion", "Is true" };
+            for (int i = 0; i < headers.Length; i++)
+            {
+                var cell = headerRow.CreateCell(i);
+                cell.SetCellValue(headers[i]);
+            }
+            //Below loop is fill content  
+            var rowIndex = 1;
+            for (int i = 0; i < questions.Count; i++)
+            {
+                var row = sheet.CreateRow(rowIndex);
+                FilltoRow(row, questions[i]);
+                rowIndex++;
+                if (questions[i].Answers != null)
+                {
+                    foreach (var item in questions[i].Answers)
+                    {
+                        var rowA = sheet.CreateRow(rowIndex);
+                        FilltoRow(rowA, item);
+                        rowIndex++;
+                    }
+                }
+            }
+            var stream = new MemoryStream();
+            workbook.Write(stream);
+            string fileName = "Export_Question_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+            string FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"),fileName);
+            //Write to file using file stream  
+            FileStream file = new FileStream(FilePath, FileMode.CreateNew, FileAccess.Write);
+            stream.WriteTo(file);
+            file.Close();
+            stream.Close();
+            return "http://localhost:65170" + "/UploadedFiles/" + fileName;
         }
     }
 }

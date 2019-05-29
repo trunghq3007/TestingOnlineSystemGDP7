@@ -92,10 +92,11 @@ namespace WebApi.Controllers
 			}
 			if ("getfillter".Equals(action))
 			{
-				return JsonConvert.SerializeObject(QuestionServices.listFilters());
+                //return JsonConvert.SerializeObject(QuestionServices.listFilters());
+                return "";
 
 
-			}
+            }
 			var result = QuestionServices.GetAll().ToList();
 			return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
 			{

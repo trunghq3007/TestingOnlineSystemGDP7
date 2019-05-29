@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Model.ViewModel;
 
 namespace Repository
 {
@@ -208,6 +209,24 @@ namespace Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+
+        public GetFill listFilters()
+        {
+            GetFill item = new GetFill()
+            {
+                ListLevel = new HashSet<string>(),
+                ListType = new HashSet<string>(),
+                ListCreateBy = new HashSet<string>()
+            };
+            foreach (var it in context.Questions)
+            {
+                item.ListLevel.Add(it.Level.ToString());
+                item.ListType.Add(it.Type.ToString());
+                item.ListCreateBy.Add(it.CreatedBy);
+            }
+            return item;
         }
     }
 }

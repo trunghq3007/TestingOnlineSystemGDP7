@@ -15,6 +15,9 @@ namespace WebApi.Controllers
     public class SemesterExamUserController : ApiController
     {
         private SemesterExamUserServices service;
+        //DELETE
+
+
         // GET: SemesterExamUser
         public SemesterExamUserController()
         {
@@ -30,48 +33,45 @@ namespace WebApi.Controllers
             //     a = item.SemesterExam.SemesterName;
             //}
             //string b = a;
-            
-            return JsonConvert.SerializeObject(result);
-        }
-        [System.Web.Http.HttpGet]
-        public string Get(int id, string Getcandiates)
-        {
-            var result = service.candidates(id);
-            //string a = "";
-            //foreach (SemesterExam_User item in result)
-            //{
-            //     a = item.SemesterExam.SemesterName;
-            //}
-            //string b = a;
 
             return JsonConvert.SerializeObject(result);
         }
+
+        //-----------------------------DELETE-------------------------------------------------------
         [System.Web.Http.HttpDelete]
-        public string Delete(int id)
+        public string Delete(int id, [FromUri]int semesterid)
         {
-            var result = service.Delete(id);
+            var result = service.DeleteCandidates(id, semesterid);
             return JsonConvert.SerializeObject(result);
         }
-        //DELETE BY ID
-        [System.Web.Http.HttpDelete]
-        public string DeleteByUserId([FromUri]int userId, [FromUri]int semesterid)
-        {
-            var result = service.DeleteUserInSemester(userId, semesterid);
-            return JsonConvert.SerializeObject(result);
-        }
-        //DELETE ALL USER
-        [System.Web.Http.HttpDelete]
-        public string DeleteAllUser([FromUri] int id)
-        {
-            var result = service.DeleteAllUserInSemester(id);
-            return JsonConvert.SerializeObject(result);
-        }
+        //-----------------------------DELETE-------------------------------------------------------
+
+
+        //-----------------------------Compare-SemesterId-----------------------------------------
         [System.Web.Http.HttpGet]
-        public string Search(string searchString, int id, int type)
+        public string GetUserOutSemester(int semesterid)
+        {
+            var result = service.GetUserOutSemester(semesterid);
+            return JsonConvert.SerializeObject(result);
+        }
+        //-----------------------------Compare-SemesterId-----------------------------------------
+
+        //------------------------------------------INSERT------------------------------------------
+        [System.Web.Http.HttpPost]
+        public string InsertUserGroup(int userid, int semesterid)
+        {
+            var result = service.InsertCandidates(userid, semesterid);
+            return JsonConvert.SerializeObject(result);
+        }
+        //------------------------------------------INSERT------------------------------------------
+
+        [System.Web.Http.HttpGet]
+        public string Get(string searchString, int id, int type)
         {
             var result = service.Search(searchString, id, type).ToList();
             return JsonConvert.SerializeObject(result);
         }
+
         [System.Web.Http.HttpPost]
         public string Get([FromUri]string action, [FromBody] object value, int id)
         {
@@ -81,7 +81,6 @@ namespace WebApi.Controllers
                 {
                     try
                     {
-
                         var filterObject = JsonConvert.DeserializeObject<Candidates>(value.ToString());
                         return JsonConvert.SerializeObject(service.Filter(filterObject));
                     }
@@ -93,8 +92,6 @@ namespace WebApi.Controllers
             }
             var result = service.candidates(id);
             return JsonConvert.SerializeObject(result);
-
         }
-
     }
 }

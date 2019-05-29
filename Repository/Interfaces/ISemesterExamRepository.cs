@@ -25,6 +25,7 @@ namespace Repository.Interfaces
         IEnumerable<Model.Exam> GetExams(int id);
         IEnumerable<T> GetByCandidateId(int candidateId);
         IEnumerable<T> Filter(T t);
+        IEnumerable<Model.Exam> SearchExams(string examName, int id);
 
 
     }

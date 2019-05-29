@@ -185,7 +185,9 @@ namespace Repository
 
             avgScore = avgScore / QT.ToList().Count;
             int participation = QT.ToList().Count;
-            int count = query.ToList().Count;
+            int count = 0;
+            if (query.ToList() != null)
+            count = query.ToList().Count;
             Exam exam = query.ToList().FirstOrDefault();
             int numQuestion = 0;
             if (exam!= null)
@@ -216,6 +218,12 @@ namespace Repository
             reportSemester.Good = good;
             reportSemester.Medium = medium;
             reportSemester.Low = low;
+            if (semesterExam.status == 1)
+                reportSemester.Status = "Public";
+            if (semesterExam.status == 2)
+                reportSemester.Status = "Draft";
+            else
+                reportSemester.Status = "Done";
             //ReportSemester reportSemester = new ReportSemester(semesterExam.SemesterName,semesterExam_Users.User.UserName,semesterExam.StartDay.ToString(),semesterExam.EndDay.ToString(),count);
             return reportSemester;
 
@@ -322,6 +330,16 @@ SE.ID equals SEU.SemesterExam.ID
                 }
             }
             return a;
+        }
+
+        public IEnumerable<Exam> SearchExams(string examName, int id)
+        {
+            var query = from E in context.Exams join T in context.Tests on
+                        E.Id equals T.ExamId 
+                        where E.NameExam.Contains(examName) && T.SemasterExamId == id
+                        select E;
+            return query.ToList();
+
         }
     }
 

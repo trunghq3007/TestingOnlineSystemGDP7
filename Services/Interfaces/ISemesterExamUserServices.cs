@@ -1,4 +1,5 @@
-﻿using Model.ViewModel;
+﻿using Model;
+using Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,32 @@ namespace Services.Interfaces
 {
     interface ISemesterExamUserServices<T>
     {
+        //-------------------------------------Insert------------------------------------------------
+        int InsertCandidates(int userid, int semesterid);
+        //-------------------------------------Insert------------------------------------------------
+
+
+        //-----------------------------------Compare Semesterid-----------------------------------------
+        IEnumerable<T> GetUserOutGroup(int idgroup);
+        //-----------------------------------Compare Semesterid-----------------------------------------
+
+
         IEnumerable<T> GetAll();
-        IEnumerable<T> Search(string searchString);
+
         int Insert(T t);
 
-        int Delete(int id);
+        IEnumerable<Model.ViewModel.Candidates> Search(string searchString, int id, int type);
+
+        //int Delete(int id);
+        //int DeleteUserInSemester(int userId, int semesterId);
+        //int DeleteAllUserInSemester(int semesterId);
         T GetById(int id);
         IEnumerable<T> GetCandidatesOfASemester(int id);
-        IEnumerable<Model.ViewModel.Candidates> Search(string searchString, int id, int type);
-        int DeleteUserInSemester(int userId, int semesterId);
-        int DeleteAllUserInSemester(int semesterId);
+        IEnumerable<SemesterExam_User> Filter(Candidates t);
 
-        IEnumerable<Model.SemesterExam_User> Filter(Candidates t);
+        int DeleteCandidates(int userId, int semesterId);
+
+        //Compare User - SemesterId
+        IEnumerable<User> GetUserOutSemester(int semesterid);
     }
 }

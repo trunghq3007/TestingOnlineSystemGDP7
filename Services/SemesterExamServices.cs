@@ -12,8 +12,8 @@ using Services.Interfaces;
 
 namespace Services
 {
-  public  class SemesterExamServices : Interfaces.ISemesterExamServices<SemesterExam>
-  {
+  public  class SemesterExamServices : ISemesterExamServices<SemesterExam>
+    {
       private ISemesterExamRepository<SemesterExam> SemesterExamRepository;
         public SemesterExamServices()
         {
@@ -91,5 +91,9 @@ namespace Services
             return SemesterExamRepository.GetByCandidateId(candidateId);
         }
 
+        public IEnumerable<Exam> SearchExams(string examName, int id)
+        {
+            return SemesterExamRepository.SearchExams(examName, id);
+        }
     }
 }

@@ -9,10 +9,12 @@ using Model;
 using Model.ViewModel;
 using Newtonsoft.Json;
 using Services;
+
 using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class SemesterExamController : ApiController
     {
         private SemesterExamServices service;
@@ -26,8 +28,23 @@ namespace WebApi.Controllers
         [System.Web.Http.HttpGet]
         public string Index()
         {
-            var result = service.GetAll();
-            return JsonConvert.SerializeObject(result);
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                 result.Data = service.GetAll();
+                return JsonConvert.SerializeObject(result,Formatting.Indented,jsonSetting);
+
+            }
+            catch (Exception E)
+            {
+                result.Message = "EXCEPTION " + E.Message + "Stack" + E.StackTrace;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            
         }
 
         //[Route("SemesterExams")]
@@ -41,19 +58,37 @@ namespace WebApi.Controllers
         [HttpPost]
         public string Post([FromBody]object value)
         {
-            if (value != null)
+            var jsonSetting = new JsonSerializerSettings
             {
-                var E= JsonConvert.DeserializeObject<SemesterExam>(value.ToString());
-                var result = service.Insert(E);
-                return JsonConvert.SerializeObject(result);
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                if (value != null)
+                {
+                    var E = JsonConvert.DeserializeObject<SemesterExam>(value.ToString());
+                   
+                     result.Data = service.Insert(E);
+                    return JsonConvert.SerializeObject(result);
+                }
+                return "FALSE";
+
             }
-            return "FALSE";
+            catch(Exception E)
+            {
+                result.Message = "EXCEPTION " + E.Message + "Stack" + E.StackTrace;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            
+            
         }
 
         [Route("SemesterExam/{id}")]
         [System.Web.Http.HttpPut]
         public string Update(SemesterExam semesterExam, int id)
         {
+
             semesterExam.ID = id;
             var result = service.Update(semesterExam);
             return JsonConvert.SerializeObject(result);
@@ -68,15 +103,30 @@ namespace WebApi.Controllers
         [System.Web.Http.HttpGet]
         public string Report(int id)
         {
-            var result = service.Report(id);
-            //string a = "";
-            //foreach (SemesterExam_User item in result)
-            //{
-            //     a = item.SemesterExam.SemesterName;
-            //}
-            //string b = a;
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                result.Data = service.Report(id);
+                //string a = "";
+                //foreach (SemesterExam_User item in result)
+                //{
+                //     a = item.SemesterExam.SemesterName;
+                //}
+                //string b = a;
 
-            return JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
+            }
+            catch(Exception E)
+            {
+                
+                result.Message = "EXCEPTION " + E.Message + "Stack" + E.StackTrace;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            
         }
         //[Route("SemesterExam/detail/{id}")]
         //[HttpGet]
@@ -104,32 +154,44 @@ namespace WebApi.Controllers
         {
             if (value != null)
             {
-                int a = 0;
+                var jsonSetting = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
+                ResultObject result = new ResultObject();
+                try {
+                    int a = 0;
 
-                var E = JsonConvert.DeserializeObject<SemesterDetail>(value.ToString());
-                SemesterExam SE = new SemesterExam();
-                SE.ID = E.ID;
-                SE.SemesterName = E.SemesterName;
-                SE.StartDay = Convert.ToDateTime(E.StartDay);
-                SE.EndDay = Convert.ToDateTime(E.EndDay);
-                SE.Code = E.Code;
-                if (E.status.Equals("Done"))
-                    SE.status = 0;
-                if (E.status.Equals("Public"))
-                    SE.status = 1;
-                if (E.status.Equals("Draft"))
-                    SE.status = 2;
+                    var E = JsonConvert.DeserializeObject<SemesterDetail>(value.ToString());
+                    SemesterExam SE = new SemesterExam();
+                    SE.ID = E.ID;
+                    SE.SemesterName = E.SemesterName;
+                    SE.StartDay = Convert.ToDateTime(E.StartDay);
+                    SE.EndDay = Convert.ToDateTime(E.EndDay);
+                    SE.Code = E.Code;
+                    if (E.status.Equals("Done"))
+                        SE.status = 0;
+                    if (E.status.Equals("Public"))
+                        SE.status = 1;
+                    if (E.status.Equals("Draft"))
+                        SE.status = 2;
 
 
-                //SE.status = E.status.Equals("Public") ? 1 : 0;
-                //SE.status = E.status.Equals("Draft") ? 2 : 0;
-                //SE.EndDay = Convert.ToDateTime(E.EndDay);
-                //SE.Code = E.Code;
+                    //SE.status = E.status.Equals("Public") ? 1 : 0;
+                    //SE.status = E.status.Equals("Draft") ? 2 : 0;
+                    //SE.EndDay = Convert.ToDateTime(E.EndDay);
+                    //SE.Code = E.Code;
 
-                //SemesterExam E = new SemesterExam();
-                //E.SemesterName = "alo123";
-                var result = service.Update(SE);
-                return JsonConvert.SerializeObject(result);
+                    //SemesterExam E = new SemesterExam();
+                    //E.SemesterName = "alo123";
+                     result.Status = service.Update(SE);
+                    return JsonConvert.SerializeObject(result);
+                } 
+                catch(Exception E)
+                {
+                    result.Message = "EXCEPTION " + E.Message + "Stack" + E.StackTrace;
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                }
             }
             //SemesterExam T = new SemesterExam();
             //T.SemesterName = "alo123";
@@ -188,7 +250,27 @@ namespace WebApi.Controllers
         [HttpGet]
         public string Search(string searchString, string isSearch)
         {
-            var result = service.Search(searchString).ToList();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                 result.Data = service.Search(searchString).ToList();
+                return JsonConvert.SerializeObject(result);
+            }
+           catch(Exception E)
+            {
+                result.Message = "EXCEPTION " + E.Message + "Stack" + E.StackTrace;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+        }
+        [HttpGet]
+        public string SearchExams(string searchString, int id , string searchExams)
+        {
+
+            var result = service.SearchExams(searchString, id);
             return JsonConvert.SerializeObject(result);
         }
 

@@ -7,7 +7,7 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using Services;
 using Model;
- 
+
 
 namespace WebApi.Controllers
 {
@@ -24,72 +24,174 @@ namespace WebApi.Controllers
         [HttpGet]
         public string Get()
         {
-            var result = services.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            ResultObject result = new ResultObject();
+            try
+            {
+                result.Data = services.GetAll().ToList();
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+
         }
+        //Add new Group method
         [HttpPost]
         public string Post([FromBody]object value)
         {
-            if (value!= null)
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
             {
-                var group = JsonConvert.DeserializeObject<Group>(value.ToString());
-                var result = services.Insert(group);
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                if (value != null)
+                {
+                    var group = JsonConvert.DeserializeObject<Group>(value.ToString());
+                    result.Success = services.Insert(group);
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                }
+                else
+                {
+                    result.Message = "Null content";
+                    return JsonConvert.SerializeObject(result);
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                 return JsonConvert.SerializeObject(result);
             }
-            return "FALSE";
+
         }
+        //Get Group by Id method
         [HttpGet]
         public string Get(int id)
         {
-            var result = services.GetById(id);
-            return JsonConvert.SerializeObject(result);
-        }
-        [HttpGet]
-        public string Get(string searchString)
-        {
-            var result = services.Search(searchString).ToList();
-            return JsonConvert.SerializeObject(result);
-        }
-        [HttpDelete]
-        public string Delete(int id)
-        {
-            var result = services.Delete(id);
-            return JsonConvert.SerializeObject(result);
-        }
-         
-        [HttpPost]
-        public string Get([FromUri]string action, [FromBody] object value)
-        {
-            if (value != null)
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
             {
-                if ("filter".Equals(action))
-                {
-                    try
-                    {
-                        var filterObject = JsonConvert.DeserializeObject<GroupFilterModel>(value.ToString());                       
-                        return JsonConvert.SerializeObject(services.FilterGroup(filterObject));
-                    }
-                    catch (Exception)
-                    {
-                        return "Object fillter not convert valid";
-                    }
-                }               
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Data = services.GetById(id);
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
             }
-            var result = services.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
-        }
-        [HttpPut]
-        public string Put(int id, string groupname)
-        {
-
-            if (groupname != null)
+            catch (Exception e)
             {
-
-                var result = services.Update(id, groupname);
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                 return JsonConvert.SerializeObject(result);
             }
 
-            return "False";
+        }
+        //Search Group method
+        [HttpGet]
+        public string Get(string searchString)
+        {
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Data = services.Search(searchString).ToList();
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+
+        }
+        //Delete Group method
+        [HttpDelete]
+        public string Delete(int id)
+        {
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Success = services.Delete(id);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+
+        }
+        //Filter Group method
+        [HttpPost]
+        public string Get([FromUri]string action, [FromBody] object value)
+        {
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            if (value == null)
+            {
+                result.Message = "Data null";
+                return JsonConvert.SerializeObject(result);
+            }
+            try
+            {
+                if ("filter".Equals(action))
+                {
+                    var filterObject = JsonConvert.DeserializeObject<GroupFilterModel>(value.ToString());
+                    result.Data = services.FilterGroup(filterObject);
+                    if (result.Data != null) result.Success = 1;
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                }
+                result.Data = services.GetAll().ToList();
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+        }
+        //Update Group method
+        [HttpPut]
+        public string Put(int id, string groupname)
+        {
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                if (groupname != null)
+                {
+                    result.Success = services.Update(id, groupname);
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                }
+                return "False";
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }           
         }
     }
 }

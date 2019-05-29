@@ -10,68 +10,149 @@ namespace WebApi.Controllers
 {
     [AllowCrossSite]
     public class UserGroupController : ApiController
-    {      
+    {
         private UserGroupServices services;
-        
+
         public UserGroupController()
         {
             services = new UserGroupServices();
         }
         [HttpGet]
-        // GET: UserGroup
+        // Get User In Group method
         public string GetUserInGroup(int id)
         {
-            var result = services.GetUserInGroup(id);
-            return JsonConvert.SerializeObject(result);
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Data = services.GetUserInGroup(id);
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
         }
         [HttpGet]
-        // GET: UserGroup
-        public string Get(int id,string searchString)
+        // Search User In Group method
+        public string Get(int id, string searchString)
         {
-            var result = services.SearchUserInGroup(id,searchString);
-            return JsonConvert.SerializeObject(result);
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Data = services.SearchUserInGroup(id, searchString);
+                if (result.Data != null) result.Success = 1;
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+
         }
+        //Delete User In Group
         [HttpDelete]
         public string Delete(int iduser, int idgroup)
         {
-            var result = services.DeleteUserGroup(iduser,idgroup);
-            return JsonConvert.SerializeObject(result);
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Success = services.DeleteUserGroup(iduser, idgroup);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
         }
-
+        //Filter User In Group
         [HttpPost]
-        public string Get([FromUri]string action, [FromBody] object value,int id)
+        public string Get([FromUri]string action, [FromBody] object value, int id)
         {
-            if (value != null)
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            if (value == null)
+            {
+                result.Message = "Data null";
+                return JsonConvert.SerializeObject(result);
+            }
+
+            try
             {
                 if ("filter".Equals(action))
                 {
-                    try
-                    {
-                        var filterObject = JsonConvert.DeserializeObject<GroupFilterModel>(value.ToString());
-                        return JsonConvert.SerializeObject(services.FilterUserInGroup(filterObject,id));
-                    }
-                    catch (Exception)
-                    {
-                        return "Object fillter not convert valid";
-                    }
+                    var filterObject = JsonConvert.DeserializeObject<GroupFilterModel>(value.ToString());
+                    result.Data = services.FilterUserInGroup(filterObject,id);
+                    if (result.Data != null) result.Success = 1;
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
                 }
+                result.Data = services.GetUserInGroup(id).ToList();
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
             }
-            var result = services.GetUserInGroup(id).ToList();
-            return JsonConvert.SerializeObject(result);
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
         }
-
+        //Add User Into Group
         [HttpPost]
         public string InsertUserGroup(int iduser, int idgroup)
         {
-            var result = services.InsertUserGroup(iduser, idgroup);
-            return JsonConvert.SerializeObject(result);
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Success = services.InsertUserGroup(iduser, idgroup);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
         }
-
+        //Get User not add to Group
         [HttpGet]
         public string GetUserOutGroup(int idgroup)
         {
-            var result = services.GetUserOutGroup(idgroup);
-            return JsonConvert.SerializeObject(result);
+            ResultObject result = new ResultObject();
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            try
+            {
+                result.Data = services.GetUserOutGroup(idgroup);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+            
         }
     }
 }

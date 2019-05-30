@@ -21,13 +21,15 @@ namespace Repository
 
         public int Delete(int id)
         {
-                var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
-                if (item != null)
-                {
-                    context.Questions.Remove(item);
-                    return context.SaveChanges();
-                }
-                return 0;
+            var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
+            if (item != null)
+            {
+                item.Answers = null;
+                context.SaveChanges();
+                context.Questions.Remove(item);
+                return context.SaveChanges();
+            }
+            return 0;
         }
 
         public IEnumerable<Question> Filter(Question t)
@@ -61,7 +63,7 @@ namespace Repository
             {
                 if (int.TryParse(model.Level, out int level)) result = result.Where(s => s.Level == level).ToList();
             }
-            if (model.StartDate != null )
+            if (model.StartDate != null)
             {
                 result = result.Where(s => s.CreatedDate >= model.StartDate).ToList();
             }
@@ -99,7 +101,7 @@ namespace Repository
 
         public IEnumerable<Question> GetAll()
         {
-                return context.Questions.ToList();
+            return context.Questions.ToList();
         }
 
         public Question GetById(int id)
@@ -109,11 +111,11 @@ namespace Repository
 
         public int Insert(Question t)
         {
-                context.Questions.Add(t);
-                t.CreatedBy = "anonymous user";
-                t.CreatedDate = DateTime.Now;
-                return context.SaveChanges();
-            
+            context.Questions.Add(t);
+            t.CreatedBy = "anonymous user";
+            t.CreatedDate = DateTime.Now;
+            return context.SaveChanges();
+
         }
 
         public IEnumerable<Question> Search(SearchPaging item)
@@ -146,8 +148,6 @@ namespace Repository
             currenQuestion.Answers = null;
             currenQuestion.Category = t.Category;
             currenQuestion.Content = t.Content;
-            currenQuestion.CreatedBy = t.CreatedBy;
-            currenQuestion.CreatedDate = t.CreatedDate;
             currenQuestion.ExamQuestions = t.ExamQuestions;
             currenQuestion.Level = t.Level;
             currenQuestion.Media = t.Media;

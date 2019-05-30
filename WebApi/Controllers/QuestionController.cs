@@ -11,10 +11,11 @@ using System.IO;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using NPOI.HSSF.UserModel;
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
-    [AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class QuestionController : ApiController
     {
         private QuestionServices service;

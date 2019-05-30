@@ -140,5 +140,25 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public bool Login(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(int id, string groupname)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

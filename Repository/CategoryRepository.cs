@@ -50,7 +50,6 @@ namespace Repository
 
         public int Insert(Category t)
         {
-            
             context.Categorys.Add(t);
             return context.SaveChanges();
         }

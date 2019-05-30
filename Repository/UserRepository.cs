@@ -56,7 +56,6 @@ namespace Repository
                 RoleId = user.RoleId,
                 Password = user.Password,
                 CreatedDate = DateTime.Now,
-                EditedDate = DateTime.Now,
                 FullName = user.FullName,
                 Phone = user.Phone,
                 Email = user.Email,
@@ -70,14 +69,18 @@ namespace Repository
             return context.SaveChanges();
         }
 
-
         public IEnumerable<User> Search(string searchString)
         {
-            return context.Users.Where(s => s.FullName.Contains(searchString));
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return context.Users.Where(s => s.FullName.Contains(searchString));
+            }
+            return context.Users.ToList();
         }
 
         public int Update(User user)
         {
+            user.EditedDate = DateTime.Now;
             context.Entry(user).State = EntityState.Modified;
             return context.SaveChanges();
         }
@@ -141,6 +144,58 @@ namespace Repository
                 result = result.Where(s => s.Position == model.Position).ToList();
             }
             return result;
+        }
+
+        public bool Login(string userName, string passWord)
+        {
+            var result = context.Users.Count(x => x.UserName == userName && x.Password == passWord);
+            if (result > 0)
+                return true;
+            else return false;
+        }
+
+        public User GetByUsername(string userName)
+        {
+            return context.Users.SingleOrDefault(x => x.UserName == userName);
+        }
+
+        public int Update(int id, string groupname)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
+        {
+            var listuserdetail =
+            (
+                from u in context.Users
+                join ug in context.UserGroups on u.UserId equals ug.UserId
+                join g in context.Groups on ug.GroupId equals g.GroupId
+                where u.UserId == id
+                select new
+                {
+                    UserName = u.UserName,
+                    FullName = u.FullName,
+                    Email = u.Email,
+                    Department = u.Department,
+                    Position = u.Position,
+                    GroupName = g.GroupName
+                }
+
+            );
+            List<UserDetail> list = new List<UserDetail>();
+            foreach (var item in listuserdetail)
+            {
+                UserDetail userDetail = new UserDetail();
+                userDetail.FullName = item.FullName;
+                userDetail.UserName = item.UserName;
+                userDetail.Email = item.Email;
+                userDetail.Department = item.Department;
+                userDetail.Position = item.Position;
+                userDetail.GroupName = item.GroupName;
+                list.Add(userDetail);
+            }
+            return list;
         }
     }
 }

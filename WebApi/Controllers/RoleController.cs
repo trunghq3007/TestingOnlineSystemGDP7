@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using Model;
 using Newtonsoft.Json;
 using Services;
 
@@ -19,8 +20,13 @@ namespace WebApi.Controllers
         // GET: Role
         public string GetRole()
         {
-            var list = sevices.GetAll();
-            return JsonConvert.SerializeObject(list);
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var result = sevices.GetAll();
+            return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
         }
+
     }
 }

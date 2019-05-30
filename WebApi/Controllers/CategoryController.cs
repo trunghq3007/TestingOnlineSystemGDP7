@@ -32,13 +32,13 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public string Get([FromUri]string action, [FromBody]object value)
+        public string Get([FromUri]string action, [FromBody]string value)
         {
-            if (value != null)
+            if (value != null && !"".Equals(value))
             {
                 if ("search".Equals(action))
                 {
-                    return JsonConvert.SerializeObject(service.Search(value.ToString()));
+                    return JsonConvert.SerializeObject(service.Search(value));
                 }
             }
             var result = service.GetAll().ToList();
@@ -47,13 +47,11 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public string Post([FromBody]object value)
+        public string Post([FromBody]string value)
         {
-            if (value != null)
+            if (value.Count() > 0)
             {
-                var category = JsonConvert.DeserializeObject<Category>(value.ToString());
-                category.CreatedBy = "anonymous user";
-                category.CreatedDate = DateTime.Now;
+                var category = JsonConvert.DeserializeObject<Category>(value);
                 var result = service.Insert(category);
                 return JsonConvert.SerializeObject(result);
             }
@@ -61,14 +59,12 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public string Put(int id, [FromBody]object value)
+        public string Put(int id, [FromBody]string value)
         {
-            if (value != null)
+            if (value.Count() > 0)
             {
-                var category = JsonConvert.DeserializeObject<Category>(value.ToString());
+                var category = JsonConvert.DeserializeObject<Category>(value);
                 category.Id = id;
-                category.CreatedBy = "anonymous user";
-                category.CreatedDate = DateTime.Now;
                 var result = service.Update(category);
                 return JsonConvert.SerializeObject(result);
             }

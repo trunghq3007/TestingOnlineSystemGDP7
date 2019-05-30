@@ -58,6 +58,16 @@ namespace Services
             return groupRepository.GetById(id);
         }
 
+        public Group GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Group> GetUserInGroup(int id)
         {
             throw new NotImplementedException();
@@ -78,6 +88,16 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public bool Login(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Group Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Group> Search(string searchString)
         {
             return groupRepository.Search(searchString);
@@ -91,6 +111,10 @@ namespace Services
         public int Update(Group t)
         {
             throw new NotImplementedException();
+        }
+        public int Update(int id, string groupname)
+        {
+            return groupRepository.Update(id, groupname);
         }
     }
 }

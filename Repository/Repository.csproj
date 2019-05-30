@@ -31,14 +31,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=1.0.1803.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExporterWordExcelPDF.1.0.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ExporterObjects, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExporterWordExcelPDF.1.0.1.0\lib\ExporterObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="ExportImplementation, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExporterWordExcelPDF.1.0.1.0\lib\ExportImplementation.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <HintPath>..\packages\ExporterWordExcelPDF.1.0.1.0\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,18 +60,30 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xamasoft.JsonClassGenerator, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExporterWordExcelPDF.1.0.1.0\lib\Xamasoft.JsonClassGenerator.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnswerRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
+    <Compile Include="ExamQuestionResponsitory.cs" />
     <Compile Include="ExamRepository.cs" />
     <Compile Include="Interfaces\IAnswerRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
+    <Compile Include="Interfaces\IExamQuestion.cs" />
+    <Compile Include="Interfaces\IExamRepository.cs" />
     <Compile Include="Interfaces\IGroupRepository.cs" />
+    <Compile Include="Interfaces\ISemesterExamRepository.cs" />
+    <Compile Include="Interfaces\ISemesterExamUserRepository.cs" />
     <Compile Include="Interfaces\ITagRepository.cs" />
     <Compile Include="Interfaces\IQuestionRepository.cs" />
+    <Compile Include="Interfaces\ITestRepository.cs" />
     <Compile Include="QuestionRepository.cs" />
     <Compile Include="RoleRepository.cs" />
+    <Compile Include="SemasterExamResponsitory.cs" />
+    <Compile Include="SemesterExamRepository.cs" />
+    <Compile Include="SemesterExamUserRepository.cs" />
     <Compile Include="TagRepository.cs" />
     <Compile Include="GroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -65,6 +91,7 @@
     <Compile Include="TestRepository.cs" />
     <Compile Include="UserGroupRepository.cs" />
     <Compile Include="UserRepository.cs" />
+    <Compile Include="ViewTestRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -82,6 +109,9 @@
       <Project>{f71235e0-1e7a-4535-8f18-2ba7830a5936}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme_exporter.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

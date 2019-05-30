@@ -57,6 +57,16 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public Role GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Role> GetUserInGroup(int id)
         {
             throw new NotImplementedException();
@@ -77,6 +87,16 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public bool Login(string userName, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Role Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Role> Search(string searchString)
         {
             throw new NotImplementedException();
@@ -88,6 +108,11 @@ namespace Services
         }
 
         public int Update(Role t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update(int id, string groupname)
         {
             throw new NotImplementedException();
         }

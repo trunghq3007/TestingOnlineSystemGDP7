@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class ExamQuestion
+   public class ExamQuestion
     {
+
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public int Id { get; set; }
         [ForeignKey("Exam")]

@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         {
             service = new QuestionServices();
         }
-
+        
         [HttpPost]
         public string Post([FromUri]string action, [FromBody]object value)
         {
@@ -32,7 +32,7 @@ namespace WebApi.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             ResultObject result = new ResultObject();
-            if (value == null)
+            if (value == null && !"import".Equals(action.ToLower()))
             {
                 result.Message = "Data null";
                 return JsonConvert.SerializeObject(result);
@@ -269,7 +269,7 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
-
+      
         [HttpPost]
         public string Post([FromBody]object value)
         {
@@ -296,7 +296,7 @@ namespace WebApi.Controllers
             }
             //  return JsonConvert.SerializeObject(result);
         }
-
+       
         [HttpPut]
         public string Put(int id, [FromBody]object value)
         {

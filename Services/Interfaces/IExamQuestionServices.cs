@@ -11,6 +11,6 @@ namespace Services.Interfaces
     {
         IEnumerable<Model.ViewModel.ViewQuestionExam> GetListQuestionById(int id);
 		int Insert(ExamQuestion model);
-
-	}
+        Model.ViewModel.GetFill listFilters();
+    }
 }

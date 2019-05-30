@@ -7,11 +7,12 @@ using System.Net;
 using Model;
 using Model.ViewModel;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
-	[AllowCrossSite]
-	public class ExamQuestionsController : ApiController
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class ExamQuestionsController : ApiController
 	{
 		private ExamQuestionServices examQuestion;
 		private QuestionServices QuestionServices;

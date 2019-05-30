@@ -6,10 +6,11 @@ using Services;
 using Model;
 using Newtonsoft.Json;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
-    [AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TagController : ApiController
     {
         private TagServices service;

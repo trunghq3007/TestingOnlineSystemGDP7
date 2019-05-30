@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
 namespace WebApi.Controllers
 {
-    [AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserGroupController : ApiController
     {
         private UserGroupServices services;

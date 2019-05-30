@@ -6,10 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
-	[AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SemasterController : ApiController
     {
 		private SemasterServices services;

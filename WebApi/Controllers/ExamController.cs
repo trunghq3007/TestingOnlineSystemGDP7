@@ -14,7 +14,7 @@ namespace WebApi.Controllers
 {
 
 
-    [AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ExamController : ApiController
     {
 		private ExamServices services;

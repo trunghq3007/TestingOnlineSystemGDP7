@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 using System.Web.Http;
-
+using System.Web.Http.Cors;
 using Model;
 using Model.ViewModel;
 using Newtonsoft.Json;
@@ -14,7 +14,7 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace WebApi.Controllers
 {
-    [AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SemesterExamController : ApiController
     {
         private SemesterExamServices service;

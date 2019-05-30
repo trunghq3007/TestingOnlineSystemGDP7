@@ -7,11 +7,11 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using Services;
 using Model;
-
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
-    [AllowCrossSite]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GroupController : ApiController
     {
         private GroupServices services;

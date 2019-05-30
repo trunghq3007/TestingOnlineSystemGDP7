@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="AnswerRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
+    <Compile Include="Commons\Encryptor.cs" />
     <Compile Include="ExamQuestionResponsitory.cs" />
     <Compile Include="ExamRepository.cs" />
     <Compile Include="Interfaces\IAnswerRepository.cs" />
@@ -97,9 +98,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
       <Project>{aaaf0160-e898-4133-b8b5-abd437395520}</Project>

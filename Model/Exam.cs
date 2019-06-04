@@ -20,8 +20,10 @@ namespace Model
         [Required(ErrorMessage = "question number is not null")]
         public int QuestionNumber { get; set; }
         [Required(ErrorMessage = "status is not null")]
+        public string Content { get; set; }
         public bool Status { get; set; }
-
+        public int Space { get; set; }
+        public virtual Category Category { get; set; }
         public DateTime? CreateAt { get; set; }
         public string Note { get; set; }
         public virtual ICollection<Test> Tests { get; set; }

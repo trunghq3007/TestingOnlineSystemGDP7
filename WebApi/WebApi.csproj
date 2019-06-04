@@ -244,6 +244,7 @@
     <Compile Include="Controllers\SemesterExamUserController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserGroupController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -317,6 +318,7 @@
     <Folder Include="Commons\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Providers\" />
+    <Folder Include="Views\Upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

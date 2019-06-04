@@ -209,8 +209,12 @@ namespace WebApi.Controllers
         [HttpGet]
         public string GetByCandidateId(int candidateId, string SemesterExamAssign)
         {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
             var result = service.GetByCandidateId(candidateId);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result,Formatting.Indented,jsonSetting);
         }
         [HttpGet]
         public string GetExams(int id, [FromUri] string IsGetExams)

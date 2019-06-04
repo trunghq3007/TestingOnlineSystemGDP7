@@ -25,7 +25,7 @@ namespace Model
         [Required(ErrorMessage = "score is not null")]
         public float Score { get; set; }
         public int TestTimeNo { get; set; }
-        
+        public string Content { get; set; }
         public string DescriptionName { get; set; }
         public virtual User User { get; set; }
         public virtual Test Test { get; set; }

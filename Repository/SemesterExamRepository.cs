@@ -341,6 +341,11 @@ SE.ID equals SEU.SemesterExam.ID
             return query.ToList();
 
         }
+
+        public IEnumerable<Model.Test> GetTestsNotAdd(int id)
+        {
+            return context.Tests.Where(T => T.SemesterExam.ID != id);
+        }
     }
 
 }

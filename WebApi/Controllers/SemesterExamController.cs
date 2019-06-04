@@ -274,6 +274,12 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
+        [HttpGet]
+        public string Get(int id, string isGetTestsNotAdd)
+        {
+            var result = service.GetTestsNotAdd(id);
+            return JsonConvert.SerializeObject(result);
+        }
 
     }
 }

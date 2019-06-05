@@ -109,28 +109,5 @@ public IEnumerable<Test> GetTestsNotAdd(int id)
             return SemesterExamRepository.GetTestDetail(id);
         }
 
-<<<<<<< .mine
-
-        public ExamInformation GetTestDetail(int id)
-        {
-            return SemesterExamRepository.GetTestDetail(id);
-        }
-
-
-
-
-
-
-
-        public IEnumerable<Test> GetTestsNotAdd(int id)
-        {
-            return SemesterExamRepository.GetTestsNotAdd(id);
-        }
-
-        public TestProcessing GeTestProcessings(int id)
-        {
-            return SemesterExamRepository.GeTestProcessings(id);
-        }
-
     }
 }

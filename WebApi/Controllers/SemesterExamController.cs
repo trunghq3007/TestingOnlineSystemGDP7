@@ -283,7 +283,7 @@ namespace WebApi.Controllers
             var result = service.SearchExams(searchString, id);
             return JsonConvert.SerializeObject(result);
         }
- [HttpGet]
+         [HttpGet]
         public string GetTestDetail(int id, string IsGetTestDetail)
         {
             var result = service.GetTestDetail(id);
@@ -313,25 +313,11 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
         }
 
-    }
+    
 
-        [HttpGet]
-        public string Get(int id, string isGetTestsNotAdd)
-        {
-            var result = service.GetTestsNotAdd(id);
-            return JsonConvert.SerializeObject(result);
-        }
-        [HttpGet]
-        public string GetTestProcessing(int id , string IsgetTestProcessing)
-        {
-
-            var jsonSetting = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-            var result = service.GeTestProcessings(id);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
-        }
+        
+      
+        
 
     }
 }

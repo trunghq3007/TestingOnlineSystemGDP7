@@ -33,7 +33,7 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         public string Get([FromUri]string action, [FromBody]string value)
         {
             if (value != null && !"".Equals(value))
@@ -42,6 +42,10 @@ namespace WebApi.Controllers
                 {
                     return JsonConvert.SerializeObject(service.Search(value));
                 }
+                if ("delete".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.DeleteBatch(value));
+                }
             }
             var result = service.GetAll().ToList();
             return JsonConvert.SerializeObject(result);
@@ -49,11 +53,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public string Post([FromBody]string value)
+        public string Post([FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null)
             {
-                var category = JsonConvert.DeserializeObject<Category>(value);
+                var category = JsonConvert.DeserializeObject<Category>(value.ToString());
+                category.CreatedDate = DateTime.Now;
+                category.CreatedBy = "Auto User";
                 var result = service.Insert(category);
                 return JsonConvert.SerializeObject(result);
             }
@@ -61,12 +67,14 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public string Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]object value)
         {
-            if (value.Count() > 0)
+            if (value != null )
             {
-                var category = JsonConvert.DeserializeObject<Category>(value);
+                var category = JsonConvert.DeserializeObject<Category>(value.ToString());
                 category.Id = id;
+                category.CreatedDate = DateTime.Now;
+                category.CreatedBy = "Auto User";
                 var result = service.Update(category);
                 return JsonConvert.SerializeObject(result);
             }

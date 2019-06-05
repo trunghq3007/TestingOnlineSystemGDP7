@@ -17,9 +17,15 @@ namespace Services
         {
             roleRepository = new RoleRepository(new DBEntityContext());
         }
-        public int Delete(int id)
+
+        public bool CheckNameGroup(string groupName)
         {
             throw new NotImplementedException();
+        }
+
+        public int Delete(int id)
+        {
+            return roleRepository.Delete(id);
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
@@ -79,7 +85,7 @@ namespace Services
 
         public int Insert(Role t)
         {
-            throw new NotImplementedException();
+            return roleRepository.Insert(t);
         }
 
         public int InsertUserGroup(int iduser, int idgroup)
@@ -109,7 +115,7 @@ namespace Services
 
         public int Update(Role t)
         {
-            throw new NotImplementedException();
+            return roleRepository.Update(t);
         }
 
         public int Update(int id, string groupname)

@@ -22,28 +22,30 @@ namespace WebApi.Controllers
 			examQuestion = new ExamQuestionServices();
 		}
         [HttpGet]
-        public string Get()
+        public string Get([FromUri] string action, [FromUri] int id)
         {
-            var result = QuestionServices.GetAll().ToList();
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            if ("GetAll".Contains(action))
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                var result = examQuestion.GetById(id).ToList();
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
+
+            if ("GetById".Contains(action))
+            {
+                var result = examQuestion.GetListQuestionById(id);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
+
+            return "true";
+
         }
-        [HttpGet]
-		// GETID : User
-		public string GetExam(int id)
-		{
-
-
-			var result = examQuestion.GetListQuestionById(id);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-
-            //return JsonConvert.SerializeObject(result);
-		}
+       
 		[HttpPost]
 		public string Post([FromBody] object value)
 		{
@@ -73,6 +75,8 @@ namespace WebApi.Controllers
             }
 
         }
+
+
         [HttpPost]
 		public string Getfilter([FromUri]string action, [FromBody]object value)
 		{
@@ -100,6 +104,20 @@ namespace WebApi.Controllers
 
 
 			}
+
+            if ("AddMutiple".Equals(action))
+            {
+                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
+                var add = examQuestion.AddMutipleQuestion(exam);
+                return JsonConvert.SerializeObject(add);
+            }
+
+            if ("random".Equals(action))
+            {
+                var exam = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());
+                var add = examQuestion.RandomQuestion(exam);
+                return JsonConvert.SerializeObject(add);
+            }
 			if ("getfillter".Equals(action))
 			{
                 return JsonConvert.SerializeObject(examQuestion.listFilters());

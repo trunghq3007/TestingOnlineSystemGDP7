@@ -38,5 +38,27 @@ namespace Services
         {
             return repository.listFilters();
         }
+
+        public int AddMutipleQuestion(List<ExamQuestion> ListModel)
+        {
+            return repository.AddMutipleQuestion(ListModel);
+        }
+
+        public IEnumerable<Question> GetAll()
+        {
+            return repository.GetAll();
+        }
+
+        
+
+        public int RandomQuestion(ViewQuestionExam model)
+        {
+            return repository.RandomQuestion(model);
+        }
+
+        public IEnumerable<Question> GetById(int id)
+        {
+            return repository.GetById(id);
+        }
     }
 }

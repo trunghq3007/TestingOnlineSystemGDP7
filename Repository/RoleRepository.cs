@@ -2,6 +2,7 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +16,17 @@ namespace Repository
         {
             this.context = context;
         }
-        public int Delete(int id)
+
+        public bool CheckNameGroup(string groupName)
         {
             throw new NotImplementedException();
+        }
+
+        public int Delete(int id)
+        {
+            var role = context.Roles.Find(id);
+            context.Roles.Remove(role);
+            return context.SaveChanges();
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
@@ -77,7 +86,8 @@ namespace Repository
 
         public int Insert(Role t)
         {
-            throw new NotImplementedException();
+            context.Roles.Add(new Role());
+            return context.SaveChanges();
         }
 
         public int InsertUserGroup(int iduser, int idgroup)
@@ -102,7 +112,8 @@ namespace Repository
 
         public int Update(Role t)
         {
-            throw new NotImplementedException();
+            context.Entry(t).State = EntityState.Modified;
+            return context.SaveChanges();
         }
 
         public int Update(int id, string groupname)

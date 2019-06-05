@@ -16,6 +16,6 @@ namespace Repository.Interfaces
         int Delete(int id);
         IEnumerable<Model.ViewModel.ViewQuestionExam> GetListQuestionById(int id);
         T GetById(int id);
-
+        Model.ViewModel.GetFill listFilters();
     }
 }

@@ -21,7 +21,8 @@ namespace Model
         public int QuestionNumber { get; set; }
         [Required(ErrorMessage = "status is not null")]
         public bool Status { get; set; }
-
+        public int SpaceQuestionNumber { get; set; }
+        public virtual Category Category { get; set; }
         public DateTime? CreateAt { get; set; }
         public string Note { get; set; }
         public virtual ICollection<Test> Tests { get; set; }

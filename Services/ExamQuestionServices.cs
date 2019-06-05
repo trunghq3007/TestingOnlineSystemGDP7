@@ -34,5 +34,9 @@ namespace Services
             return repository.Insert(model);
 
         }
+        public GetFill listFilters()
+        {
+            return repository.listFilters();
+        }
     }
 }

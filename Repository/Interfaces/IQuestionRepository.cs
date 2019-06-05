@@ -19,5 +19,6 @@ namespace Repository.Interfaces
         IEnumerable<T> Filter(QuestionFillterModel t);
         Category getCategoryByName(string cateName);
         int Import(List<T> list);
+        
     }
 }

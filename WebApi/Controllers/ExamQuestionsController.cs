@@ -21,7 +21,16 @@ namespace WebApi.Controllers
 			QuestionServices = new QuestionServices();
 			examQuestion = new ExamQuestionServices();
 		}
-		[HttpGet]
+        [HttpGet]
+        public string Get()
+        {
+            var result = QuestionServices.GetAll().ToList();
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
+        [HttpGet]
 		// GETID : User
 		public string GetExam(int id)
 		{
@@ -93,8 +102,8 @@ namespace WebApi.Controllers
 			}
 			if ("getfillter".Equals(action))
 			{
-                //return JsonConvert.SerializeObject(QuestionServices.listFilters());
-                return "";
+                return JsonConvert.SerializeObject(examQuestion.listFilters());
+                //return "";
 
 
             }

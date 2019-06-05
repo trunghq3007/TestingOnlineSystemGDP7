@@ -100,5 +100,10 @@ namespace Services
         {
             return SemesterExamRepository.GetTestsNotAdd(id);
         }
+
+        public TestProcessing GeTestProcessings(int id)
+        {
+            return SemesterExamRepository.GeTestProcessings(id);
+        }
     }
 }

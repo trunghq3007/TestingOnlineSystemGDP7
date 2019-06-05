@@ -366,7 +366,7 @@ SE.ID equals SEU.SemesterExam.ID
 
 
             List<Question> questions = queryQuestions.ToList();
-            testProcessing.questions = questions;
+            testProcessing.Questions = questions;
             return testProcessing;
 
 

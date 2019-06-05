@@ -11,7 +11,6 @@ using System.Web.Mvc;
 
 namespace WebApi.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UploadController : Controller
     {
         // GET: Upload

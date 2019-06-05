@@ -95,8 +95,7 @@ namespace Services
         {
             return SemesterExamRepository.SearchExams(examName, id);
         }
-
-        public IEnumerable<Test> GetTestsNotAdd(int id)
+public IEnumerable<Test> GetTestsNotAdd(int id)
         {
             return SemesterExamRepository.GetTestsNotAdd(id);
         }
@@ -105,5 +104,10 @@ namespace Services
         {
             return SemesterExamRepository.GeTestProcessings(id);
         }
+ public ExamInformation GetTestDetail(int id)
+        {
+            return SemesterExamRepository.GetTestDetail(id);
+        }
+
     }
 }

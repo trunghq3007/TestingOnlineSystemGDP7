@@ -65,7 +65,6 @@
     <Compile Include="Action.cs" />
     <Compile Include="Answer.cs" />
     <Compile Include="Category.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Exam.cs" />
     <Compile Include="ExamQuestion.cs" />
     <Compile Include="Group.cs" />

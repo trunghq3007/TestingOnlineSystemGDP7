@@ -63,8 +63,8 @@ namespace WebApi.Controllers
         //    }
         //}
         public string UploadCkeditor()
-        {
-            dynamic result = new ExpandoObject();
+        { 
+             dynamic result = new ExpandoObject();
             try
             {
                 HttpPostedFileBase file;

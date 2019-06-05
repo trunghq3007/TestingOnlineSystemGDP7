@@ -267,7 +267,8 @@ SE.ID equals SEU.SemesterExam.ID
 
         public IEnumerable<Test> GetTests(int id)
         {
-            return context.Tests.Where(T => T.SemesterExam.ID == id).ToList();
+            List<Test> list =   context.Tests.Where(T => T.SemesterExam.ID == id).ToList();
+            return list;
         }
         public IEnumerable<Exam> GetExamsNotAdd(int id)
         {
@@ -339,6 +340,36 @@ SE.ID equals SEU.SemesterExam.ID
                         where E.NameExam.Contains(examName) && T.SemasterExamId == id
                         select E;
             return query.ToList();
+
+        }
+
+        public IEnumerable<Model.Test> GetTestsNotAdd(int id)
+        {
+            return context.Tests.Where(T => T.SemesterExam.ID != id);
+        }
+
+        public Model.ViewModel.TestProcessing GeTestProcessings(int id)
+        {
+            TestProcessing testProcessing= new TestProcessing();
+            Test test = context.Tests.Find(id);
+            testProcessing.Id = id;
+            testProcessing.TestName = test.TestName;
+            testProcessing.TestTime = test.TestTime;
+            Exam exam = test.Exam;
+            var queryQuestions = from Q in context.Questions
+                join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
+                join E in context.Exams on EQ.ExamId equals E.Id
+                join T in context.Tests on E.Id equals T.ExamId
+                where T.Id == id
+                //where E.Category.Id == Q.Category.Id
+                select Q;
+
+
+            List<Question> questions = queryQuestions.ToList();
+            testProcessing.questions = questions;
+            return testProcessing;
+
+
 
         }
     }

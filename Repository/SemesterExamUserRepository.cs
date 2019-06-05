@@ -102,7 +102,7 @@ namespace Repository
                 a.Position = item.Position;
                 candidates.Add(a);
             }
-            int b = 0;
+         
 
             return candidates;
         }

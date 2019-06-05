@@ -267,7 +267,8 @@ SE.ID equals SEU.SemesterExam.ID
 
         public IEnumerable<Test> GetTests(int id)
         {
-            return context.Tests.Where(T => T.SemesterExam.ID == id).ToList();
+            List<Test> list =   context.Tests.Where(T => T.SemesterExam.ID == id).ToList();
+            return list;
         }
         public IEnumerable<Exam> GetExamsNotAdd(int id)
         {
@@ -341,6 +342,84 @@ SE.ID equals SEU.SemesterExam.ID
             return query.ToList();
 
         }
+ public IEnumerable<Model.Test> GetTestsNotAdd(int id)
+        {
+            return context.Tests.Where(T => T.SemesterExam.ID != id);
+        }
+
+        public Model.ViewModel.TestProcessing GeTestProcessings(int id)
+        {
+            TestProcessing testProcessing= new TestProcessing();
+            Test test = context.Tests.Find(id);
+            testProcessing.Id = id;
+            testProcessing.TestName = test.TestName;
+            testProcessing.TestTime = test.TestTime;
+            Exam exam = test.Exam;
+            var queryQuestions = from Q in context.Questions
+                join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
+                join E in context.Exams on EQ.ExamId equals E.Id
+                join T in context.Tests on E.Id equals T.ExamId
+                where T.Id == id
+                //where E.Category.Id == Q.Category.Id
+                select Q;
+
+
+            List<Question> questions = queryQuestions.ToList();
+            testProcessing.questions = questions;
+            return testProcessing;
+
+
+
+        }
+ public IEnumerable<ExamInformation> GetTestDetail(int id)
+        {
+            var query = from T in context.Tests
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                        on E.Category.Id equals C.Id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,                    
+                        };
+            ExamInformation examInformation = new ExamInformation();
+            examInformation.TestName = query.FirstOrDefault().TestName;
+            examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4 ;
+            examInformation.NumberStatementQuestion = query.FirstOrDefault().QuestionNumber - examInformation.NumberChoiceQuestion;
+            examInformation.TestTime = query.FirstOrDefault().TestTime;
+            examInformation.CategoryName = query.FirstOrDefault().Name;
+            examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
+            examInformation.TotalScore = 100;
+            return GetTestDetail(id);
+        }
+
+        ExamInformation ISemesterExamRepository<SemesterExam>.GetTestDetail(int id)
+        {
+            var query = from T in context.Tests
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                        on E.Category.Id equals C.Id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,
+                        };
+            ExamInformation examInformation = new ExamInformation();
+            examInformation.TestName = query.FirstOrDefault().TestName;
+            examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4;
+            examInformation.NumberStatementQuestion = query.FirstOrDefault().QuestionNumber - examInformation.NumberChoiceQuestion;
+            examInformation.TestTime = query.FirstOrDefault().TestTime;
+            examInformation.CategoryName = query.FirstOrDefault().Name;
+            examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
+            examInformation.TotalScore = 100;
+            return examInformation;
+        }
+    }
+
 
         public IEnumerable<ExamInformation> GetTestDetail(int id)
         {
@@ -389,6 +468,56 @@ SE.ID equals SEU.SemesterExam.ID
             examInformation.TotalScore = 100;
             return examInformation;
         }
+
+
+        public IEnumerable<Model.Test> GetTestsNotAdd(int id)
+        {
+            return context.Tests.Where(T => T.SemesterExam.ID != id);
+        }
+
+        public Model.ViewModel.TestProcessing GeTestProcessings(int id)
+        {
+            TestProcessing testProcessing= new TestProcessing();
+            Test test = context.Tests.Find(id);
+            testProcessing.Id = id;
+            testProcessing.TestName = test.TestName;
+            testProcessing.TestTime = test.TestTime;
+            Exam exam = test.Exam;
+            var queryQuestions = from Q in context.Questions
+                join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
+                join E in context.Exams on EQ.ExamId equals E.Id
+                join T in context.Tests on E.Id equals T.ExamId
+                where T.Id == id
+                //where E.Category.Id == Q.Category.Id
+                select Q;
+
+
+            List<Question> questions = queryQuestions.ToList();
+            testProcessing.questions = questions;
+            return testProcessing;
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 }

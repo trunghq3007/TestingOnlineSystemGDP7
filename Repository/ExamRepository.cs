@@ -11,6 +11,11 @@ using System.Data.Entity;
 using System.IO;
 using ExporterObjects;
 using ExportImplementation;
+using Microsoft.Office.Interop.Word;
+using System.Drawing;
+using Spire.Doc;
+using Spire.Doc.Fields;
+using Spire.Doc.Documents;
 
 namespace Repository
 {
@@ -170,15 +175,134 @@ namespace Repository
 
 		}
 
-		public Exam Export_exam(int id)
+		public int Export_exam(int id)
 		{
-			var exams = context.Database.SqlQuery<ExportExam>(" select Row_number() over(order by q.id) stt, NameExam, QuestionNumber, e.Status, q.Content, q.Level, a.Content as 'ContentAnswer', a.IsTrue,c.Name from Exams e inner join ExamQuestions eq on e.Id = eq.ExamId inner join Question q on q.Id = eq.QuestionId inner join Answer a on a.Question_Id = q.Id inner join Category c on c.Id = q.Category_Id where e.Id = "+id).ToList();
-            //Export<ExportExam> export = new Ẽz<ExportExam>();
-            Export <ExportExam> export = new ExportExcel2007<ExportExam>();
-			var data = export.ExportResult(exams);
-			File.WriteAllBytes("D:/Export_Exam"+id+".xlsx", data);
+            
+            Exam exam = (from e in context.Exams
+                         where e.Id == id
+                         select e).SingleOrDefault();
+            string examName = "";
 
-			return null;
+            examName = "Subject : "+exam.NameExam.ToString()+"\r";
+            string nameFile = exam.NameExam.ToString();
+
+            try
+            {
+                examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
+                //titleExam += (from t in context.Tests
+                //              where t.ExamId == id
+                //              select new
+                //              {
+                //                  TestTime = t.TestTime
+                //              }
+                //              ).ToString() +"\r";
+
+                Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
+                object missing = System.Reflection.Missing.Value;
+               
+                Microsoft.Office.Interop.Word.Document document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
+                Microsoft.Office.Interop.Word.Range range = document.Range();
+                foreach (Microsoft.Office.Interop.Word.Section section in document.Sections)
+                {
+                    //Get the header range and add the header details.  
+                    Microsoft.Office.Interop.Word.Range headerRange = section.Headers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    headerRange.Fields.Add(headerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
+                    headerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    headerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdBlue;
+                    headerRange.Font.Size = 24;
+                    
+                    headerRange.Text = examName;
+
+                }
+                string tempSave = string.Empty;
+
+                foreach (Microsoft.Office.Interop.Word.Section wordSection in document.Sections)
+                {
+                    //Get the footer range and add the footer details.  
+                    Microsoft.Office.Interop.Word.Range footerRange = wordSection.Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    footerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdDarkRed;
+                    footerRange.Font.Size = 10;
+                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    footerRange.Text = "Footer text goes here";
+
+                    var exams = (from eq in context.ExamQuestions
+                                 where eq.ExamId == id
+                                 select new
+                                 {
+                                     QuestionId = eq.QuestionId
+                                 }).ToList();
+                    int countExam =  1;
+
+                    foreach (var item in exams)
+                    {
+                        long temp = Convert.ToInt64(item.QuestionId);
+                        List<Question> ques = (from q in context.Questions
+                                               where q.Id == temp
+
+                                               select q).ToList();
+                        foreach (Question itemq in ques)
+                        {
+
+                            ///document.Content.CopyAsPicture();
+                            string quesText = itemq.Content.ToString();
+                            
+                            //document.Content.Text = quesText + Environment.NewLine + Environment.NewLine;
+
+                            tempSave += "Question "+countExam+" : "+itemq.Content + '\r';
+                            List<Answer> answers = (from a in context.Answers
+                                                    where a.Question.Id == temp
+                                                    select a
+                                                    ).ToList();
+                            int characterAbc = 0;
+                            char character = 'A';
+                            characterAbc = (int)character;
+                            foreach (var itemAns in answers)
+                            {
+                                
+                                string answer = (char)(characterAbc) + ". "+ itemAns.Content.ToString();
+                                
+                                tempSave += answer + "\r";
+                                characterAbc++;
+                            }
+                            countExam++;
+                            tempSave += "\r";
+                        }
+                        
+                    }
+                    //object rangeABC = range.InlineShapes.AddPicture(@"C:\Users\LeCuong\OneDrive\Desktop\Untitled.jpg");
+
+
+                    //Range rngPic = document.Tables[1].Range;
+
+                    //rngPic.InlineShapes.AddPicture(@"C:\Users\LeCuong\Desktop\Untitled.jpg");
+
+                    //float leftPosition = (float)this.Application.Selection.Information[WdInformation.wdHorizontalPositionRelativeToPage];
+
+
+                    //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
+                    //string configLocation = requiredPath.ToString().Substring(6)+ "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
+
+
+                    //string configText = File.ReadAllText(configLocation);
+
+                    //document.Content.Text = tempSave;
+                    //object filename = configText+nameFile+"cuong"+id+".docx";
+                    object filename = @"D:\"+nameFile + id + ".docx";
+                    document.SaveAs2(ref filename);
+                    
+                }
+                string abc = document.Content.Text;
+                document.Close(ref missing, ref missing, ref missing);
+                document = null;
+                winword.Quit(ref missing, ref missing, ref missing);
+                winword = null;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return 1;
 			
 		}
 

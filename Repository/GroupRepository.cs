@@ -169,5 +169,15 @@ namespace Repository
             var check = context.Groups.Where(x => x.GroupName == groupName).Count() > 0;
             return check;
         }
+
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

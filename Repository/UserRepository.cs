@@ -80,8 +80,25 @@ namespace Repository
 
         public int Update(User user)
         {
-            user.EditedDate = DateTime.Now;
-            context.Entry(user).State = EntityState.Modified;
+
+            var currentUser = context.Users.Find(user.UserId);
+
+            currentUser.EditedDate = DateTime.Now;
+
+            currentUser.Email = user.Email;
+            currentUser.Role = context.Roles.Find(user.RoleId);
+            currentUser.RoleId = user.RoleId;
+            currentUser.FullName = user.FullName;
+            currentUser.Phone = user.Phone;
+            currentUser.Address = user.Address;
+            currentUser.Department = user.Department;
+            currentUser.Position = user.Position;
+            currentUser.Avatar = user.Avatar;
+            currentUser.Status = user.Status;
+            currentUser.Note = user.Note;
+
+
+            context.Entry(currentUser).State = EntityState.Modified;
             return context.SaveChanges();
         }
         private bool disposed = false;
@@ -199,6 +216,16 @@ namespace Repository
         }
 
         public bool CheckNameGroup(string groupName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
         }

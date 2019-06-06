@@ -24,6 +24,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Delete(int id)
         {
             throw new NotImplementedException();
@@ -70,6 +75,11 @@ namespace Services
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
         }

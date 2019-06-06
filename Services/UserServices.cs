@@ -24,6 +24,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public bool CheckUserName(string userName)
+        {
+            return userRepository.CheckUserName(userName);
+        }
+
         public int Delete(int id)
         {
             return userRepository.Delete(id);
@@ -72,6 +77,11 @@ namespace Services
         public List<UserDetail> GetDetailUser(int id)
         {
             return userRepository.GetDetailUser(id);
+        }
+
+        public string GetRoleName(int idUser)
+        {
+            return userRepository.GetRoleName(idUser);
         }
 
         public IEnumerable<User> GetUserInGroup(int id)

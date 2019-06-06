@@ -23,6 +23,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Delete(int id)
         {
             return roleRepository.Delete(id);
@@ -69,6 +74,11 @@ namespace Services
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
         }

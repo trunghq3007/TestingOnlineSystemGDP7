@@ -121,5 +121,15 @@ namespace Services
         {
             return groupRepository.CheckNameGroup(groupName);
         }
+
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

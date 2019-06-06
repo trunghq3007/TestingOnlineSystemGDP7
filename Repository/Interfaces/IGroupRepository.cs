@@ -48,5 +48,9 @@ namespace Repository.Interfaces
         //Get Detail user
         List<UserDetail> GetDetailUser(int id);
         bool CheckNameGroup(string groupName);
+        //Check UserName
+        bool CheckUserName(string userName);
+        //Get RoleName of user
+        string GetRoleName(int idUser);
     }
 }

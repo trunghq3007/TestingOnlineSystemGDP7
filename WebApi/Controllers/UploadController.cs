@@ -32,7 +32,7 @@ namespace WebApi.Controllers
                         string fileExtension = _FileName.Split('.').Last();
                         _FileName = _fileNotExtension + "." + fileExtension;
                         var supportExtensions = ConfigurationManager.AppSettings.Get("MediaExtensionsSupport");
-                        if (supportExtensions.Contains(fileExtension))
+                        if (supportExtensions.Contains(fileExtension.ToLower()))
                         {
                             var url = (Request.Url.GetLeftPart(UriPartial.Authority));
                             var folder = ConfigurationManager.AppSettings["MediaUploadFolder"];

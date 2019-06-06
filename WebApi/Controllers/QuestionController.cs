@@ -12,6 +12,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using NPOI.HSSF.UserModel;
 using System.Web.Http.Cors;
+using System.Configuration;
 
 namespace WebApi.Controllers
 {
@@ -396,43 +397,52 @@ namespace WebApi.Controllers
         private string Export(List<Question> questions)
         {
             var result = new ResultObject();
-            var workbook = new HSSFWorkbook();
-            var sheet = workbook.CreateSheet("Data");
-            var headerRow = sheet.CreateRow(0);
-            // fill header
-            var headers = new[] { "Type", "Content", "Level", "Type Question", "Status", "Category Name", "Suggestion", "Is true" };
-            for (int i = 0; i < headers.Length; i++)
-            {
-                var cell = headerRow.CreateCell(i);
-                cell.SetCellValue(headers[i]);
-            }
-            //Below loop is fill content  
-            var rowIndex = 1;
-            for (int i = 0; i < questions.Count; i++)
-            {
-                var row = sheet.CreateRow(rowIndex);
-                FilltoRow(row, questions[i]);
-                rowIndex++;
-                if (questions[i].Answers != null)
+            try {
+                var workbook = new HSSFWorkbook();
+                var sheet = workbook.CreateSheet("Data");
+                var headerRow = sheet.CreateRow(0);
+                // fill header
+                var headers = new[] { "Type", "Content", "Level", "Type Question", "Status", "Category Name", "Suggestion", "Is true" };
+                for (int i = 0; i < headers.Length; i++)
                 {
-                    foreach (var item in questions[i].Answers)
+                    var cell = headerRow.CreateCell(i);
+                    cell.SetCellValue(headers[i]);
+                }
+                //Below loop is fill content  
+                var rowIndex = 1;
+                for (int i = 0; i < questions.Count; i++)
+                {
+                    var row = sheet.CreateRow(rowIndex);
+                    FilltoRow(row, questions[i]);
+                    rowIndex++;
+                    if (questions[i].Answers != null)
                     {
-                        var rowA = sheet.CreateRow(rowIndex);
-                        FilltoRow(rowA, item);
-                        rowIndex++;
+                        foreach (var item in questions[i].Answers)
+                        {
+                            var rowA = sheet.CreateRow(rowIndex);
+                            FilltoRow(rowA, item);
+                            rowIndex++;
+                        }
                     }
                 }
+                var stream = new MemoryStream();
+                workbook.Write(stream);
+                string fileName = "Export_Question_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+                string FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"), fileName);
+                //Write to file using file stream  
+                FileStream file = new FileStream(FilePath, FileMode.CreateNew, FileAccess.Write);
+                stream.WriteTo(file);
+                file.Close();
+                stream.Close();
+                var url = (Request.RequestUri.GetLeftPart(UriPartial.Authority));
+                var folder = ConfigurationManager.AppSettings["MediaUploadFolder"];
+                return url + folder + fileName;
             }
-            var stream = new MemoryStream();
-            workbook.Write(stream);
-            string fileName = "Export_Question_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
-            string FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/UploadedFiles"),fileName);
-            //Write to file using file stream  
-            FileStream file = new FileStream(FilePath, FileMode.CreateNew, FileAccess.Write);
-            stream.WriteTo(file);
-            file.Close();
-            stream.Close();
-            return "http://localhost:65170" + "/UploadedFiles/" + fileName;
+            catch (Exception e)
+            {
+                throw e;
+            }
+  
         }
     }
 }

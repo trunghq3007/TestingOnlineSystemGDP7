@@ -21,6 +21,16 @@ namespace WebApi.Controllers
 			QuestionServices = new QuestionServices();
 			examQuestion = new ExamQuestionServices();
 		}
+
+        [HttpGet]
+        public string Search(string searchString)
+        {
+            var result = examQuestion.Search(searchString);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+        }
         [HttpGet]
         public string Get([FromUri] string action, [FromUri] int id)
         {
@@ -42,6 +52,15 @@ namespace WebApi.Controllers
                 });
             }
 
+            //if ("Search".Contains(action))
+            //{
+            //    var result = examQuestion.Search(searchString);
+            //    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            //    {
+            //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //    });
+            //}
+
             return "true";
 
         }
@@ -59,13 +78,14 @@ namespace WebApi.Controllers
 			return "FALSE";
 		}
         [HttpDelete]
-        public string Delete(int id)
+        public string Delete(List<ExamQuestion> ListModel)
         {
             ResultObject resultt = new ResultObject();
 
             try
             {
-                var result = examQuestion.Delete(id);
+                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(ListModel.ToString());
+                var result = examQuestion.DeleteMutiple(exam);
                 return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)
@@ -112,6 +132,12 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(add);
             }
 
+            if ("DeleteMutiple".Equals(action))
+            {
+                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
+                var delete = examQuestion.DeleteMutiple(exam);
+                return JsonConvert.SerializeObject(delete);
+            }
             if ("random".Equals(action))
             {
                 var exam = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());

@@ -25,9 +25,9 @@ namespace Services
             return repository.GetListQuestionById(id);
         }
 
-        public int Delete(int id)
+        public int Delete(ExamQuestion model)
         {
-            return repository.Delete(id);
+            return repository.Delete(model);
         }
         public int Insert(Model.ExamQuestion model)
         {
@@ -59,6 +59,16 @@ namespace Services
         public IEnumerable<Question> GetById(int id)
         {
             return repository.GetById(id);
+        }
+
+        public int DeleteMutiple(List<ExamQuestion> ListModel)
+        {
+            return repository.DeleteMutiple(ListModel);
+        }
+
+        public IEnumerable<Question> Search(string searchString)
+        {
+            return repository.Search(searchString);
         }
     }
 }

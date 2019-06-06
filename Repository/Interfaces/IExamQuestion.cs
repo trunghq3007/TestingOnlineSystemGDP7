@@ -15,12 +15,13 @@ namespace Repository.Interfaces
         IEnumerable<T> Filter(T t);
         int Insert(ExamQuestion model);
         int Update(T t);
-        int Delete(int id);
+        int Delete(ExamQuestion model);
         IEnumerable<ViewQuestionExam> GetListQuestionById(int id);
 
         IEnumerable<Question> GetById(int id);
         GetFill listFilters();
         int AddMutipleQuestion(List<ExamQuestion> ListModel);
         int RandomQuestion(ViewQuestionExam model);
+        int DeleteMutiple(List<ExamQuestion> ListModel);
     }
 }

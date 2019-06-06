@@ -3,11 +3,7 @@ using Model;
 using Model.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -20,12 +16,12 @@ namespace Repository
             this.context = context;
         }
 
-        public int Delete(int id)
+        public int Delete(ExamQuestion model)
         {
-            var item = context.ExamQuestions.Where(s => s.QuestionId == id).SingleOrDefault();
-            if (item != null)
+            var examQuestion = context.ExamQuestions.Where(eq => eq.ExamId == model.ExamId && eq.QuestionId==model.QuestionId).SingleOrDefault();
+            if (examQuestion != null)
             {
-                context.ExamQuestions.Remove(item);
+                context.ExamQuestions.Remove(examQuestion);
                 return context.SaveChanges();
             }
 
@@ -78,7 +74,7 @@ namespace Repository
 
             return list;
         }
-
+        //getall
         public IEnumerable<Question> GetById(int id)
         {
             var examquestion = context.ExamQuestions.Where(e=>e.ExamId==id).ToList();
@@ -118,7 +114,7 @@ namespace Repository
                 where e.ExamId == id
                 select new
                 {
-                    Id = e.Id,
+                    Id = e.QuestionId,
                     NameExam = ex.NameExam,
                     Content = q.Content,
                     Level = q.Level,
@@ -163,7 +159,12 @@ namespace Repository
 
         public IEnumerable<Question> Search(string searchString)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return context.Questions.Where(s => s.Content.Contains(searchString)).ToList();
+            }
+
+            return context.Questions.ToList();
         }
 
         public int Update(Question t)
@@ -191,7 +192,7 @@ namespace Repository
 
         public int AddMutipleQuestion(List<ExamQuestion> ListModel)
         {
-            //var exam= context.Exams.Where(e=>e.Id==ListModel.Count())
+           
             foreach (var item in ListModel)
             {
                 context.ExamQuestions.Add(item);
@@ -205,27 +206,59 @@ namespace Repository
         {
             List<ExamQuestion> list=new List<ExamQuestion>();
             var questions = context.Questions.ToList();
-            var count = context.Questions.ToList().Count();
-           
-            
+            var examquestion = context.ExamQuestions.Where(ex => ex.ExamId == model.ExamId).ToList();
+            foreach (var item in examquestion)
+            {
+                questions.Remove(questions.SingleOrDefault(s => s.Id == item.QuestionId));
+            }
+
+            ExamQuestion ExamQues;
             foreach (var item in questions)
             {
-                ExamQuestion examquestion = new ExamQuestion();
-                examquestion.QuestionId = item.Id;
-                examquestion.ExamId =model.ExamId;
-                list.Add(examquestion);
+                 ExamQues = new ExamQuestion();
+
+
+                ExamQues.QuestionId = item.Id;
+                ExamQues.ExamId =model.ExamId;
+                list.Add(ExamQues);
             }
+
+            if (model.Total > list.Count) model.Total = list.Count;
+            Random random;
+            int count = questions.Count;
             for (int i = 0; i < model.Total; i++)
             {
-                var random = new Random();
-                int randomnumber = random.Next(0, count);
-                context.ExamQuestions.Add(list.ElementAt(randomnumber));
 
+               random =  new Random();
+               count--;
+                int randomnumber = random.Next(0, count);
+                
+
+
+                context.ExamQuestions.Add(list.ElementAt(randomnumber));
+                list.Remove(list.ElementAt(randomnumber));
+              
+                
 
             }
 
             return context.SaveChanges();
 
         }
+
+        public int DeleteMutiple(List<ExamQuestion> ListModel)
+        {
+           
+            foreach (var item in ListModel)
+            {
+                var List = context.ExamQuestions
+                    .Where(eq => eq.ExamId == item.ExamId && eq.QuestionId == item.QuestionId).SingleOrDefault();
+                context.ExamQuestions.Remove(List);
+            }
+
+            return context.SaveChanges();
+        }
+
+       
     }
 }

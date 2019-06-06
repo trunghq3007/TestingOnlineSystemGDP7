@@ -17,6 +17,7 @@ namespace Services.Interfaces
         IEnumerable<T> GetAll();
         int RandomQuestion(ViewQuestionExam model);
         IEnumerable<Question> GetById(int id);
-
+        int DeleteMutiple(List<ExamQuestion> ListModel);
+        IEnumerable<T> Search(string searchString);
     }
 }

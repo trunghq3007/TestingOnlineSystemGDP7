@@ -8,7 +8,8 @@ public class AllowCrossSiteAttribute : ActionFilterAttribute
         filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
         filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Headers", "*");
         filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Credentials", "true");
-
+        filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  
         base.OnActionExecuting(filterContext);
     }
 }

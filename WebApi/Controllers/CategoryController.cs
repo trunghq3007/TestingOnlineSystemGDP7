@@ -24,7 +24,11 @@ namespace WebApi.Controllers
         public string Get()
         {
             var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
+            //return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
         [HttpGet]
         public string Get(int id)

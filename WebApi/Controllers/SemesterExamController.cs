@@ -209,8 +209,14 @@ namespace WebApi.Controllers
         [HttpGet]
         public string GetByCandidateId(int candidateId, string SemesterExamAssign)
         {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
             var result = service.GetByCandidateId(candidateId);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result,Formatting.Indented,jsonSetting
+            
+            );
         }
         [HttpGet]
         public string GetExams(int id, [FromUri] string IsGetExams)
@@ -221,8 +227,12 @@ namespace WebApi.Controllers
         [HttpGet]
         public string GetTests(int id, [FromUri] string IsGetTests)
         {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
             var result = service.GetTests(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented,jsonSetting);
         }
 
         [HttpPost]
@@ -273,7 +283,41 @@ namespace WebApi.Controllers
             var result = service.SearchExams(searchString, id);
             return JsonConvert.SerializeObject(result);
         }
+         [HttpGet]
+        public string GetTestDetail(int id, string IsGetTestDetail)
+        {
+            var result = service.GetTestDetail(id);
+            return JsonConvert.SerializeObject(result);
+        }
 
+
+
+
+
+        [HttpGet]
+        public string Get(int id, string isGetTestsNotAdd)
+        {
+            var result = service.GetTestsNotAdd(id);
+            return JsonConvert.SerializeObject(result);
+        }
+        [HttpGet]
+        public string GetTestProcessing(int id , string IsgetTestProcessing)
+        {
+
+
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var result = service.GeTestProcessings(id);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+        }
+
+    
+
+        
+      
+        
 
     }
 }

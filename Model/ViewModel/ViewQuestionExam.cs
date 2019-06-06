@@ -20,6 +20,7 @@ namespace Model.ViewModel
         public int Status { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        
+        public int Total { get; set; }
+        public int ExamId { get; set; }
     }
 }

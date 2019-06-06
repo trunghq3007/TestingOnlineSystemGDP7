@@ -34,7 +34,10 @@ namespace Services
         {
             throw new NotImplementedException();
         }
-
+        public int DeleteBatch(string listId)
+        {
+            return repository.DeleteBatch(listId);
+        }
         public IEnumerable<Category> GetAll()
         {
             return repository.GetAll();

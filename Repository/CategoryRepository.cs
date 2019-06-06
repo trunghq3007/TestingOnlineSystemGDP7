@@ -34,7 +34,7 @@ namespace Repository
             {
                 return 0;
             }
-           
+
             return 0;
         }
 
@@ -82,6 +82,36 @@ namespace Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
+        public int DeleteBatch(string listId)
+        {
+            var arrId = listId.Split(',');
+            try
+            {
+                using (var trans = context.Database.BeginTransaction())
+                {
+                    foreach (var id in arrId)
+                    {
+                        var flag = int.TryParse(id, out int ID);
+                        if (flag)
+                        {
+                            context.Categorys.Remove(context.Categorys.Where(s => s.Id == ID).SingleOrDefault());
+                        }
+                        else
+                        {
+                            trans.Rollback();
+                            return 0;
+                        }
+                    }
+                    var result = context.SaveChanges();
+                    trans.Commit();
+                    return result;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
+
 }

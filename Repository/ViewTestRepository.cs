@@ -31,10 +31,39 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
 
 		public IEnumerable<ViewTest> GetAll()
 		{
+
+
+            var result = from t in context.Tests
+                         join e in context.Exams on t.ExamId equals e.Id
+                         join s in context.SemesterExams on t.SemasterExamId equals s.ID
+                         select new
+                         {
+
+
+                             t.Id,
+                             t.TestName,
+                             t.CreateBy,
+                             t.PassScore,
+                             e.NameExam,
+                             s.SemesterName
+                         };
+                        List<ViewTest> list = new List<ViewTest>();
+            foreach(var item in result)
+            {
+                ViewTest viewTest = new ViewTest();
+                viewTest.Id = item.Id;
+                viewTest.TestName = item.TestName;
+                viewTest.CreateBy = item.CreateBy;
+                viewTest.PassScore = item.PassScore;
+                viewTest.NameExam = item.NameExam;
+                viewTest.SemesterName = item.SemesterName;
+                list.Add(viewTest);
+            }
+            return list;
 			// return context..ToList();
-			var ques = context.Database.SqlQuery<ViewTest>
-				("select t.Id,t.TestName,t.CreateBy,PassScore, e.NameExam,s.SemesterName,t.Status from Tests t join Exams e on t.ExamId = e.Id join SemesterExam s on t.SemasterExamId = s.ID").ToList();
-			return ques.ToList();
+			//var ques = context.Database.SqlQuery<ViewTest>
+			//	("select t.Id,t.TestName,t.CreateBy,PassScore, e.NameExam,s.SemesterName,t.Status from Tests t join Exams e on t.ExamId = e.Id join SemesterExam s on t.SemasterExamId = s.ID").ToList();
+			//return ques.ToList();
 		}
 
 
@@ -48,9 +77,34 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
 
 		public IEnumerable<ViewTest> Search(string searchString)
 		{
-            var ques = context.Database.SqlQuery<ViewTest>
-                ("  select t.Id,t.TestName,t.CreateBy,PassScore, e.NameExam,s.SemesterName,t.Status from Tests t join Exams e on t.ExamId = e.Id join SemesterExam s on t.SemasterExamId = s.ID where t.TestName like '%"+searchString+"%'").ToList();
-            return ques.ToList();
+            //var ques = context.Database.SqlQuery<ViewTest>
+            //("  select t.Id,t.TestName,t.CreateBy,PassScore, e.NameExam,s.SemesterName,t.Status from Tests t join Exams e on t.ExamId = e.Id join SemesterExam s on t.SemasterExamId = s.ID where t.TestName like '%"+searchString+"%'").ToList();
+            var result = from t in context.Tests
+                         join e in context.Exams on t.ExamId equals e.Id
+                         join s in context.SemesterExams on t.SemasterExamId equals s.ID
+                         where t.TestName.Contains(searchString)
+                         select new
+                         {
+                             t.Id,
+                             t.TestName,
+                             t.CreateBy,
+                             t.PassScore,
+                             e.NameExam,
+                             s.SemesterName
+                         };
+            List<ViewTest> list = new List<ViewTest>();
+            foreach (var item in result)
+            {
+                ViewTest viewTest = new ViewTest();
+                viewTest.Id = item.Id;
+                viewTest.TestName = item.TestName;
+                viewTest.CreateBy = item.CreateBy;
+                viewTest.PassScore = item.PassScore;
+                viewTest.NameExam = item.NameExam;
+                viewTest.SemesterName = item.SemesterName;
+                list.Add(viewTest);
+            }
+            return list;
         }
 
 		public int Update(ViewTest t)

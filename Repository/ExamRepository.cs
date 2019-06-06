@@ -90,8 +90,8 @@ namespace Repository
 
 		public IEnumerable<Exam> GetAll()
 		{
-			return context.Exams.ToList();
-		}
+            return context.Exams.ToList();
+        }
 
 		public Exam GetById(int id)
 		{
@@ -100,15 +100,19 @@ namespace Repository
 
 		public int Insert(Exam exam)
 		{
+
+            //exam.Category = context.Categorys.Where(s => s.Category.Id == exam.Id).SingleOrDefault();
             context.Exams.Add(new Exam
             {
                 NameExam = exam.NameExam,
                 CreateBy = exam.CreateBy,
                 QuestionNumber = exam.QuestionNumber,
                 Status = exam.Status,
+                SpaceQuestionNumber = exam.SpaceQuestionNumber,
                 CreateAt = DateTime.Now,
-                Note = exam.Note
-            });
+                Note = exam.Note,
+                Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id)
+        });
             return context.SaveChanges();
 		}
 		public IEnumerable<Exam> Search(string searchString)
@@ -306,6 +310,5 @@ namespace Repository
 			
 		}
 
-		
-	}
+    }
 }

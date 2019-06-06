@@ -222,12 +222,19 @@ namespace Repository
 
         public bool CheckUserName(string userName)
         {
-            throw new NotImplementedException();
+            var check = context.Users.Where(s => s.UserName == userName).Count() > 0;
+            return check;
         }
 
         public string GetRoleName(int idUser)
         {
-            throw new NotImplementedException();
+            string roleName = "";
+            var user = context.Users.SingleOrDefault(s => s.UserId == idUser);
+            if (user != null)
+            {
+                roleName = user.Role.RoleName;
+            }
+            return roleName;
         }
     }
 }

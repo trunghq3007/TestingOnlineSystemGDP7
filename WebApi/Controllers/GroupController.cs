@@ -193,5 +193,10 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }           
         }
+        [HttpGet]
+        public string CheckNameGroup(string groupName)
+        {
+            return services.CheckNameGroup(groupName).ToString();
+        }
     }
 }

@@ -116,5 +116,10 @@ namespace Services
         {
             return groupRepository.Update(id, groupname);
         }
+
+        public bool CheckNameGroup(string groupName)
+        {
+            return groupRepository.CheckNameGroup(groupName);
+        }
     }
 }

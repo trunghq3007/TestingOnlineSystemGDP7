@@ -19,6 +19,6 @@ namespace Services.Interfaces
 		T GetById(int id);
 		IEnumerable<T> Filter(ExamFilterModel filterModel);
            
-		T Export_exam(int id);
+		int Export_exam(int id);
 	}
 }

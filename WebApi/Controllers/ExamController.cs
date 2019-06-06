@@ -25,27 +25,16 @@ namespace WebApi.Controllers
 		}
 		[HttpGet]
 
-		public string GetExam()
+		public string Get()
 		{
-            ResultObject resultt = new ResultObject();
-
-            try
+            var result = services.GetAll().ToList();
+            // return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
             {
-                var result = services.GetAll();
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
 
-                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-            }
-            catch (Exception e)
-            {
-                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-                return JsonConvert.SerializeObject(resultt);
-            }
-
-			
-		}
+        }
 
 		[HttpGet]
 
@@ -204,7 +193,7 @@ namespace WebApi.Controllers
 		public string Export_Exam(int id, [FromUri] string action)
 		{
             ResultObject resultt = new ResultObject();
-
+            
             if (action.Equals("export"))
 			{
 				try

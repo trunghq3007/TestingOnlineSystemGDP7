@@ -29,6 +29,6 @@ namespace Model
 
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
-        public virtual ICollection<ExamQuestion> ExamQuestions { get; set; }
+        public ICollection<ExamQuestion> ExamQuestions { get; set; }
     }
 }

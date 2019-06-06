@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using Model.ViewModel;
+
 namespace Repository.Interfaces
 {
          public interface IExamQuestion<T> where T : class
@@ -13,9 +15,13 @@ namespace Repository.Interfaces
         IEnumerable<T> Filter(T t);
         int Insert(ExamQuestion model);
         int Update(T t);
-        int Delete(int id);
-        IEnumerable<Model.ViewModel.ViewQuestionExam> GetListQuestionById(int id);
-        T GetById(int id);
-        Model.ViewModel.GetFill listFilters();
+        int Delete(ExamQuestion model);
+        IEnumerable<ViewQuestionExam> GetListQuestionById(int id);
+
+        IEnumerable<Question> GetById(int id);
+        GetFill listFilters();
+        int AddMutipleQuestion(List<ExamQuestion> ListModel);
+        int RandomQuestion(ViewQuestionExam model);
+        int DeleteMutiple(List<ExamQuestion> ListModel);
     }
 }

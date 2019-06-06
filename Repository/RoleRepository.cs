@@ -22,6 +22,11 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Delete(int id)
         {
             var role = context.Roles.Find(id);
@@ -70,6 +75,11 @@ namespace Repository
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
         }

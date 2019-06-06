@@ -194,5 +194,17 @@ namespace WebApi.Controllers
             var result = services.Login(userName, passWord, rememberMe);
             return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
         }
+        [HttpGet]
+        //Check UserName
+        public string CheckUserName(string userName)
+        {
+            return services.CheckUserName(userName).ToString();
+        }
+        // Get RoleName of user
+        [HttpGet]
+        public string GetRoleName(int idUser)
+        {
+            return services.GetRoleName(idUser);
+        }
     }
 }

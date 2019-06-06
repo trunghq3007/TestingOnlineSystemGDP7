@@ -13,9 +13,7 @@ using ExporterObjects;
 using ExportImplementation;
 using Microsoft.Office.Interop.Word;
 using System.Drawing;
-using Spire.Doc;
-using Spire.Doc.Fields;
-using Spire.Doc.Documents;
+
 
 namespace Repository
 {

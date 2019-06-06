@@ -342,8 +342,7 @@ SE.ID equals SEU.SemesterExam.ID
             return query.ToList();
 
         }
-
-        public IEnumerable<Model.Test> GetTestsNotAdd(int id)
+ public IEnumerable<Model.Test> GetTestsNotAdd(int id)
         {
             return context.Tests.Where(T => T.SemesterExam.ID != id);
         }
@@ -372,6 +371,84 @@ SE.ID equals SEU.SemesterExam.ID
 
 
         }
+ public IEnumerable<ExamInformation> GetTestDetail(int id)
+        {
+            var query = from T in context.Tests
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                        on E.Category.Id equals C.Id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,                    
+                        };
+            ExamInformation examInformation = new ExamInformation();
+            examInformation.TestName = query.FirstOrDefault().TestName;
+            examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4 ;
+            examInformation.NumberStatementQuestion = query.FirstOrDefault().QuestionNumber - examInformation.NumberChoiceQuestion;
+            examInformation.TestTime = query.FirstOrDefault().TestTime;
+            examInformation.CategoryName = query.FirstOrDefault().Name;
+            examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
+            examInformation.TotalScore = 100;
+            return GetTestDetail(id);
+        }
+
+        ExamInformation ISemesterExamRepository<SemesterExam>.GetTestDetail(int id)
+        {
+            var query = from T in context.Tests
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                        on E.Category.Id equals C.Id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,
+                        };
+            ExamInformation examInformation = new ExamInformation();
+            examInformation.TestName = query.FirstOrDefault().TestName;
+            examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4;
+            examInformation.NumberStatementQuestion = query.FirstOrDefault().QuestionNumber - examInformation.NumberChoiceQuestion;
+            examInformation.TestTime = query.FirstOrDefault().TestTime;
+            examInformation.CategoryName = query.FirstOrDefault().Name;
+            examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
+            examInformation.TotalScore = 100;
+            return examInformation;
+        }
+        
     }
 
-}
+
+      
+
+        
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+

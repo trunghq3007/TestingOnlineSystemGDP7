@@ -18,6 +18,12 @@ namespace Services
         {
             userRepository= new UserRepository(new DBEntityContext());
         }
+
+        public bool CheckNameGroup(string groupName)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Delete(int id)
         {
             return userRepository.Delete(id);

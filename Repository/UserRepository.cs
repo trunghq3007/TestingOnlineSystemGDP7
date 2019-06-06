@@ -197,5 +197,10 @@ namespace Repository
             }
             return list;
         }
+
+        public bool CheckNameGroup(string groupName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

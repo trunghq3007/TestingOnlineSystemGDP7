@@ -160,5 +160,10 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public bool CheckNameGroup(string groupName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -15,6 +15,7 @@ using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class QuestionController : ApiController
     {
         private QuestionServices service;

@@ -160,5 +160,20 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public bool CheckNameGroup(string groupName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

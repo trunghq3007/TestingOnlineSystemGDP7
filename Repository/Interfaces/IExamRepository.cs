@@ -19,6 +19,6 @@ namespace Repository.Interfaces
 		int Delete(int id);
 		T GetById(int id);
 		IEnumerable<T> Filter(Model.ViewModel.ExamFilterModel filterModel);
-		T Export_exam(int id);
+		int Export_exam(int id);
 	}
 }

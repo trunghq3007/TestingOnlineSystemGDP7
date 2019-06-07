@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -159,6 +160,22 @@ namespace Repository
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckNameGroup(string groupName)
+        {
+            var check = context.Groups.Where(x => x.GroupName == groupName).Count() > 0;
+            return check;
+        }
+
+        public bool CheckUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
         }

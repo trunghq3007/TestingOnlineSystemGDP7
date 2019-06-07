@@ -26,7 +26,7 @@ namespace Services
 			return examRepository.Delete(id);
 		}
 
-		public Exam Export_exam(int id)
+		public int Export_exam(int id)
 		{
 			return examRepository.Export_exam(id);
 			//throw new System.NotImplementedException();

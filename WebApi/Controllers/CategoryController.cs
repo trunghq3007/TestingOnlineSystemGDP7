@@ -11,6 +11,7 @@ using Services;
 
 namespace WebApi.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CategoryController : ApiController
     {
         private CategoryService service;
@@ -23,7 +24,11 @@ namespace WebApi.Controllers
         public string Get()
         {
             var result = service.GetAll().ToList();
-            return JsonConvert.SerializeObject(result);
+            //return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
         [HttpGet]
         public string Get(int id)

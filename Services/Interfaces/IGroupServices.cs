@@ -29,5 +29,10 @@ namespace Services.Interfaces
         T Login(string userName, string passWord, bool rememberMe);
         int Update(int id, string groupname);
         List<UserDetail> GetDetailUser(int id);
+        bool CheckNameGroup(string groupName);
+        //Check UserName
+        bool CheckUserName(string userName);
+        //Get RoleName of user
+        string GetRoleName(int idUser);
     }
 }

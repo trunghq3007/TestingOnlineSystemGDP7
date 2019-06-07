@@ -21,29 +21,50 @@ namespace WebApi.Controllers
 			QuestionServices = new QuestionServices();
 			examQuestion = new ExamQuestionServices();
 		}
+
         [HttpGet]
-        public string Get()
+        public string Search(string searchString)
         {
-            var result = QuestionServices.GetAll().ToList();
+            var result = examQuestion.Search(searchString);
             return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
         [HttpGet]
-		// GETID : User
-		public string GetExam(int id)
-		{
-
-
-			var result = examQuestion.GetListQuestionById(id);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+        public string Get([FromUri] string action, [FromUri] int id)
+        {
+            if ("GetAll".Contains(action))
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                var result = examQuestion.GetById(id).ToList();
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
 
-            //return JsonConvert.SerializeObject(result);
-		}
+            if ("GetById".Contains(action))
+            {
+                var result = examQuestion.GetListQuestionById(id);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
+
+            //if ("Search".Contains(action))
+            //{
+            //    var result = examQuestion.Search(searchString);
+            //    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            //    {
+            //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //    });
+            //}
+
+            return "true";
+
+        }
+       
 		[HttpPost]
 		public string Post([FromBody] object value)
 		{
@@ -57,13 +78,14 @@ namespace WebApi.Controllers
 			return "FALSE";
 		}
         [HttpDelete]
-        public string Delete(int id)
+        public string Delete(List<ExamQuestion> ListModel)
         {
             ResultObject resultt = new ResultObject();
 
             try
             {
-                var result = examQuestion.Delete(id);
+                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(ListModel.ToString());
+                var result = examQuestion.DeleteMutiple(exam);
                 return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)
@@ -73,6 +95,8 @@ namespace WebApi.Controllers
             }
 
         }
+
+
         [HttpPost]
 		public string Getfilter([FromUri]string action, [FromBody]object value)
 		{
@@ -100,6 +124,26 @@ namespace WebApi.Controllers
 
 
 			}
+
+            if ("AddMutiple".Equals(action))
+            {
+                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
+                var add = examQuestion.AddMutipleQuestion(exam);
+                return JsonConvert.SerializeObject(add);
+            }
+
+            if ("DeleteMutiple".Equals(action))
+            {
+                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
+                var delete = examQuestion.DeleteMutiple(exam);
+                return JsonConvert.SerializeObject(delete);
+            }
+            if ("random".Equals(action))
+            {
+                var exam = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());
+                var add = examQuestion.RandomQuestion(exam);
+                return JsonConvert.SerializeObject(add);
+            }
 			if ("getfillter".Equals(action))
 			{
                 return JsonConvert.SerializeObject(examQuestion.listFilters());

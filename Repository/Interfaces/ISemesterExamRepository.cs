@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using Model.ViewModel;
 
 namespace Repository.Interfaces
 {
-   public interface ISemesterExamRepository<T>
+    public interface ISemesterExamRepository<T>
     {
 
         IEnumerable<T> GetAll();
@@ -26,12 +27,12 @@ namespace Repository.Interfaces
         IEnumerable<T> GetByCandidateId(int candidateId);
         IEnumerable<T> Filter(T t);
         IEnumerable<Model.Exam> SearchExams(string examName, int id);
-IEnumerable<Model.Test> GetTestsNotAdd(int id);
+        IEnumerable<Model.Test> GetTestsNotAdd(int id);
         Model.ViewModel.TestProcessing GeTestProcessings(int id);
- Model.ViewModel.ExamInformation GetTestDetail(int id);
+        Model.ViewModel.ExamInformation GetTestDetail(int id);
+        int Submit( List<Model.Answer> answers, int testId ,int userID);
 
 
-        
 
 
     }

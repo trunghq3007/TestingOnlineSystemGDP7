@@ -129,6 +129,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public int Login(LoginModel model, bool isLoginAdmin = false)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Model.Action> Search(string searchString)
         {
             throw new NotImplementedException();

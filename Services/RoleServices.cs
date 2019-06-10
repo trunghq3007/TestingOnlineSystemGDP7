@@ -83,6 +83,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public List<int> GetListAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
@@ -114,6 +119,11 @@ namespace Services
         }
 
         public Role Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
         {
             throw new NotImplementedException();
         }

@@ -109,5 +109,9 @@ public IEnumerable<Test> GetTestsNotAdd(int id)
             return SemesterExamRepository.GetTestDetail(id);
         }
 
+        public int Submit(List<Answer> answers, int testId, int userID)
+        {
+            return SemesterExamRepository.Submit(answers, testId, userID);
+        }
     }
 }

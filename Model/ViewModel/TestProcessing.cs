@@ -11,6 +11,7 @@ namespace Model.ViewModel
         public int Id { get; set; }
         public string TestName { get; set; }
         public float TestTime { get; set; }
-        public ICollection<Question> questions  { get; set; }
+        
+        public ICollection<Question> Questions  { get; set; }
     }
 }

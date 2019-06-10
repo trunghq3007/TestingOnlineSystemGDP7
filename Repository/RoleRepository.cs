@@ -9,12 +9,30 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class RoleRepository : Interfaces.IGroupRepository<Role>
+    public class RoleRepository : Interfaces.IGroupRepository<Role>, IDisposable
     {
         private DBEntityContext context;
         public RoleRepository(DBEntityContext context)
         {
             this.context = context;
+        }
+
+        public int Insert(Role t)
+        {
+            context.Roles.Add(new Role());
+            return context.SaveChanges();
+        }
+        public int Update(Role t)
+        {
+            context.Entry(t).State = EntityState.Modified;
+            return context.SaveChanges();
+        }
+
+        public int Delete(int id)
+        {
+            var role = context.Roles.Find(id);
+            context.Roles.Remove(role);
+            return context.SaveChanges();
         }
 
         public bool CheckNameGroup(string groupName)
@@ -25,13 +43,6 @@ namespace Repository
         public bool CheckUserName(string userName)
         {
             throw new NotImplementedException();
-        }
-
-        public int Delete(int id)
-        {
-            var role = context.Roles.Find(id);
-            context.Roles.Remove(role);
-            return context.SaveChanges();
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
@@ -94,11 +105,6 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public int Insert(Role t)
-        {
-            context.Roles.Add(new Role());
-            return context.SaveChanges();
-        }
 
         public int InsertUserGroup(int iduser, int idgroup)
         {
@@ -120,15 +126,27 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public int Update(Role t)
-        {
-            context.Entry(t).State = EntityState.Modified;
-            return context.SaveChanges();
-        }
-
         public int Update(int id, string groupname)
         {
             throw new NotImplementedException();
         }
+        private bool disposed = false;
+        public void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

@@ -236,5 +236,10 @@ namespace Repository
             }
             return roleName;
         }
+
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

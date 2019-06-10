@@ -1,21 +1,27 @@
-﻿using Model;
-using Repository.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Repository;
 using DataAccessLayer;
+using Model;
+using Repository;
+using Repository.Interfaces;
 
 namespace Services
 {
-    public class RoleServices : Interfaces.IGroupServices<Role>
+    public class RoleActionServices : Interfaces.IGroupServices<Model.Action>
     {
-        private IGroupRepository<Role> roleRepository;
-        public RoleServices()
+        private IGroupRepository<Model.Action> roleActionRepository;
+
+        public RoleActionServices()
         {
-            roleRepository = new RoleRepository(new DBEntityContext());
+            roleActionRepository = new RoleActionRepository(new DBEntityContext());
+        }
+
+        public bool CheckNameGroup(string groupName, int groupId)
+        {
+            throw new NotImplementedException();
         }
 
         public bool CheckNameGroup(string groupName)
@@ -30,7 +36,7 @@ namespace Services
 
         public int Delete(int id)
         {
-            return roleRepository.Delete(id);
+            throw new NotImplementedException();
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
@@ -38,42 +44,42 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> Filter(Role t)
+        public IEnumerable<Model.Action> Filter(Model.Action t)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> FilterGroup(GroupFilterModel model)
+        public IEnumerable<Model.Action> FilterGroup(GroupFilterModel model)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> FilterUser(UserFilterModel model)
+        public IEnumerable<Model.Action> FilterUser(UserFilterModel model)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> FilterUserInGroup(GroupFilterModel model, int id)
+        public IEnumerable<Model.Action> FilterUserInGroup(GroupFilterModel model, int id)
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<Model.Action> GetActionInRole(int roleId)
         {
-            throw new NotImplementedException();
+            return roleActionRepository.GetActionInRole(roleId);
         }
 
-        public IEnumerable<Role> GetAll()
-        {
-            return roleRepository.GetAll();
-        }
-
-        public Role GetById(int id)
+        public IEnumerable<Model.Action> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Role GetByUsername(string userName)
+        public Model.Action GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Model.Action GetByUsername(string userName)
         {
             throw new NotImplementedException();
         }
@@ -83,24 +89,29 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public List<int> GetListAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetRoleName(int idUser)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> GetUserInGroup(int id)
+        public IEnumerable<Model.Action> GetUserInGroup(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> GetUserOutGroup(int idgroup)
+        public IEnumerable<Model.Action> GetUserOutGroup(int idgroup)
         {
             throw new NotImplementedException();
         }
 
-        public int Insert(Role t)
+        public int Insert(Model.Action t)
         {
-            return roleRepository.Insert(t);
+            throw new NotImplementedException();
         }
 
         public int InsertUserGroup(int iduser, int idgroup)
@@ -113,24 +124,24 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public Role Login(string userName, string passWord, bool rememberMe)
+        public Model.Action Login(string userName, string passWord, bool rememberMe)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> Search(string searchString)
+        public IEnumerable<Model.Action> Search(string searchString)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> SearchUserInGroup(int id, string searchString)
+        public IEnumerable<Model.Action> SearchUserInGroup(int id, string searchString)
         {
             throw new NotImplementedException();
         }
 
-        public int Update(Role t)
+        public int Update(Model.Action t)
         {
-            return roleRepository.Update(t);
+            throw new NotImplementedException();
         }
 
         public int Update(int id, string groupname)

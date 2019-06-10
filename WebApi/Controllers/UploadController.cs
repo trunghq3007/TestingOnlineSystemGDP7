@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -135,7 +136,7 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
-
+        [DeleteFileAttribute]
         public ActionResult DownloadFileExport(string fileName)
         {
             //get the temp folder and file path in server
@@ -238,7 +239,8 @@ namespace WebApi.Controllers
                         }
                     }
                 }
-
+                var finishRow = sheet.CreateRow(rowIndex);
+                finishRow.CreateCell(0).SetCellValue("END");
                 string fileName = "Questions.xls";
                 string FilePath = Path.Combine(_tempStoreFolder, fileName);
                 FileStream zipToOpen = new FileStream(FilePath, FileMode.Create, FileAccess.Write);

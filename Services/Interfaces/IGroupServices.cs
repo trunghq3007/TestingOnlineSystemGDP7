@@ -34,5 +34,6 @@ namespace Services.Interfaces
         bool CheckUserName(string userName);
         //Get RoleName of user
         string GetRoleName(int idUser);
+        IEnumerable<Model.Action> GetActionInRole(int roleId);
     }
 }

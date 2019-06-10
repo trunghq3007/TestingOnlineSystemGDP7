@@ -59,6 +59,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> GetAll()
         {
             return userRepository.GetAll();

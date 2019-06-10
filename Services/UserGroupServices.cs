@@ -59,6 +59,11 @@ namespace Services
             return usergroupRepository.FilterUserInGroup(model, id);
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();

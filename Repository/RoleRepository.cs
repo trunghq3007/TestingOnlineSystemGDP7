@@ -148,5 +148,9 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

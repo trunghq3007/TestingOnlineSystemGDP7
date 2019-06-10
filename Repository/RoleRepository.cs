@@ -19,7 +19,10 @@ namespace Repository
 
         public int Insert(Role t)
         {
-            context.Roles.Add(new Role());
+            context.Roles.Add(new Role() {
+                RoleName = t.RoleName,
+                Description = t.Description
+            });
             return context.SaveChanges();
         }
         public int Update(Role t)

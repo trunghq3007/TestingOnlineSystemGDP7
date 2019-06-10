@@ -236,5 +236,77 @@ namespace Repository
             }
             return roleName;
         }
+
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
+        {
+            var result = context.Users.SingleOrDefault(x => x.UserName == model.UserName);
+            var result2 = context.Roles.Where(x => x.RoleId == result.RoleId);
+            if (result == null)
+            {
+                return 0;
+            }
+            else
+            {
+                if (isLoginAdmin == true)
+                {
+                    //if (result.RoleId == CommonConstants.Admin_Role || result.RoleId == CommonConstants.Manager_Role)
+                    if (result2 != null)
+                    {
+                        if (result.Password == model.Password)
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return -2;
+                        }
+                    }
+                    else
+                    {
+                        return -3;
+                    }
+                }
+                else
+                {
+                    if (result.Password == model.Password)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return -2;
+                    }
+                }
+            }
+        }
+
+        public List<int> GetListAction(string userName)
+        {
+            var user = context.Users.Single(x => x.UserName == userName);
+            var data = (from a in context.RoleActions
+                        join b in context.Roles on a.RoleId equals b.RoleId
+                        join c in context.Actions on a.ActionId equals c.ActionId
+                        where b.RoleId == user.RoleId
+                        select new
+                        {
+                            RoleId = a.RoleId,
+                            ActionId = a.ActionId
+                        }).AsEnumerable().Select(x => new Model.RoleAction()
+                        {
+                            RoleId = x.RoleId,
+                            ActionId = x.ActionId
+                        });
+            return data.Select(x => x.ActionId).ToList();
+        }
+
+        public IEnumerable<User> GetAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

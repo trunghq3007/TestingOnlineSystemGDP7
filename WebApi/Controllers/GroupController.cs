@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Services;
 using Model;
 using System.Web.Http.Cors;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -22,6 +23,7 @@ namespace WebApi.Controllers
         }
         // GET: Group
         [HttpGet]
+        [HasCredential(ActionId = 1)]
         public string Get()
         {
             var jsonSetting = new JsonSerializerSettings
@@ -44,6 +46,7 @@ namespace WebApi.Controllers
         }
         //Add new Group method
         [HttpPost]
+        [HasCredential(ActionId = 2)]
         public string Post([FromBody]object value)
         {
             ResultObject result = new ResultObject();
@@ -118,6 +121,7 @@ namespace WebApi.Controllers
         }
         //Delete Group method
         [HttpDelete]
+        [HasCredential(ActionId = 4)]
         public string Delete(int id)
         {
             ResultObject result = new ResultObject();

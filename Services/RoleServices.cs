@@ -58,6 +58,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Role> GetAll()
         {
             return roleRepository.GetAll();
@@ -74,6 +79,11 @@ namespace Services
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetListAction(string userName)
         {
             throw new NotImplementedException();
         }
@@ -109,6 +119,11 @@ namespace Services
         }
 
         public Role Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
         {
             throw new NotImplementedException();
         }

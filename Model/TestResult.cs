@@ -10,6 +10,18 @@ namespace Model
 {
    public class TestResult
     {
+        public TestResult(int testId, int userId, int questionId, int anwserId)
+        {
+            TestId = testId;
+            UserId = userId;
+            QuestionId = questionId;
+            AnwserId = anwserId;
+        }
+
+        public TestResult()
+        {
+            
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

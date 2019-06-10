@@ -8,9 +8,9 @@ using Model.ViewModel;
 
 namespace Repository.Interfaces
 {
-         public interface IExamQuestion<T> where T : class
+    public interface IExamQuestion<T> where T : class
     {
-        IEnumerable<T> GetAll();
+        IEnumerable<ViewQuestionExam> GetAll();
         IEnumerable<T> Search(string searchString);
         IEnumerable<T> Filter(T t);
         int Insert(ExamQuestion model);
@@ -18,7 +18,7 @@ namespace Repository.Interfaces
         int Delete(ExamQuestion model);
         IEnumerable<ViewQuestionExam> GetListQuestionById(int id);
 
-        IEnumerable<Question> GetById(int id);
+        IEnumerable<ViewQuestionExam> GetById(int id);
         GetFill listFilters();
         int AddMutipleQuestion(List<ExamQuestion> ListModel);
         int RandomQuestion(ViewQuestionExam model);

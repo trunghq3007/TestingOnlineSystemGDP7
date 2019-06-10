@@ -1,22 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Repository;
-using DataAccessLayer;
 using Model;
+using DataAccessLayer;
 using Repository.Interfaces;
 
-namespace Services
+namespace Repository
 {
-    public class UserGroupServices : Interfaces.IGroupServices<User>
+    public class RoleActionRepository : IGroupRepository<Model.Action>, IDisposable
     {
-        private IGroupRepository<User> usergroupRepository;
-
-        public UserGroupServices()
+        private DBEntityContext context;
+        public RoleActionRepository(DBEntityContext context)
         {
-           usergroupRepository = new UserGroupRepository(new DBEntityContext());
+            this.context = context;
+        }
+
+        public bool CheckNameGroup(string groupName, int groupId)
+        {
+            throw new NotImplementedException();
         }
 
         public bool CheckNameGroup(string groupName)
@@ -36,45 +41,60 @@ namespace Services
 
         public int DeleteUserGroup(int iduser, int idgroup)
         {
-            return usergroupRepository.DeleteUserGroup(iduser, idgroup);
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<User> Filter(User t)
+        public void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> FilterGroup(GroupFilterModel model)
+        public IEnumerable<Model.Action> Filter(Model.Action t)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> FilterUser(UserFilterModel model)
+        public IEnumerable<Model.Action> FilterGroup(GroupFilterModel model)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> FilterUserInGroup(GroupFilterModel model, int id)
+        public IEnumerable<Model.Action> FilterUser(UserFilterModel model)
         {
-            return usergroupRepository.FilterUserInGroup(model, id);
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Model.Action> FilterUserInGroup(GroupFilterModel model, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Model.Action> GetAction(string userName)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Model.Action> GetActionInRole(int roleId)
         {
-            throw new NotImplementedException();
+            var result = context.Actions.Where(s => s.RoleActions.Where(x => x.RoleId == roleId).Count() > 0);
+            //var result = (from a in context.Actions
+            //    join r in context.RoleActions on a.ActionId equals r.ActionId
+            //    where r.RoleId == roleId
+            //    select a).ToList();
+            return result;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Model.Action> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public User GetById(int id)
+        public Model.Action GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public User GetByUsername(string userName)
+        public Model.Action GetByUsername(string userName)
         {
             throw new NotImplementedException();
         }
@@ -94,32 +114,27 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetUserInGroup(int id)
+        public IEnumerable<Model.Action> GetUserInGroup(int id)
         {
-            return usergroupRepository.GetUserInGroup(id);
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetUserOutGroup(int idgroup)
+        public IEnumerable<Model.Action> GetUserOutGroup(int idgroup)
         {
-            return usergroupRepository.GetUserOutGroup(idgroup);
+            throw new NotImplementedException();
         }
 
-        public int Insert(User t)
+        public int Insert(Model.Action t)
         {
             throw new NotImplementedException();
         }
 
         public int InsertUserGroup(int iduser, int idgroup)
         {
-            return usergroupRepository.InsertUserGroup(iduser, idgroup);
-        }
-
-        public bool Login(string userName, string passWord)
-        {
             throw new NotImplementedException();
         }
 
-        public User Login(string userName, string passWord, bool rememberMe)
+        public bool Login(string userName, string passWord)
         {
             throw new NotImplementedException();
         }
@@ -129,17 +144,17 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> Search(string searchString)
+        public IEnumerable<Model.Action> Search(string searchString)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> SearchUserInGroup(int id, string searchString)
+        public IEnumerable<Model.Action> SearchUserInGroup(int id, string searchString)
         {
-            return usergroupRepository.SearchUserInGroup(id, searchString);
+            throw new NotImplementedException();
         }
 
-        public int Update(User t)
+        public int Update(Model.Action t)
         {
             throw new NotImplementedException();
         }

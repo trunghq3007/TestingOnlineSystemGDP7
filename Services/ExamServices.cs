@@ -46,12 +46,12 @@ namespace Services
 			return examRepository.GetAll();
 		}
 
-		public Exam GetById(int id)
-		{
-			return examRepository.GetById(id);
-		}
+        public Exam GetById(int id)
+        {
+            return examRepository.GetById(id);
+        }
 
-		public int Insert(Exam exam)
+        public int Insert(Exam exam)
 		{
 			return examRepository.Insert(exam);
 		}
@@ -75,5 +75,14 @@ namespace Services
 		{
 			throw new NotImplementedException();
 		}
-	}
+        public string GetCategoryName(int idExam)
+        {
+            return examRepository.GetCategoryName(idExam);
+        }
+
+        //public IEnumerable<ViewDetailExam> GetDetailExams(int id)
+        //{
+        //    return examRepository.GetDetailExams(id);
+        //}
+    }
 }

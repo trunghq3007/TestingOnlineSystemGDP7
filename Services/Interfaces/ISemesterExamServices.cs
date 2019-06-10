@@ -23,6 +23,7 @@ namespace Services.Interfaces
         IEnumerable<Model.Test> GetTestsNotAdd(int id);
         Model.ViewModel.ExamInformation GetTestDetail(int id);
         Model.ViewModel.TestProcessing GeTestProcessings(int id);
+        int Submit(List<Model.Answer> answers, int testId, int userID);
     }
 }
     

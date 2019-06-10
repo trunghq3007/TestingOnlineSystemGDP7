@@ -26,9 +26,10 @@ namespace Repository
                 var item = context.Questions.Where(s => s.Id == id).SingleOrDefault();
                 if (item != null)
                 {
-                    item.Answers = null;
-                    context.SaveChanges();
-                    context.Questions.Remove(item);
+                    //item.Answers = null;
+                    //context.SaveChanges();
+                    //context.Questions.Remove(item);
+                    item.Status = -1;
                     return context.SaveChanges();
                 }
                 return 0;
@@ -117,7 +118,8 @@ namespace Repository
 
         public IEnumerable<Question> GetAll()
         {
-            return context.Questions.ToList();
+
+            return context.Questions.Where(s=>s.Status!=-1).ToList();
         }
 
         public Question GetById(int id)

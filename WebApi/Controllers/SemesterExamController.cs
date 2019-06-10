@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Web;
 
@@ -311,6 +312,15 @@ namespace WebApi.Controllers
             };
             var result = service.GeTestProcessings(id);
             return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+        }
+
+        [HttpPost]
+        public string Submit([FromBody] object value, int testId, string isSubmit)
+        {
+            int userid = 2;
+            var E = JsonConvert.DeserializeObject<List<Answer>>(value.ToString());
+            return JsonConvert.SerializeObject(E) ;
+
         }
 
     

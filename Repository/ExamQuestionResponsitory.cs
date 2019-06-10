@@ -213,66 +213,11 @@ namespace Repository
 
         public int AddMutipleQuestion(List<ExamQuestion> ListModel)
         {
-
-
-
             var check = ListModel.ElementAt(0);
             var exam = context.Exams.Where(ex => ex.Id == check.ExamId).SingleOrDefault();
-            //var question = context.Questions.Where(ex => ex.Category.Id==exam.Category.Id ).ToList();
             var checkSpace = context.Questions.Count();
             var countExamQuestion = context.ExamQuestions.Where(ex => ex.ExamId == exam.Id).ToList().Count();
-            //if (ListModel.Count <= (exam.SpaceQuestionNumber - countExamQuestion))
-            //{
-            //    for (int i = 0; i < ListModel.Count; i++)
-            //    {
-            //        var checkModel = ListModel.ElementAt(i).QuestionId;
-            //        var checkQuestion = context.Questions.Where(ex => ex.Id == checkModel && ex.Category.Id == exam.Category.Id)
-            //            .SingleOrDefault();
-            //        if (checkQuestion != null)
-            //        {
-            //            ExamQuestion examQuestion = new ExamQuestion();
-            //            examQuestion.ExamId = exam.Id;
-            //            examQuestion.QuestionId = checkQuestion.Id;
-
-            //            context.ExamQuestions.Add(examQuestion);
-            //        }
-
-
-
-            //    }
-
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < exam.SpaceQuestionNumber - countExamQuestion; i++)
-            //    {
-            //        var checkModel = ListModel.ElementAt(i).QuestionId;
-            //        var checkQuestion = context.Questions.Where(ex => ex.Id == checkModel && ex.Category.Id == exam.Category.Id)
-            //            .SingleOrDefault();
-
-            //        if (checkQuestion != null)
-            //        {
-            //            ExamQuestion examQuestion = new ExamQuestion();
-            //            examQuestion.ExamId = exam.Id;
-            //            examQuestion.QuestionId = checkQuestion.Id;
-
-            //            context.ExamQuestions.Add(examQuestion);
-            //        }
-            //    }
-            //}
-            //    for (int i = 0; i < ListModel.Count; i++)
-            //    {
-            //        var checkModel = ListModel.ElementAt(i).QuestionId;
-            //        var checkQuestion = context.Questions.Where(ex => ex.Id == checkModel && ex.Category.Id == exam.Category.Id)
-            //            .SingleOrDefault();
-            //        if (checkQuestion != null)
-            //        {
-            //            ExamQuestion examQuestion = new ExamQuestion();
-            //            examQuestion.ExamId = exam.Id;
-            //            examQuestion.QuestionId = checkQuestion.Id;
-
-            //            context.ExamQuestions.Add(examQuestion);
-            //        }
+           
             for (int i = 0; i < ListModel.Count; i++)
             {
                 var checkModel = ListModel.ElementAt(i).QuestionId;
@@ -286,9 +231,6 @@ namespace Repository
 
                     context.ExamQuestions.Add(examQuestion);
                 }
-
-
-
             }
             return context.SaveChanges();
         }

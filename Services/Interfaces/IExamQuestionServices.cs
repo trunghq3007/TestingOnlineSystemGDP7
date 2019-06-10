@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-   public interface IExamQuestionServices<T> where T : class
+    public interface IExamQuestionServices<T> where T : class
     {
         IEnumerable<Model.ViewModel.ViewQuestionExam> GetListQuestionById(int id);
-		int Insert(ExamQuestion model);
+        int Insert(ExamQuestion model);
         Model.ViewModel.GetFill listFilters();
         int AddMutipleQuestion(List<ExamQuestion> ListModel);
-        IEnumerable<T> GetAll();
+        IEnumerable<ViewQuestionExam> GetAll();
         int RandomQuestion(ViewQuestionExam model);
-        IEnumerable<Question> GetById(int id);
+        IEnumerable<ViewQuestionExam> GetById(int id);
         int DeleteMutiple(List<ExamQuestion> ListModel);
         IEnumerable<T> Search(string searchString);
     }

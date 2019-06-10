@@ -182,18 +182,7 @@ namespace WebApi.Controllers
             }
 
         }
-        [HttpPost]
-        //Login method
-        public string Login(string userName, string passWord, bool rememberMe)
-        {
-            //ResultObject result = new ResultObject();
-            var jsonSetting = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-            var result = services.Login(userName, passWord, rememberMe);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
-        }
+
         [HttpGet]
         //Check UserName
         public string CheckUserName(string userName)

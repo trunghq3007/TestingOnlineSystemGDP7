@@ -40,13 +40,15 @@ namespace Repository.Interfaces
         //Filter user by input
         IEnumerable<T> FilterUser(UserFilterModel model);
         //Login method
-        bool Login(string userName, string passWord);
+        int Login(LoginModel model, bool isLoginAdmin = false);
         //Get by username
         T GetByUsername(string userName);
         //Update group
         int Update(int id, string groupname);
         //Get Detail user
         List<UserDetail> GetDetailUser(int id);
+        List<int> GetListAction(string userName);
+        IEnumerable<T> GetAction(string userName);
         bool CheckNameGroup(string groupName);
         //Check UserName
         bool CheckUserName(string userName);

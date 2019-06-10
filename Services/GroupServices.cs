@@ -136,5 +136,15 @@ namespace Services
         {
             throw new NotImplementedException();
         }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetListAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

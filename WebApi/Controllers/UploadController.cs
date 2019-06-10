@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             service = new QuestionServices();
         }
         private QuestionServices service;
-
+       
 
         public string UploadCkeditor()
         {
@@ -107,6 +107,49 @@ namespace WebApi.Controllers
             }
         }
 
+        public string ExportQuestion()
+        {
+            if (("OPTIONS").Equals(HttpContext.Request.HttpMethod)){
+                Response.StatusCode = 200;
+                return "";
+            }
+            var result = new ResultObject();
+            try
+            {
+                string _tempUploadFolder = ConfigurationManager.AppSettings["MediaTempUploadFolder"];
+                string _storeFolder = Server.MapPath(ConfigurationManager.AppSettings["MediaUploadFolder"]);
+                string fileName = "export_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                string _tempStoreFolder = Server.MapPath(_tempUploadFolder + "/" + fileName);
+                if (!Directory.Exists(_tempStoreFolder)) Directory.CreateDirectory(_tempStoreFolder);
+                var question = service.GetAll().ToList();
+                result = Export(question, _storeFolder, _tempStoreFolder + "/");
+                ZipFile.CreateFromDirectory(_tempStoreFolder + "/", _tempStoreFolder + ".zip", CompressionLevel.Optimal, false);
+                DeleteDirectory(_tempStoreFolder);
+                result.Message = fileName + ".zip";
+                return JsonConvert.SerializeObject(result);
+            }
+            catch (Exception e)
+            {
+                result.Success = -1;
+                result.Message = e.Message;
+                return JsonConvert.SerializeObject(result);
+            }
+        }
+
+        public ActionResult DownloadFileExport(string fileName)
+        {
+            //get the temp folder and file path in server
+            string fullPath = Path.Combine(Server.MapPath(ConfigurationManager.AppSettings["MediaTempUploadFolder"]), fileName);
+            if (!System.IO.File.Exists(fullPath))
+            {
+                //Response.StatusCode = 404;
+                return null;
+            }
+
+            //return the file for download
+            return File(fullPath, "application/zip", fileName);
+        }
+
         // private method
         private void ClearFile(string _path)
         {
@@ -160,7 +203,7 @@ namespace WebApi.Controllers
             return row;
         }
 
-        private string Export(List<Question> questions)
+        private ResultObject Export(List<Question> questions, string _localStoreFolder, string _tempStoreFolder)
         {
             var result = new ResultObject();
             try
@@ -177,8 +220,11 @@ namespace WebApi.Controllers
                 }
                 //Below loop is fill content  
                 var rowIndex = 1;
+                string imagePath = Path.Combine(_tempStoreFolder + "Images/");
+                if (!Directory.Exists(imagePath)) Directory.CreateDirectory(imagePath);
                 for (int i = 0; i < questions.Count; i++)
                 {
+                    AcceptFile(questions[i].Content, _localStoreFolder, imagePath);
                     var row = sheet.CreateRow(rowIndex);
                     FilltoRow(row, questions[i]);
                     rowIndex++;
@@ -192,18 +238,17 @@ namespace WebApi.Controllers
                         }
                     }
                 }
+
+                string fileName = "Questions.xls";
+                string FilePath = Path.Combine(_tempStoreFolder, fileName);
+                FileStream zipToOpen = new FileStream(FilePath, FileMode.Create, FileAccess.Write);
                 var stream = new MemoryStream();
                 workbook.Write(stream);
-                string fileName = "Export_Question_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
-                string FilePath = Path.Combine(HttpContext.Server.MapPath("~/UploadedFiles"), fileName);
-                //Write to file using file stream  
-                FileStream file = new FileStream(FilePath, FileMode.CreateNew, FileAccess.Write);
-                stream.WriteTo(file);
-                file.Close();
+                stream.WriteTo(zipToOpen);
+                zipToOpen.Close();
                 stream.Close();
-                var url = (Request.Url.GetLeftPart(UriPartial.Authority));
-                var folder = ConfigurationManager.AppSettings["MediaUploadFolder"];
-                return url + folder + fileName;
+                result.Success = 1;
+                return result;
             }
             catch (Exception e)
             {
@@ -211,6 +256,7 @@ namespace WebApi.Controllers
             }
 
         }
+
 
 
         private void AcceptFile(string content, string srcFolder, string destFolder)
@@ -232,7 +278,7 @@ namespace WebApi.Controllers
                     if (System.IO.File.Exists(srcFolder + fileName))
                     {
                         if (System.IO.File.Exists(destFolder + fileName)) System.IO.File.Delete(destFolder + fileName);
-                        Directory.Move(srcFolder + fileName, destFolder + fileName);
+                        System.IO.File.Copy(srcFolder + fileName, destFolder + fileName);
                     }
                 }
 

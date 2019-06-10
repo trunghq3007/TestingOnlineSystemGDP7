@@ -91,12 +91,32 @@ namespace Repository
             return context.Exams.ToList();
         }
 
-		public Exam GetById(int id)
-		{
-			return context.Exams.Where(s => s.Id == id).SingleOrDefault();
-		}
+        public Exam GetById(int id)
+        {
+            return context.Exams.Where(s => s.Id == id).SingleOrDefault();
+           // return context.Users.Where(s => s.UserId == id).SingleOrDefault();
+        }
+        public IEnumerable<ViewDetailExam> GetDetailExams(int id)
+        {
+            var query = from e in context.Exams
+                        join c in context.Categorys on e.Category.Id equals c.Id
+                        where e.Id == id
+                        select new ViewDetailExam()
+                        {
+                            Id = e.Id,
+                            NameExam = e.NameExam,
+                            CreateBy = e.CreateBy,
+                            CreateAt = e.CreateAt,
+                            QuestionNumber = e.QuestionNumber,
+                            SpaceQuestionNumber = e.SpaceQuestionNumber,
+                            Note = e.Note,
+                            Status = e.Status,
+                            NameCategory = c.Name,
+                        };
+            return query.ToList();
 
-		public int Insert(Exam exam)
+        }
+        public int Insert(Exam exam)
 		{
 
             //exam.Category = context.Categorys.Where(s => s.Category.Id == exam.Id).SingleOrDefault();
@@ -124,16 +144,43 @@ namespace Repository
 		}
 		public int Update(Exam exam)
 		{
-          
-                    //exam.CreateAt=DateTime.Now;
 
-                    context.Entry(exam).State = EntityState.Modified;
-                    return context.SaveChanges();
-               
+            //exam.CreateAt=DateTime.Now;
 
-		}
+            //context.Entry(exam).State = EntityState.Modified;
+            //return context.SaveChanges();
+            var currentExam = context.Exams.Find(exam.Id);
 
-		private bool disposed = false;
+            currentExam.CreateAt = DateTime.Now;
+
+
+            currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
+           
+            currentExam.NameExam = exam.NameExam;
+            currentExam.CreateBy = exam.CreateBy;
+            currentExam.QuestionNumber = exam.QuestionNumber;
+            currentExam.Status = exam.Status;
+            currentExam.SpaceQuestionNumber = exam.SpaceQuestionNumber;
+           
+            currentExam.Note = exam.Note;
+
+
+            context.Entry(currentExam).State = EntityState.Modified;
+            return context.SaveChanges();
+
+
+        }
+        public string GetCategoryName(int idExam)
+        {
+            string categoryName = "";
+            var exam = context.Exams.SingleOrDefault(s => s.Id == idExam);
+            if (exam != null)
+            {
+                categoryName = exam.Category.Name;
+            }
+            return categoryName;
+        }
+        private bool disposed = false;
 		public void Dispose(bool disposing)
 		{
 			if (!this.disposed)

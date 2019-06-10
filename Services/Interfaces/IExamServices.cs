@@ -1,4 +1,5 @@
-﻿using Model.ViewModel;
+﻿using Model;
+using Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,7 @@ namespace Services.Interfaces
 		IEnumerable<T> Filter(ExamFilterModel filterModel);
            
 		int Export_exam(int id);
-	}
+        string GetCategoryName(int idExam);
+        //IEnumerable<ViewDetailExam> GetDetailExams(int id);
+    }
 }

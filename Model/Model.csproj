@@ -87,6 +87,7 @@
     <Compile Include="UserDetail.cs" />
     <Compile Include="UserFilterModel.cs" />
     <Compile Include="UserGroup.cs" />
+    <Compile Include="ViewModel\ViewDetailExam.cs" />
     <Compile Include="ViewModel\Candidates.cs" />
     <Compile Include="ViewModel\ExamFilterModel.cs" />
     <Compile Include="ViewModel\ExamInformation.cs" />

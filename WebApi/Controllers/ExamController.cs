@@ -90,7 +90,7 @@ namespace WebApi.Controllers
                 {
                     return JsonConvert.SerializeObject(services.listFilters());
                 }
-
+               
                 var result = services.GetAll().ToList();
 
                 return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
@@ -209,5 +209,10 @@ namespace WebApi.Controllers
 			}
 			return null;
 		}
+        [HttpGet]
+        public string Get(int idExam)
+        {
+            return services.GetCategoryName(idExam);
+        }
 	}
 }

@@ -140,7 +140,11 @@ namespace WebApi.Controllers
         public string Get(string searchString)
         {
             var result = service.Search(searchString).ToList();
-            return JsonConvert.SerializeObject(result);
+            //return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
         [Route("SemesterExam/detail/{id}")]
         [HttpGet]

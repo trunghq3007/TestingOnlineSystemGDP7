@@ -39,6 +39,15 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            var del = (from a in context.RoleActions
+                       where a.ActionId == idAction && a.RoleId == idRole
+                       select a).FirstOrDefault();
+            context.RoleActions.Remove(del);
+            return context.SaveChanges();
+        }
+
         public int DeleteUserGroup(int iduser, int idgroup)
         {
             throw new NotImplementedException();
@@ -124,6 +133,16 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            RoleAction item = new RoleAction();
+            item.ActionId = idAction;
+            item.RoleId = idRole;
+            item.IsTrue = true;
+            context.RoleActions.Add(item);
+            return context.SaveChanges();
+        }
+
         public int Insert(Model.Action t)
         {
             throw new NotImplementedException();
@@ -162,6 +181,18 @@ namespace Repository
         public int Update(int id, string groupname)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Model.Action> GetActionOutRole(int idRole)
+        {
+            var actioninrole = context.Actions.Where(s => s.RoleActions.Where(x => x.RoleId == idRole).Count() > 0);
+            var action = new List<Model.Action>(context.Actions);
+            foreach(var item in actioninrole)
+            {
+                var t = action.Remove(item);
+            }
+            var remainaction = action.ToList();
+            return remainaction;
         }
     }
 }

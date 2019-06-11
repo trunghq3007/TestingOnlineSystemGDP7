@@ -146,25 +146,5 @@ namespace Services
         {
             throw new NotImplementedException();
         }
-
-        public int DeleteActionRole(int idAction, int idRole)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int InsertRoleAction(int idAction, int idRole)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int ActionRoleAction(int idRole)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Group> GetActionOutRole(int idRole)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

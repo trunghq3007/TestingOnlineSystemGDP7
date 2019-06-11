@@ -15,5 +15,6 @@ namespace Repository.Interfaces
         int Update(T t);
         int Delete(int id);
         T GetById(int id);
+        int DeleteBatch(string listId);
     }
 }

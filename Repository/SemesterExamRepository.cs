@@ -136,11 +136,10 @@ namespace Repository
             //return semesterExams;
             if (!string.IsNullOrEmpty(searchString))
             {
-                return context.SemesterExams.Where(SE => SE.SemesterName.Contains(searchString) && SE.status != 0)
-                    .ToList();
+                return context.SemesterExams.Where(SE => SE.SemesterName.Contains(searchString)).ToList();
             }
 
-            return context.SemesterExams.Where(SE => SE.status != 0).ToList();
+            return context.SemesterExams.ToList();
         }
 
         public Model.ViewModel.ReportSemester Report(int id)

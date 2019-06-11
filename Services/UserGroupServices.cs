@@ -19,6 +19,11 @@ namespace Services
            usergroupRepository = new UserGroupRepository(new DBEntityContext());
         }
 
+        public int ActionRoleAction(int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CheckNameGroup(string groupName)
         {
             throw new NotImplementedException();
@@ -30,6 +35,11 @@ namespace Services
         }
 
         public int Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteActionRole(int idAction, int idRole)
         {
             throw new NotImplementedException();
         }
@@ -59,6 +69,16 @@ namespace Services
             return usergroupRepository.FilterUserInGroup(model, id);
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();
@@ -75,6 +95,11 @@ namespace Services
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetListAction(string userName)
         {
             throw new NotImplementedException();
         }
@@ -99,6 +124,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
         public int InsertUserGroup(int iduser, int idgroup)
         {
             return usergroupRepository.InsertUserGroup(iduser, idgroup);
@@ -110,6 +140,11 @@ namespace Services
         }
 
         public User Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using Model;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,7 +20,10 @@ namespace Repository
 
         public int Insert(Role t)
         {
-            context.Roles.Add(new Role());
+            context.Roles.Add(new Role() {
+                RoleName = t.RoleName,
+                Description = t.Description
+            });
             return context.SaveChanges();
         }
         public int Update(Role t)
@@ -148,5 +152,44 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetListAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Role> GetAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Role> IGroupRepository<Role>.GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

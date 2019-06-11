@@ -64,7 +64,7 @@ namespace Repository
 
         public IEnumerable<SemesterExam> GetAll()
         {
-            return (IEnumerable<SemesterExam>) context.SemesterExams.Where(SE => SE.status != 0).ToList();
+            return (IEnumerable<SemesterExam>) context.SemesterExams.ToList();
         }
 
         public SemesterDetail GetById(int id)
@@ -87,7 +87,7 @@ namespace Repository
 
             }
 
-            semesterDetail.StartDay = semesterExam.StartDay.ToString().Substring(0, 9);
+            semesterDetail.StartDay = semesterExam.StartDay.ToString();
             semesterDetail.EndDay = semesterExam.EndDay.ToString();
             if (semesterExam_Users != null)
                 semesterDetail.Creator = semesterExam_Users.User.FullName;
@@ -96,7 +96,7 @@ namespace Repository
                 semesterDetail.status = "Public";
             if (semesterExam.status == 2)
                 semesterDetail.status = "Draft";
-            else
+            if (semesterExam.status == 0)
                 semesterDetail.status = "Done";
 
             var QT = from TR in context.TestResults
@@ -136,11 +136,10 @@ namespace Repository
             //return semesterExams;
             if (!string.IsNullOrEmpty(searchString))
             {
-                return context.SemesterExams.Where(SE => SE.SemesterName.Contains(searchString) && SE.status != 0)
-                    .ToList();
+                return context.SemesterExams.Where(SE => SE.SemesterName.Contains(searchString)).ToList();
             }
 
-            return context.SemesterExams.Where(SE => SE.status != 0).ToList();
+            return context.SemesterExams.ToList();
         }
 
         public Model.ViewModel.ReportSemester Report(int id)

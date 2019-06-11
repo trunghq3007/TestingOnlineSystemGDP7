@@ -26,7 +26,7 @@ namespace Services.Interfaces
         IEnumerable<T> FilterUser(UserFilterModel model);
         bool Login(string userName, string passWord);
         T GetByUsername(string userName);
-        T Login(string userName, string passWord, bool rememberMe);
+        int Login(LoginModel model, bool isLoginAdmin = false);
         int Update(int id, string groupname);
         List<UserDetail> GetDetailUser(int id);
         bool CheckNameGroup(string groupName);
@@ -34,5 +34,13 @@ namespace Services.Interfaces
         bool CheckUserName(string userName);
         //Get RoleName of user
         string GetRoleName(int idUser);
+        IEnumerable<Model.Action> GetActionInRole(int roleId);
+        List<int> GetListAction(string userName);
+        // Deleter action in role
+        int DeleteActionRole(int idAction, int idRole);
+        // Add Roleaction to role
+        int InsertRoleAction(int idAction, int idRole);
+        int ActionRoleAction(int idRole);
+        IEnumerable<T> GetActionOutRole(int idRole);
     }
 }

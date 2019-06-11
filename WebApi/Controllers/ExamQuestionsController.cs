@@ -25,41 +25,68 @@ namespace WebApi.Controllers
         [HttpGet]
         public string Search(string searchString)
         {
-            var result = examQuestion.Search(searchString);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            ResultObject resultt = new ResultObject();
+
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                var result = examQuestion.Search(searchString);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
+            catch (Exception e)
+            {
+
+                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(resultt);
+            }
+           
         }
         [HttpGet]
         public string Get([FromUri] string action, [FromUri] int id)
         {
+
             if ("GetAll".Contains(action))
             {
-                var result = examQuestion.GetById(id).ToList();
-                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                ResultObject resultt = new ResultObject();
+
+                try
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
+                    var result = examQuestion.GetById(id).ToList();
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                }
+                catch (Exception e)
+                {
+
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
+                
             }
 
             if ("GetById".Contains(action))
             {
-                var result = examQuestion.GetListQuestionById(id);
-                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                ResultObject resultt = new ResultObject();
+                try
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
+                    var result = examQuestion.GetListQuestionById(id);
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
+               
             }
 
-            //if ("Search".Contains(action))
-            //{
-            //    var result = examQuestion.Search(searchString);
-            //    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
-            //    {
-            //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            //    });
-            //}
 
             return "true";
 
@@ -68,13 +95,24 @@ namespace WebApi.Controllers
 		[HttpPost]
 		public string Post([FromBody] object value)
 		{
-			if (value != null)
-			{
-				var exam = JsonConvert.DeserializeObject<ExamQuestion>(value.ToString());
-				var result = examQuestion.Insert(exam);
-				return JsonConvert.SerializeObject(result);
+            ResultObject resultt = new ResultObject();
 
-			}
+            try
+            {
+                if (value != null)
+                {
+                    var exam = JsonConvert.DeserializeObject<ExamQuestion>(value.ToString());
+                    var result = examQuestion.Insert(exam);
+                    return JsonConvert.SerializeObject(result);
+
+                }
+            }
+            catch (Exception e)
+            {
+                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(resultt);
+            }
+			
 			return "FALSE";
 		}
         [HttpDelete]
@@ -127,22 +165,54 @@ namespace WebApi.Controllers
 
             if ("AddMutiple".Equals(action))
             {
-                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
-                var add = examQuestion.AddMutipleQuestion(exam);
-                return JsonConvert.SerializeObject(add);
+                ResultObject resultt = new ResultObject();
+                try
+                {
+                    var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
+                    var add = examQuestion.AddMutipleQuestion(exam);
+                    return JsonConvert.SerializeObject(add);
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
+               
             }
 
             if ("DeleteMutiple".Equals(action))
             {
-                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
-                var delete = examQuestion.DeleteMutiple(exam);
-                return JsonConvert.SerializeObject(delete);
+                ResultObject resultt = new ResultObject();
+
+                try
+                {
+                    var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(value.ToString());
+                    var delete = examQuestion.DeleteMutiple(exam);
+                    return JsonConvert.SerializeObject(delete);
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
+               
             }
             if ("random".Equals(action))
             {
-                var exam = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());
-                var add = examQuestion.RandomQuestion(exam);
-                return JsonConvert.SerializeObject(add);
+                ResultObject resultt = new ResultObject();
+
+                try
+                {
+                    var exam = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());
+                    var add = examQuestion.RandomQuestion(exam);
+                    return JsonConvert.SerializeObject(add);
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
+               
             }
 			if ("getfillter".Equals(action))
 			{

@@ -16,11 +16,11 @@ namespace WebApi.Commons
         protected override bool IsAuthorized(HttpActionContext httpContext)
         {
             var keys = HttpContext.Current.Request.Headers.GetValues("Permission");
-            if (keys != null && keys.Length < 0) return false;
+            if (keys == null || keys.Length < 0) return false;
             else
             {
                 var listActionId = JsonConvert.DeserializeObject<List<int>>(keys[0]);
-               
+                
                 foreach(var item in listActionId)
                 {
                     if (item == ActionId) return true;

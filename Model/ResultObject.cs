@@ -14,8 +14,8 @@ namespace Model
         public int Success { get; set; }
         public ResultObject()
         {
-            Status = 0;
-            Success = 0;
+            Status = 200;
+            Success = -1;
             Data = null;
             Message = null;
         }

@@ -139,9 +139,22 @@ namespace Repository
         {
             try
             {
-                context.Questions.Add(t);
                 t.CreatedBy = "anonymous user";
                 t.CreatedDate = DateTime.Now;
+                if (t.Category != null)
+                {
+                    t.Category = context.Categorys.SingleOrDefault(s => s.Id == t.Category.Id);
+                }
+                if(t.Tags != null)
+                {
+                    var tags = new List<Tag>();
+                    foreach(var tag in t.Tags)
+                    {
+                        tags.Add(context.Tags.SingleOrDefault(s => s.Id == tag.Id));
+                    }
+                    t.Tags = tags;
+                }
+                context.Questions.Add(t);
                 return context.SaveChanges();
             }
             catch(Exception e)
@@ -219,7 +232,7 @@ namespace Repository
 
         public Category getCategoryByName(string cateName)
         {
-            return context.Categorys.Where(s => s.Name.Equals(cateName)).FirstOrDefault();
+            return context.Categorys.FirstOrDefault(s => s.Name.Equals(cateName));
         }
 
         public int Import(List<Question> list)

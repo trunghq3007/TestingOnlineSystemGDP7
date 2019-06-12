@@ -36,11 +36,5 @@ namespace Services.Interfaces
         string GetRoleName(int idUser);
         IEnumerable<Model.Action> GetActionInRole(int roleId);
         List<int> GetListAction(string userName);
-        // Deleter action in role
-        int DeleteActionRole(int idAction, int idRole);
-        // Add Roleaction to role
-        int InsertRoleAction(int idAction, int idRole);
-        int ActionRoleAction(int idRole);
-        IEnumerable<T> GetActionOutRole(int idRole);
     }
 }

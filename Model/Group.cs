@@ -20,7 +20,7 @@ namespace Model
         [MaxLength(50)]
         public string Description { get; set; }
         //public bool IsActive { get; set; }
-        public virtual ICollection<UserGroup> UserGroups { get; set; }
+        public  ICollection<UserGroup> UserGroups { get; set; }
 
     }
 }

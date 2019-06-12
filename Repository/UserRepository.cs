@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Model;
 using DataAccessLayer;
 using System.Data.Entity;
+using Repository.Commons;
 
 namespace Repository
 {
@@ -54,7 +55,7 @@ namespace Repository
             {
                 UserName = user.UserName,
                 RoleId = user.RoleId,
-                Password = user.Password,
+                Password = Encryptor.MD5Hash(user.Password),
                 CreatedDate = DateTime.Now,
                 FullName = user.FullName,
                 Phone = user.Phone,
@@ -84,7 +85,7 @@ namespace Repository
             var currentUser = context.Users.Find(user.UserId);
 
             currentUser.EditedDate = DateTime.Now;
-
+            currentUser.Password = Encryptor.MD5Hash(user.Password);
             currentUser.Email = user.Email;
             currentUser.Role = context.Roles.Find(user.RoleId);
             currentUser.RoleId = user.RoleId;
@@ -257,7 +258,7 @@ namespace Repository
                     //if (result.RoleId == CommonConstants.Admin_Role || result.RoleId == CommonConstants.Manager_Role)
                     if (result2 != null)
                     {
-                        if (result.Password == model.Password)
+                        if (result.Password ==Encryptor.MD5Hash(model.Password))
                         {
                             return 1;
                         }

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using WebApi.Commons;
+using Model.ViewModel;
 
 namespace WebApi.Controllers
 {
@@ -21,26 +22,35 @@ namespace WebApi.Controllers
             services = new UserSevices();
         }
         [HttpPost]
-        public string Login([FromBody] object value)
+        public ResultObject Login([FromBody] object value)
         {
+
             var jsonSetting = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             var model = JsonConvert.DeserializeObject<LoginModel>(value.ToString());
-            var result = services.Login(model, true);
-            if (result == 1)
+            var result = new ResultObject();
+            result.Success = services.Login(model, true);
+            if (result.Success == 1)
             {
                 var user = services.GetByUsername(model.UserName);
-                var userSession = new UserLogin();
-                userSession.UserName = user.UserName;
-                userSession.UserId = user.UserId;
-                userSession.RoleId = user.RoleId;
-                var listRoleActions = services.GetListAction(model.UserName);
-                HttpContext.Current.Session.Add(Commons.CommonConstants.SESSION_CREDENTIALS, listRoleActions);
-                HttpContext.Current.Session.Add(Commons.CommonConstants.USER_SESSION, userSession);
+                var listAction = services.GetListAction(user.UserName);
+
+                //var userSession = new UserLogin();
+                //userSession.UserName = user.UserName;
+                //userSession.UserId = user.UserId;
+                //userSession.RoleId = user.RoleId;
+                //var listRoleActions = services.GetListAction(model.UserName);
+                //var userContext = new UserContext { CurrentUser = user, ListActionId = listAction.ToList() };
+                //HttpContext.Current.Session[HttpContext.Current.Session.SessionID] = userContext;
+
+                //HttpContext.Current.Session.Add(Commons.CommonConstants.SESSION_CREDENTIALS, listRoleActions);
+                //HttpContext.Current.Session.Add(Commons.CommonConstants.USER_SESSION, userSession);
+                result.Data = JsonConvert.SerializeObject(listAction);
+                return result;
             }
-            return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+            return result;
         }
     }
 }

@@ -55,11 +55,11 @@ namespace Repository.Interfaces
         //Get RoleName of user
         string GetRoleName(int idUser);
         IEnumerable<Model.Action> GetActionInRole(int roleId);
-        // Deleter action in role
         int DeleteActionRole(int idAction, int idRole);
         // Add Roleaction to role
         int InsertRoleAction(int idAction, int idRole);
         //Get ActionOutRole
         IEnumerable<T> GetActionOutRole(int idRole);
+
     }
 }

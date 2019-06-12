@@ -23,7 +23,7 @@ namespace Services
         {
             return repository.Delete(id);
         }
-
+       
         public IEnumerable<Tag> GetAll()
         {
             return repository.GetAll();
@@ -47,10 +47,6 @@ namespace Services
         public int Update(Tag t)
         {
             return repository.Update(t);
-        }
-        public int DeleteBatch(string listId)
-        {
-            return repository.DeleteBatch(listId);
         }
     }
 }

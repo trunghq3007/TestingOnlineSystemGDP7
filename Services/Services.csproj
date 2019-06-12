@@ -72,6 +72,7 @@
     <Compile Include="Interfaces\IExamServices.cs" />
     <Compile Include="Interfaces\IGroupServices.cs" />
     <Compile Include="Interfaces\IQuestionServices.cs" />
+    <Compile Include="Interfaces\ISemesterCustomerService.cs" />
     <Compile Include="Interfaces\ISemesterExamServices.cs" />
     <Compile Include="Interfaces\ISemesterExamUserServices.cs" />
     <Compile Include="Interfaces\ITagServices.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="RoleActionServices.cs" />
     <Compile Include="RoleServices.cs" />
     <Compile Include="SemasterServices.cs" />
+    <Compile Include="SemesterCustomerSevice.cs" />
     <Compile Include="SemesterExamServices.cs" />
     <Compile Include="SemesterExamUserServices.cs" />
     <Compile Include="TagServices.cs" />

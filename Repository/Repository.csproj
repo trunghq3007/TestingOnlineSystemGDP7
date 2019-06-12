@@ -79,6 +79,7 @@
     <Compile Include="Interfaces\IExamQuestion.cs" />
     <Compile Include="Interfaces\IExamRepository.cs" />
     <Compile Include="Interfaces\IGroupRepository.cs" />
+    <Compile Include="Interfaces\ISemesterCustomer.cs" />
     <Compile Include="Interfaces\ISemesterExamRepository.cs" />
     <Compile Include="Interfaces\ISemesterExamUserRepository.cs" />
     <Compile Include="Interfaces\ITagRepository.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="RoleActionRepository.cs" />
     <Compile Include="RoleRepository.cs" />
     <Compile Include="SemasterExamResponsitory.cs" />
+    <Compile Include="SemesterExamCustomer.cs" />
     <Compile Include="SemesterExamRepository.cs" />
     <Compile Include="SemesterExamUserRepository.cs" />
     <Compile Include="TagRepository.cs" />

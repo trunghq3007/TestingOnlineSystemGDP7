@@ -251,6 +251,7 @@
     <Compile Include="Controllers\RoleActionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SemasterController.cs" />
+    <Compile Include="Controllers\SemesterCustomerController.cs" />
     <Compile Include="Controllers\SemesterExamController.cs" />
     <Compile Include="Controllers\SemesterExamUserController.cs" />
     <Compile Include="Controllers\TagController.cs" />

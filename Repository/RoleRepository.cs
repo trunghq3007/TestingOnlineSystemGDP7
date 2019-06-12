@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using Model;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -181,7 +182,12 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Role> GetActionOutRole(int idRole)
+        public int GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Role> IGroupRepository<Role>.GetActionOutRole(int idRole)
         {
             throw new NotImplementedException();
         }

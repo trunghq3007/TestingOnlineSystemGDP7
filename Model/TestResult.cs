@@ -40,6 +40,6 @@ namespace Model
         public string Content { get; set; }
         public string DescriptionName { get; set; }
         public virtual User User { get; set; }
-        public virtual Test Test { get; set; }
+        public  Test Test { get; set; }
     }
 }

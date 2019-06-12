@@ -27,7 +27,7 @@ namespace Services
             {
                 return 0;
             }
-           
+
         }
 
         public IEnumerable<Category> Filter(Category t)
@@ -45,7 +45,7 @@ namespace Services
 
         public Category GetById(int id)
         {
-           return repository.GetById(id);
+            return repository.GetById(id);
         }
 
         public int Insert(Category t)

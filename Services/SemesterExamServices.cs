@@ -39,11 +39,6 @@ namespace Services
             return SemesterExamRepository.GetById(id);
         }
 
-       public Result GetResult(int id)
-        {
-            return SemesterExamRepository.GetResult(id);
-        }
-
         public int Insert(SemesterExam t)
         {
             return SemesterExamRepository.Insert(t);

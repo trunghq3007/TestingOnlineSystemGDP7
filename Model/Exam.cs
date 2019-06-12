@@ -22,12 +22,11 @@ namespace Model
         [Required(ErrorMessage = "status is not null")]
         public bool Status { get; set; }
         public int SpaceQuestionNumber { get; set; }
-        public virtual Category Category { get; set; }
+        public  Category Category { get; set; }
         public DateTime? CreateAt { get; set; }
         public string Note { get; set; }
         //public virtual Category Categories { get; set; }
-      
         public  ICollection<Test> Tests { get; set; }
-        public virtual ICollection<ExamQuestion> ExamQuestions { get; set; }
+        public  ICollection<ExamQuestion> ExamQuestions { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface ICategoryServices<T> where T:class
+    public interface ICategoryServices<T> where T : class
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Search(string searchString);

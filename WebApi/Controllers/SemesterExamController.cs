@@ -153,14 +153,6 @@ namespace WebApi.Controllers
             var result = service.GetById(id);
             return JsonConvert.SerializeObject(result);
         }
-
-        [Route("SemesterExam/result/{id}")]
-        [HttpGet]
-        public string Result(int id)
-        {
-            var result = service.GetResult(id);
-            return JsonConvert.SerializeObject(result);
-        }
         [Route("SemesterExam/Update/")]
         [HttpPost]
         public string Update([FromBody]object value)

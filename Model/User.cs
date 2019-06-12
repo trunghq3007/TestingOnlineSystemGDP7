@@ -39,9 +39,9 @@ namespace Model
         public string Avatar { get; set; }
         public string Note { get; set; }
         public bool Status { get; set; }
-        public  ICollection<UserGroup> UserGroups { get; set; }
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
         public virtual Role Role { get; set; }
-        public  ICollection<SemesterExam_User> SemesterExam_Users { get; set; }
-        public  ICollection<TestResult> TestResults { get; set; }
+        public virtual ICollection<SemesterExam_User> SemesterExam_Users { get; set; }
+        public virtual ICollection<TestResult> TestResults { get; set; }
     }
 }

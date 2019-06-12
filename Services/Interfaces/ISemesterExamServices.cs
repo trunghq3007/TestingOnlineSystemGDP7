@@ -18,7 +18,6 @@ namespace Services.Interfaces
         //T GetById(int id);
         Model.ViewModel.SemesterDetail GetById(int id);
         Model.ViewModel.ReportSemester Report(int id);
-        Model.ViewModel.Result GetResult(int id);
         IEnumerable<T> Filter(T t);
         IEnumerable<Model.Exam> SearchExams(string examName, int id);
         IEnumerable<Model.Test> GetTestsNotAdd(int id);

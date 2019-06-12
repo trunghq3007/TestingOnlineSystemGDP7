@@ -199,25 +199,13 @@ namespace Repository
             {
                 ListLevel = new HashSet<string>(),
                 ListType = new HashSet<string>(),
-                ListCreateBy = new HashSet<string>(),
-                ListCategory = new HashSet<string>()
+                ListCreateBy = new HashSet<string>()
             };
             foreach (var it in context.Questions)
             {
                 item.ListLevel.Add(it.Level.ToString());
                 item.ListType.Add(it.Type.ToString());
                 item.ListCreateBy.Add(it.CreatedBy);
-              
-            }
-
-            foreach (var category in context.Questions)
-            {
-                var cateogories = context.Categorys.Where(c => c.Id == category.Category.Id).SingleOrDefault();
-                if (category.Category.Id == cateogories.Id)
-                {
-                    item.ListCategory.Add(category.Category.Name);
-                } 
-               
             }
 
             return item;
@@ -226,61 +214,24 @@ namespace Repository
         public int AddMutipleQuestion(List<ExamQuestion> ListModel)
         {
             var check = ListModel.ElementAt(0);
-            var exam = context.Exams.Where(ex => ex.Id == check.ExamId ).SingleOrDefault();
-           
+            var exam = context.Exams.Where(ex => ex.Id == check.ExamId).SingleOrDefault();
+            var checkSpace = context.Questions.Count();
             var countExamQuestion = context.ExamQuestions.Where(ex => ex.ExamId == exam.Id).ToList().Count();
-          
-            List<ExamQuestion> list = new List<ExamQuestion>();
-          
-            foreach (var item in ListModel)
+           
+            for (int i = 0; i < ListModel.Count; i++)
             {
-                
-                var Ques = context.Questions.Where(e => e.Category.Id == exam.Category.Id && e.Id==item.QuestionId && exam.Id==item.ExamId).SingleOrDefault();
-                if (Ques != null)
+                var checkModel = ListModel.ElementAt(i).QuestionId;
+                var checkQuestion = context.Questions.Where(ex => ex.Id == checkModel && ex.Category.Id == exam.Category.Id)
+                    .SingleOrDefault();
+                if (checkQuestion != null)
                 {
-                    ExamQuestion ExamQues = new ExamQuestion();
-                    ExamQues.QuestionId = Ques.Id;
-                    ExamQues.ExamId = check.ExamId;
-                    list.Add(ExamQues);
-                }
-               
-            }
-            if (list.Count < exam.SpaceQuestionNumber - countExamQuestion)
-            {
-               
-                for (int i = 0; i < list.Count; i++)
-                {
-                    var checkModel = list.ElementAt(i).QuestionId;
-                    var checkQuestion = context.Questions.Where(ex => ex.Id == checkModel && ex.Category.Id == exam.Category.Id)
-                        .SingleOrDefault();
-                    if (checkQuestion != null)
-                    {
-                        ExamQuestion examQuestion = new ExamQuestion();
-                        examQuestion.ExamId = exam.Id;
-                        examQuestion.QuestionId = checkQuestion.Id;
+                    ExamQuestion examQuestion = new ExamQuestion();
+                    examQuestion.ExamId = exam.Id;
+                    examQuestion.QuestionId = checkQuestion.Id;
 
-                        context.ExamQuestions.Add(examQuestion);
-                    }
+                    context.ExamQuestions.Add(examQuestion);
                 }
             }
-            else
-            {
-                for (int i = 0; i < exam.SpaceQuestionNumber - countExamQuestion; i++)
-                {
-                    var checkModel = list.ElementAt(i).QuestionId;
-                    var checkQuestion = context.Questions.Where(ex => ex.Id == checkModel && ex.Category.Id == exam.Category.Id)
-                        .SingleOrDefault();
-                    if (checkQuestion != null)
-                    {
-                        ExamQuestion examQuestion = new ExamQuestion();
-                        examQuestion.ExamId = exam.Id;
-                        examQuestion.QuestionId = checkQuestion.Id;
-
-                        context.ExamQuestions.Add(examQuestion);
-                    }
-                }
-            }
-            
             return context.SaveChanges();
         }
 
@@ -289,7 +240,7 @@ namespace Repository
         {
             List<ExamQuestion> list = new List<ExamQuestion>();
             var exam = context.Exams.Where(ex => ex.Id == model.ExamId).SingleOrDefault();
-            var questions = context.Questions.Where(e => e.Category.Name == model.CategoryName && e.Level==model.Type).ToList();
+            var questions = context.Questions.Where(e => e.Category.Id == exam.Category.Id).ToList();
             var examquestion = context.ExamQuestions.Where(ex => ex.ExamId == model.ExamId).ToList();
             foreach (var item in examquestion)
             {

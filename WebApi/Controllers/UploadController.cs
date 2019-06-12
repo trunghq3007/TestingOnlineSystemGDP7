@@ -19,6 +19,7 @@ using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class UploadController : Controller
     {
         public UploadController()
@@ -135,6 +136,7 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
+        [DeleteFileAttribute]
         public ActionResult DownloadFileExport(string fileName)
         {
             //get the temp folder and file path in server

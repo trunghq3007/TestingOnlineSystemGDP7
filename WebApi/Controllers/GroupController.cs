@@ -23,8 +23,7 @@ namespace WebApi.Controllers
         }
         // GET: Group
         [HttpGet]
-        //[HasCredential(ActionId = 1)]
-        [ValidateSSID(ActionId =1)]
+        [HasCredential(ActionId = 1)]
         public string Get()
         {
             var jsonSetting = new JsonSerializerSettings

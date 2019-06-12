@@ -11,7 +11,5 @@ namespace Model.ViewModel
         public HashSet<string> ListLevel { get; set; }
         public HashSet<string> ListType { get; set; }
         public HashSet<string> ListCreateBy { get; set; }
-        public HashSet<string> ListCategory { get; set; }
-        
     }
 }

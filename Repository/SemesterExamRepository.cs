@@ -112,33 +112,6 @@ namespace Repository
 
         }
 
-        public Result GetResult(int id)
-        {
-            context.Configuration.LazyLoadingEnabled = false;
-            List<TestResult> testResults = context.TestResults.ToList();
-            List<User> users = context.Users.ToList();
-            List<Test> tests = context.Tests.ToList();
-            List<SemesterExam> semesterExams = context.SemesterExams.ToList();
-            User semesterExam_Users =
-                context.Users.Where(SU => SU.UserId == id).FirstOrDefault();
-            SemesterExam semesterExam = context.SemesterExams.Find(id);
-            User user = context.Users.Find(id);
-            TestResult testResult = context.TestResults.Find(id);
-            Test test = context.Tests.Find(id);
-            Result result = new Result();
-
-            result.ID = user.UserId;
-            result.TestName = test.TestName;
-            if (semesterExam_Users != null)
-                result.FullName = semesterExam_Users.UserName;
-            result.SemesterName = semesterExam.SemesterName;
-            result.Email = user.Email;
-            
-            return result;
-
-
-        }
-
         public int Insert(SemesterExam t)
         {
             context.SemesterExams.Add(t);
@@ -485,8 +458,6 @@ namespace Repository
 
             return 1;
         }
-
-        
     }
 
 

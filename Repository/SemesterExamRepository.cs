@@ -408,13 +408,17 @@ namespace Repository
             List<Question> listRandom = new List<Question>();
             Random random = new Random();
             int b = questions.Count;
-            for (int i = 0; i < test.Exam.QuestionNumber; i++)
+            if(b>0)
             {
-                int a = random.Next(1, b);
-                b--;
-                listRandom.Add(questions[a]);
-                questions.Remove(questions[a]);
+                for (int i = 0; i < test.Exam.QuestionNumber; i++)
+                {
+                    int a = random.Next(1, b);
+                    b--;
+                    listRandom.Add(questions[a]);
+                    questions.Remove(questions[a]);
+                }
             }
+           
 
             testProcessing.Questions = questions;
             return testProcessing;
@@ -475,9 +479,25 @@ namespace Repository
 
         public int Submit(List<Answer> answers, int testId, int userID)
         {
+            
+            foreach (Answer item in answers)
+            {
+                var query = from Q in context.Questions
+                            join A in context.Answers
+                            on Q.Id equals A.Question.Id
+                            where A.Id == item.Id
+                            select Q;
+                item.Question = query.FirstOrDefault();
+                            
+            }
             foreach (Answer item  in answers)
             {
-                TestResult testResult = new TestResult(testId,userID,item.Question.Id,item.Id);
+                TestResult testResult = new TestResult();
+                testResult.AnwserId = item.Id;
+                testResult.QuestionId = item.Question.Id;
+                testResult.UserId = userID;
+                testResult.TestId = testId;
+                if (item.IsTrue == true) testResult.Score = 2;
                 context.TestResults.Add(testResult);
                 context.SaveChanges();
 

@@ -207,11 +207,29 @@ namespace WebApi.Controllers
 				}
 				return "true";
 			}
+            if ("exportExam".Equals(action)){
+
+                try
+                {
+                    var export = services.Export_exam(id);
+                      return JsonConvert.SerializeObject(export);
+
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return "false";
+                }
+                //return "true";
+            }
 			return null;
 		}
+
+       
         [HttpGet]
         public string Get(int idExam)
         {
+
             return services.GetCategoryName(idExam);
         }
 	}

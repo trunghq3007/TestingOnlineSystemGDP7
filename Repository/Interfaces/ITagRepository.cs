@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +15,6 @@ namespace Repository.Interfaces
         int Update(T t);
         int Delete(int id);
         T GetById(int id);
+        int DeleteBatch(string listId);
     }
 }

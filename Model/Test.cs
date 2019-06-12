@@ -33,9 +33,9 @@ namespace Model
         public int TotalTest { get; set; }
         [Required(ErrorMessage = "test time is not null")]
         public float TestTime { get; set; }
-        public virtual ICollection<TestResult> TestResults { get; set; }
-        public virtual Exam Exam { get; set; }
-        public virtual SemesterExam SemesterExam { get; set; }
+        public  ICollection<TestResult> TestResults { get; set; }
+        public  Exam Exam { get; set; }
+        public  SemesterExam SemesterExam { get; set; }
 
     }
 }

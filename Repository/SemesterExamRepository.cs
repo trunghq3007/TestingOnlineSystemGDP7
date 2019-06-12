@@ -133,7 +133,23 @@ namespace Repository
                 result.FullName = semesterExam_Users.UserName;
             result.SemesterName = semesterExam.SemesterName;
             result.Email = user.Email;
+            try
+            {
+                result.Score = Convert.ToInt32(testResult.Score);
+                if (result.Score <= 50)
+                    result.Category = "Trượt";
+                else
+                    result.Category = "Đỗ";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
             
+            
+
+           
+
             return result;
 
 

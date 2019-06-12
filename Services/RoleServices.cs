@@ -18,11 +18,6 @@ namespace Services
             roleRepository = new RoleRepository(new DBEntityContext());
         }
 
-        public int ActionRoleAction(int idRole)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool CheckNameGroup(string groupName)
         {
             throw new NotImplementedException();
@@ -36,11 +31,6 @@ namespace Services
         public int Delete(int id)
         {
             return roleRepository.Delete(id);
-        }
-
-        public int DeleteActionRole(int idAction, int idRole)
-        {
-            throw new NotImplementedException();
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
@@ -69,11 +59,6 @@ namespace Services
         }
 
         public IEnumerable<Model.Action> GetActionInRole(int roleId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Role> GetActionOutRole(int idRole)
         {
             throw new NotImplementedException();
         }
@@ -121,11 +106,6 @@ namespace Services
         public int Insert(Role t)
         {
             return roleRepository.Insert(t);
-        }
-
-        public int InsertRoleAction(int idAction, int idRole)
-        {
-            throw new NotImplementedException();
         }
 
         public int InsertUserGroup(int iduser, int idgroup)

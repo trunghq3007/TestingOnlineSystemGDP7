@@ -19,11 +19,6 @@ namespace Services
             roleActionRepository = new RoleActionRepository(new DBEntityContext());
         }
 
-        public int ActionRoleAction(int idRole)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool CheckNameGroup(string groupName, int groupId)
         {
             throw new NotImplementedException();
@@ -42,11 +37,6 @@ namespace Services
         public int Delete(int id)
         {
             throw new NotImplementedException();
-        }
-
-        public int DeleteActionRole(int idAction, int idRole)
-        {
-            return roleActionRepository.DeleteActionRole(idAction, idRole);
         }
 
         public int DeleteUserGroup(int iduser, int idgroup)
@@ -77,11 +67,6 @@ namespace Services
         public IEnumerable<Model.Action> GetActionInRole(int roleId)
         {
             return roleActionRepository.GetActionInRole(roleId);
-        }
-
-        public IEnumerable<Model.Action> GetActionOutRole(int idRole)
-        {
-            return roleActionRepository.GetActionOutRole(idRole);
         }
 
         public IEnumerable<Model.Action> GetAll()
@@ -129,11 +114,6 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public int InsertRoleAction(int idAction, int idRole)
-        {
-            return roleActionRepository.InsertRoleAction(idAction, idRole);
-        }
-
         public int InsertUserGroup(int iduser, int idgroup)
         {
             throw new NotImplementedException();
@@ -172,6 +152,18 @@ namespace Services
         public int Update(int id, string groupname)
         {
             throw new NotImplementedException();
+        }
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            return roleActionRepository.DeleteActionRole(idAction, idRole);
+        }
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            return roleActionRepository.InsertRoleAction(idAction, idRole);
+        }
+        public IEnumerable<Model.Action> GetActionOutRole(int idRole)
+        {
+            return roleActionRepository.GetActionOutRole(idRole);
         }
     }
 }

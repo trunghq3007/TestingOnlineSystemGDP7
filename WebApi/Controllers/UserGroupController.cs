@@ -7,6 +7,8 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
+
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -19,6 +21,7 @@ namespace WebApi.Controllers
             services = new UserGroupServices();
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 5)]
         // Get User In Group method
         public string GetUserInGroup(int id)
         {
@@ -40,6 +43,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 6)]
         // Search User In Group method
         public string Get(int id, string searchString)
         {
@@ -63,6 +67,7 @@ namespace WebApi.Controllers
         }
         //Delete User In Group
         [HttpDelete]
+        [ValidateSSID(ActionId = 4)]
         public string Delete(int iduser, int idgroup)
         {
             ResultObject result = new ResultObject();
@@ -83,6 +88,7 @@ namespace WebApi.Controllers
         }
         //Filter User In Group
         [HttpPost]
+        [ValidateSSID(ActionId = 6)]
         public string Get([FromUri]string action, [FromBody] object value, int id)
         {
             ResultObject result = new ResultObject();
@@ -116,6 +122,7 @@ namespace WebApi.Controllers
         }
         //Add User Into Group
         [HttpPost]
+        [ValidateSSID(ActionId = 2)]
         public string InsertUserGroup(int iduser, int idgroup)
         {
             ResultObject result = new ResultObject();
@@ -136,6 +143,7 @@ namespace WebApi.Controllers
         }
         //Get User not add to Group
         [HttpGet]
+        [ValidateSSID(ActionId = 2)]
         public string GetUserOutGroup(int idgroup)
         {
             ResultObject result = new ResultObject();

@@ -19,6 +19,7 @@ using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
+    [AllowCrossSite]
     public class UploadController : Controller
     {
         public UploadController()

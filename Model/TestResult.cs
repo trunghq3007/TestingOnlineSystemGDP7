@@ -10,6 +10,18 @@ namespace Model
 {
    public class TestResult
     {
+        public TestResult(int testId, int userId, int questionId, int anwserId)
+        {
+            TestId = testId;
+            UserId = userId;
+            QuestionId = questionId;
+            AnwserId = anwserId;
+        }
+
+        public TestResult()
+        {
+            
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -27,7 +39,7 @@ namespace Model
         public int TestTimeNo { get; set; }
         public string Content { get; set; }
         public string DescriptionName { get; set; }
-        public virtual User User { get; set; }
-        public virtual Test Test { get; set; }
+        public  User User { get; set; }
+        public  Test Test { get; set; }
     }
 }

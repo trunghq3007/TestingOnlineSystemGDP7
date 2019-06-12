@@ -179,5 +179,40 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetListAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> GetAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

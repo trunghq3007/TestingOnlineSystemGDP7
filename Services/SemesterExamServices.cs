@@ -39,6 +39,11 @@ namespace Services
             return SemesterExamRepository.GetById(id);
         }
 
+       public Result GetResult(int id)
+        {
+            return SemesterExamRepository.GetResult(id);
+        }
+
         public int Insert(SemesterExam t)
         {
             return SemesterExamRepository.Insert(t);
@@ -109,5 +114,9 @@ public IEnumerable<Test> GetTestsNotAdd(int id)
             return SemesterExamRepository.GetTestDetail(id);
         }
 
+        public int Submit(List<Answer> answers, int testId, int userID)
+        {
+            return SemesterExamRepository.Submit(answers, testId, userID);
+        }
     }
 }

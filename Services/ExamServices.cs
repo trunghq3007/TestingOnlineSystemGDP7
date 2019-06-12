@@ -18,8 +18,7 @@ namespace Services
 		private IExamRepository<Exam> examRepository;
 		public ExamServices()
 		{
-            
-               examRepository = new ExamRepository(new DBEntityContext());
+			examRepository = new ExamRepository(new DBEntityContext());
 		}
 
 		public int Delete(int id)
@@ -27,7 +26,7 @@ namespace Services
 			return examRepository.Delete(id);
 		}
 
-		public int Export_exam(int id)
+		public string Export_exam(int id)
 		{
 			return examRepository.Export_exam(id);
 			//throw new System.NotImplementedException();
@@ -81,9 +80,9 @@ namespace Services
             return examRepository.GetCategoryName(idExam);
         }
 
-        public IEnumerable<ViewDetailExam> GetDetailExams(int id)
-        {
-            return examRepository.GetDetailExams(id);
-        }
+        //public IEnumerable<ViewDetailExam> GetDetailExams(int id)
+        //{
+        //    return examRepository.GetDetailExams(id);
+        //}
     }
 }

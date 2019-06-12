@@ -7,6 +7,7 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebApi.Controllers
             services = new UserSevices();
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 1)]
         // Get all User method
         public string GetUser()
         {
@@ -182,18 +184,7 @@ namespace WebApi.Controllers
             }
 
         }
-        [HttpPost]
-        //Login method
-        public string Login(string userName, string passWord, bool rememberMe)
-        {
-            //ResultObject result = new ResultObject();
-            var jsonSetting = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-            var result = services.Login(userName, passWord, rememberMe);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
-        }
+
         [HttpGet]
         //Check UserName
         public string CheckUserName(string userName)

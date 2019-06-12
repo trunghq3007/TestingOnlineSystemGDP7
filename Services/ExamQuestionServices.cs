@@ -12,7 +12,7 @@ using Services.Interfaces;
 
 namespace Services
 {
-   public class ExamQuestionServices:Interfaces.IExamQuestionServices<Question>
+    public class ExamQuestionServices : Interfaces.IExamQuestionServices<Question>
     {
         private IExamQuestion<Question> repository;
         public ExamQuestionServices()
@@ -44,19 +44,19 @@ namespace Services
             return repository.AddMutipleQuestion(ListModel);
         }
 
-        public IEnumerable<Question> GetAll()
+        public IEnumerable<ViewQuestionExam> GetAll()
         {
             return repository.GetAll();
         }
 
-        
+
 
         public int RandomQuestion(ViewQuestionExam model)
         {
             return repository.RandomQuestion(model);
         }
 
-        public IEnumerable<Question> GetById(int id)
+        public IEnumerable<ViewQuestionExam> GetById(int id)
         {
             return repository.GetById(id);
         }

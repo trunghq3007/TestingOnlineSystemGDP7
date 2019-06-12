@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Web;
 
@@ -139,13 +140,25 @@ namespace WebApi.Controllers
         public string Get(string searchString)
         {
             var result = service.Search(searchString).ToList();
-            return JsonConvert.SerializeObject(result);
+            //return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
         [Route("SemesterExam/detail/{id}")]
         [HttpGet]
         public string Detail(int id)
         {
             var result = service.GetById(id);
+            return JsonConvert.SerializeObject(result);
+        }
+
+        [Route("SemesterExam/result/{id}")]
+        [HttpGet]
+        public string Result(int id)
+        {
+            var result = service.GetResult(id);
             return JsonConvert.SerializeObject(result);
         }
         [Route("SemesterExam/Update/")]
@@ -311,6 +324,20 @@ namespace WebApi.Controllers
             };
             var result = service.GeTestProcessings(id);
             return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+        }
+
+        [HttpPost]
+        public string Submit([FromBody] object value, int testId, string isSubmit)
+        {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            int userid = 2;
+            var E = JsonConvert.DeserializeObject<List<Answer>>(value.ToString());
+            int F = service.Submit(E, testId, userid);
+            return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting);
+
         }
 
     

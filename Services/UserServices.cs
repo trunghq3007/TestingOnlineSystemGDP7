@@ -59,6 +59,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> GetAll()
         {
             return userRepository.GetAll();
@@ -71,12 +76,17 @@ namespace Services
 
         public User GetByUsername(string userName)
         {
-            throw new NotImplementedException();
+            return userRepository.GetByUsername(userName);
         }
 
         public List<UserDetail> GetDetailUser(int id)
         {
             return userRepository.GetDetailUser(id);
+        }
+
+        public List<int> GetListAction(string userName)
+        {
+            return userRepository.GetListAction(userName);
         }
 
         public string GetRoleName(int idUser)
@@ -109,18 +119,9 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public User Login(string userName, string passWord, bool rememberMe)
+        public int Login(LoginModel model, bool isLoginAdmin = false)
         {
-            var result = userRepository.Login(userName, /*Encryptor.MD5Hash(*/passWord/*)*/);
-            if (result == true)
-            {
-                var userSession = userRepository.GetByUsername(userName);
-                return userSession;
-            }
-            else
-            {
-                return null;
-            }
+            return userRepository.Login(model, isLoginAdmin);
         }
 
         public IEnumerable<User> Search(string searchString)

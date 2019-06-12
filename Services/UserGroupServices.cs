@@ -59,6 +59,11 @@ namespace Services
             return usergroupRepository.FilterUserInGroup(model, id);
         }
 
+        public IEnumerable<Model.Action> GetActionInRole(int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();
@@ -75,6 +80,11 @@ namespace Services
         }
 
         public List<UserDetail> GetDetailUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetListAction(string userName)
         {
             throw new NotImplementedException();
         }
@@ -110,6 +120,11 @@ namespace Services
         }
 
         public User Login(string userName, string passWord, bool rememberMe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Login(LoginModel model, bool isLoginAdmin = false)
         {
             throw new NotImplementedException();
         }

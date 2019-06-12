@@ -75,6 +75,30 @@ namespace Repository
             GC.SuppressFinalize(this);
         }
 
-       
+        public int DeleteBatch(string listId)
+        {
+            var arrId = listId.Split(',');
+            using (var trans = context.Database.BeginTransaction())
+            {
+                foreach (var id in arrId)
+                {
+                    var flag = int.TryParse(id, out int ID);
+                    if (flag)
+                    {
+                        context.Tags.Remove(context.Tags.Where(s => s.Id == ID).SingleOrDefault());
+                    }
+                    else
+                    {
+                        trans.Rollback();
+                        return 0;
+                    }
+                }
+                var result = context.SaveChanges();
+                trans.Commit();
+                return result;
+            }
+        }
+
+
     }
 }

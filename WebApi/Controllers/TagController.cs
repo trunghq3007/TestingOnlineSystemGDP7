@@ -29,14 +29,23 @@ namespace WebApi.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
+
         [HttpGet]
         public string Get(int id)
         {
+
+
+
             var result = service.GetById(id);
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+
+
         }
 
-        [HttpGet]
+        [HttpPost]
         public string Get([FromUri]string action, [FromBody]string value)
         {
             if (value != null && !"".Equals(value))
@@ -45,41 +54,89 @@ namespace WebApi.Controllers
                 {
                     return JsonConvert.SerializeObject(service.Search(value));
                 }
+                if ("delete".Equals(action))
+                {
+                    return JsonConvert.SerializeObject(service.DeleteBatch(value));
+                }
             }
-            var result = service.GetAll().ToList();
+            return "NULL VALUE";
+        }
+
+
+        [HttpPost]
+        public string Post([FromBody]object value)
+        {
+            ResultObject result = new ResultObject();
+            try
+            {
+                if (value != null)
+                {
+                    var question = JsonConvert.DeserializeObject<Tag>(value.ToString());
+                    result.Success = service.Insert(question);
+                    return JsonConvert.SerializeObject(result);
+                }
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+
             return JsonConvert.SerializeObject(result);
         }
 
-        [HttpPost]
-        public string Post([FromBody]string value)
-        {
-            if (value.Count() > 0)
-            {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
-                var result = service.Insert(question);
-                return JsonConvert.SerializeObject(result);
-            }
-            return "FALSE";
-        }
+
+
+
 
         [HttpPut]
-        public string Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]object value)
         {
-            if (value.Count() > 0)
+            ResultObject result = new ResultObject();
+            try
             {
-                var question = JsonConvert.DeserializeObject<Tag>(value);
-                question.Id = id;
-                var result = service.Update(question);
+                if (value != null)
+                {
+                    var question = JsonConvert.DeserializeObject<Tag>(value.ToString().Trim());
+                    question.Id = id;
+                    result.Success = service.Update(question);
+                    return JsonConvert.SerializeObject(result);
+                }
+
+            }
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                 return JsonConvert.SerializeObject(result);
             }
-            return "FALSE";
+            result.Message = "Null content";
+            return JsonConvert.SerializeObject(result);
         }
+
+
+
         [HttpDelete]
         public string Put(int id)
         {
-            var result = service.Delete(id);
-            return JsonConvert.SerializeObject(result);
+            ResultObject result = new ResultObject();
+            try
+            {
+                result.Success = service.Delete(id);
+                return JsonConvert.SerializeObject(result);
+
+            }
+
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(result);
+            }
+
+
+
+
         }
+
 
 
     }

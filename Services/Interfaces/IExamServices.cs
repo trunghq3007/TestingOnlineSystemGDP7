@@ -1,4 +1,5 @@
-﻿using Model.ViewModel;
+﻿using Model;
+using Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Services.Interfaces
  public	interface IExamServices<T>
 	{
 		ListFilter listFilters();
-		IEnumerable<T> GetAll();
+		//IEnumerable<T> GetAll();
 		IEnumerable<T> Search(string searchString);
 		
 		int Insert(T t);
@@ -20,5 +21,8 @@ namespace Services.Interfaces
 		IEnumerable<T> Filter(ExamFilterModel filterModel);
            
 		int Export_exam(int id);
-	}
+        string GetCategoryName(int idExam);
+        IEnumerable<ViewDetailExam> GetDetailExams(int id);
+        IEnumerable<T> GetAll();
+    }
 }

@@ -23,16 +23,24 @@ namespace WebApi.Controllers
 		{
 			services = new ExamServices();
 		}
-		[HttpGet]
-
-		public string Get()
-		{
-            var result = services.GetAll().ToList();
-            // return JsonConvert.SerializeObject(result);
-            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+	
+         [HttpGet]
+		public string Getall()
+        {
+            ResultObject resultt = new ResultObject();
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                var result = services.GetAll().ToList();
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
+            catch (Exception e)
+            {
+                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return JsonConvert.SerializeObject(resultt);
+            }
 
         }
 
@@ -90,7 +98,7 @@ namespace WebApi.Controllers
                 {
                     return JsonConvert.SerializeObject(services.listFilters());
                 }
-
+               
                 var result = services.GetAll().ToList();
 
                 return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
@@ -209,5 +217,10 @@ namespace WebApi.Controllers
 			}
 			return null;
 		}
+        [HttpGet]
+        public string Get(int idExam)
+        {
+            return services.GetCategoryName(idExam);
+        }
 	}
 }

@@ -36,7 +36,9 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
             var result = from t in context.Tests
                          join e in context.Exams on t.ExamId equals e.Id
                          join s in context.SemesterExams on t.SemasterExamId equals s.ID
+                         where t.Status != 0
                          select new
+                         
                          {
 
 
@@ -45,7 +47,8 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
                              t.CreateBy,
                              t.PassScore,
                              e.NameExam,
-                             s.SemesterName
+                             s.SemesterName,
+                             t.Status
                          };
                         List<ViewTest> list = new List<ViewTest>();
             foreach(var item in result)
@@ -57,6 +60,7 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
                 viewTest.PassScore = item.PassScore;
                 viewTest.NameExam = item.NameExam;
                 viewTest.SemesterName = item.SemesterName;
+                viewTest.Status = item.Status;
                 list.Add(viewTest);
             }
             return list;

@@ -88,7 +88,8 @@ namespace Repository
                         context.Tags.Remove(context.Tags.Where(s => s.Id == ID).SingleOrDefault());
                     }
                     else
-                    {
+                    { 
+
                         trans.Rollback();
                         return 0;
                     }

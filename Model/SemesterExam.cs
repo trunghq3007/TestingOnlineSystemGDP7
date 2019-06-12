@@ -38,7 +38,7 @@ namespace Model
         public string Code { get; set; }      
         public int status { get; set; }
         public ICollection<SemesterExam_User> semesterExam_Users { get; set; }
-        public virtual ICollection<Test> Tests { get; set; }
+        public  ICollection<Test> Tests { get; set; }
         
     }
 }

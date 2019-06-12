@@ -32,9 +32,14 @@ namespace Services
             return repository.getAll();
         }
 
-        public IEnumerable<Exam> getDetailExam(int id)
+        public object getDetailExam(int id)
         {
             return repository.getDetailExam(id);
+        }
+
+        public IEnumerable<SemesterExam> SeachCode(string code)
+        {
+            return repository.SeachCode(code);
         }
     }
 }

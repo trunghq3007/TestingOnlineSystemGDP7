@@ -34,7 +34,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public string Get(int id)
         {
-          
+
 
             var result = service.GetById(id);
             return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
@@ -79,7 +79,7 @@ namespace WebApi.Controllers
         [HttpPut]
         public string Put(int id, [FromBody]object value)
         {
-            if (value != null )
+            if (value != null)
             {
                 var category = JsonConvert.DeserializeObject<Category>(value.ToString());
                 category.Id = id;
@@ -98,7 +98,7 @@ namespace WebApi.Controllers
                 var result = service.Delete(id);
                 return JsonConvert.SerializeObject(result);
             }
-           catch
+            catch
             {
                 return "0";
             }

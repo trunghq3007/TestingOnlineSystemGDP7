@@ -35,9 +35,40 @@ namespace Repository
             var list = context.Tests.Where(s => s.SemasterExamId == id).ToList();
             return list;
         }
-        public IEnumerable<Exam> getDetailExam(int id)
+        public object getDetailExam(int id)
         {
-            return context.Exams.Where(s => s.Id == id).ToList();
+            ExamInformation examInformation = new ExamInformation();
+            var query = from T in context.Tests
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                            on E.Category.Id equals C.Id
+                        where T.Id == id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,
+                            T.Id,
+                        };
+            examInformation.TestName = query.FirstOrDefault().TestName;
+            examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4;
+            examInformation.NumberStatementQuestion = query.FirstOrDefault().QuestionNumber - examInformation.NumberChoiceQuestion;
+            examInformation.TestTime = query.FirstOrDefault().TestTime;
+            examInformation.CategoryName = query.FirstOrDefault().Name;
+            examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
+            examInformation.TotalScore = 100;
+            return examInformation;
+        }
+
+        public IEnumerable<SemesterExam> SeachCode(string code)
+        {
+            if (!string.IsNullOrEmpty(code))
+            {
+                return context.SemesterExams.Where(s => s.Code.Equals(code) && s.status !=0).ToList();
+            }
+           
+            return context.SemesterExams.Where(s => s.status != 0).ToList();
         }
     }
 }

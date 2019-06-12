@@ -10,6 +10,7 @@ namespace Repository.Interfaces
     {
         IEnumerable<T1> getAll();
         IEnumerable<T2> getListExam(int id);
-        IEnumerable<T3> getDetailExam(int id);
+        object getDetailExam(int id);
+        IEnumerable<T1> SeachCode(string code);
     }
 }

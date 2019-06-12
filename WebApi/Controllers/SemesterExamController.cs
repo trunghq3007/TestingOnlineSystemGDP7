@@ -140,13 +140,25 @@ namespace WebApi.Controllers
         public string Get(string searchString)
         {
             var result = service.Search(searchString).ToList();
-            return JsonConvert.SerializeObject(result);
+            //return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
         [Route("SemesterExam/detail/{id}")]
         [HttpGet]
         public string Detail(int id)
         {
             var result = service.GetById(id);
+            return JsonConvert.SerializeObject(result);
+        }
+
+        [Route("SemesterExam/result/{id}")]
+        [HttpGet]
+        public string Result(int id)
+        {
+            var result = service.GetResult(id);
             return JsonConvert.SerializeObject(result);
         }
         [Route("SemesterExam/Update/")]

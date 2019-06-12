@@ -153,5 +153,17 @@ namespace Services
         {
             throw new NotImplementedException();
         }
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            return roleActionRepository.DeleteActionRole(idAction, idRole);
+        }
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            return roleActionRepository.InsertRoleAction(idAction, idRole);
+        }
+        public IEnumerable<Model.Action> GetActionOutRole(int idRole)
+        {
+            return roleActionRepository.GetActionOutRole(idRole);
+        }
     }
 }

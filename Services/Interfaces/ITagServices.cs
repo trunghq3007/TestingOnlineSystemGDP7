@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface ITagServices<T> where T:class
+    public interface ITagServices<T> where T : class
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Search(string searchString);
         int Insert(T t);
         int Update(T t);
         int Delete(int id);
-        T GetById(int id); 
+        T GetById(int id);
     }
 }

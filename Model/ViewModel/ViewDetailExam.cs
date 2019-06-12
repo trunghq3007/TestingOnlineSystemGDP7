@@ -21,5 +21,7 @@ namespace Model
         public DateTime? CreateAt { get; set; }
         public string Note { get; set; }
         public string NameCategory { get; set; }
+        public int CategoryId { get; set; }
+        
     }
 }

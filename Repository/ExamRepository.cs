@@ -86,10 +86,10 @@ namespace Repository
 
         }
 
-		public IEnumerable<Exam> GetAll()
-		{
-            return context.Exams.ToList();
-        }
+		//public IEnumerable<Exam> GetAll()
+		//{
+  //          return context.Exams.ToList();
+  //      }
 
         public Exam GetById(int id)
         {
@@ -204,7 +204,9 @@ namespace Repository
 			{
 				Listtmetest = new HashSet<float>(),
 				ListCreateBy = new HashSet<string>(),
-				Listquestion = new HashSet<int>()
+				Listquestion = new HashSet<int>(),
+                ListTypeExam = new HashSet<string>(),
+
 			};
 			foreach (var it in context.Tests)
 			{
@@ -213,54 +215,67 @@ namespace Repository
 			foreach (var itw in context.Exams)
 			{
 				item.ListCreateBy.Add(itw.CreateBy);
+                item.Listquestion.Add(itw.QuestionNumber);
 
 			}
-			foreach (var item1 in context.Exams)
+			foreach (var item1 in context.Categorys)
 			{
-				item.Listquestion.Add(item1.QuestionNumber);
+				item.ListTypeExam.Add(item1.Name);
 			}
 
 			return item;
 
 		}
 
-        public string Export_exam(int id)
-        {
-            string Exam="";
+		public int Export_exam(int id)
+		{
+            
             Exam exam = (from e in context.Exams
                          where e.Id == id
                          select e).SingleOrDefault();
             string examName = "";
 
-            examName = "Subject : " + exam.NameExam.ToString() + "\r";
+            examName = "Subject : "+exam.NameExam.ToString()+"\r";
             string nameFile = exam.NameExam.ToString();
 
             try
             {
-                //examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
+                examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
+                //titleExam += (from t in context.Tests
+                //              where t.ExamId == id
+                //              select new
+                //              {
+                //                  TestTime = t.TestTime
+                //              }
+                //              ).ToString() +"\r";
 
                 Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
                 object missing = System.Reflection.Missing.Value;
-
+               
                 Microsoft.Office.Interop.Word.Document document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
                 Microsoft.Office.Interop.Word.Range range = document.Range();
                 foreach (Microsoft.Office.Interop.Word.Section section in document.Sections)
                 {
-
+                    //Get the header range and add the header details.  
                     Microsoft.Office.Interop.Word.Range headerRange = section.Headers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
                     headerRange.Fields.Add(headerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
                     headerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
                     headerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdBlue;
                     headerRange.Font.Size = 24;
-
+                    
                     headerRange.Text = examName;
-                    break;
-                }
 
+                }
                 string tempSave = string.Empty;
 
                 foreach (Microsoft.Office.Interop.Word.Section wordSection in document.Sections)
                 {
+                    //Get the footer range and add the footer details.  
+                    Microsoft.Office.Interop.Word.Range footerRange = wordSection.Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                    footerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdDarkRed;
+                    footerRange.Font.Size = 10;
+                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
+                    footerRange.Text = "Footer text goes here";
 
                     var exams = (from eq in context.ExamQuestions
                                  where eq.ExamId == id
@@ -268,11 +283,10 @@ namespace Repository
                                  {
                                      QuestionId = eq.QuestionId
                                  }).ToList();
+                    int countExam =  1;
 
-                    int countExam = 1;
                     foreach (var item in exams)
                     {
-
                         long temp = Convert.ToInt64(item.QuestionId);
                         List<Question> ques = (from q in context.Questions
                                                where q.Id == temp
@@ -281,9 +295,12 @@ namespace Repository
                         foreach (Question itemq in ques)
                         {
 
+                            ///document.Content.CopyAsPicture();
                             string quesText = itemq.Content.ToString();
+                            
+                            //document.Content.Text = quesText + Environment.NewLine + Environment.NewLine;
 
-                            tempSave += "<br>Question " + countExam + " : " + itemq.Content + "<br>";
+                            tempSave += "Question "+countExam+" : "+itemq.Content + '\r';
                             List<Answer> answers = (from a in context.Answers
                                                     where a.Question.Id == temp
                                                     select a
@@ -293,106 +310,63 @@ namespace Repository
                             characterAbc = (int)character;
                             foreach (var itemAns in answers)
                             {
-                                //string tach = itemAns.Content.ToString().Replace("<p>","");
-                                string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString()+"<br>";
-
-                                tempSave += answer;
+                                
+                                string answer = (char)(characterAbc) + ". "+ itemAns.Content.ToString();
+                                
+                                tempSave += answer + "\r";
                                 characterAbc++;
                             }
                             countExam++;
+                            tempSave += "\r";
                         }
-
+                        
                     }
-                    tempSave += "<br><br><br><br><br><br><br><br><br><br><br><br>" + "ANSWER" + "<br>";
-                    //
-                    int countExamAnswer = 1;
-                    foreach (var item in exams)
-                    {
-
-                        long temp = Convert.ToInt64(item.QuestionId);
-                        List<Question> ques = (from q in context.Questions
-                                               where q.Id == temp
-
-                                               select q).ToList();
-                        foreach (Question itemq in ques)
-                        {
-
-                            string quesText = itemq.Content.ToString();
-
-                            tempSave += "Q" + countExamAnswer + ": ";
-                            List<Answer> answers = (from a in context.Answers
-                                                    where a.Question.Id == temp
-                                                    select a
-                                                    ).ToList();
-                            int characterAbc = 0;
-                            char character = 'A';
-                            characterAbc = (int)character;
-                            foreach (var itemAns in answers)
-                            {
-
-                                string answer = (char)(characterAbc)+ "&emsp; &emsp;";
-                                if (itemAns.IsTrue)
-                                {
-                                    tempSave += answer;
-                                }
-
-                                characterAbc++;
-                            }
-                            countExamAnswer++;
-                        }
-
-                    }
-                    Exam = tempSave;
-                    ///string formatExam = tempSave;
-                    //Application wordApp = new Application();
-                    //wordApp.Visible = true;
-                    //Document doc = wordApp.Documents.Add();
-                    //Range rng = wordApp.ActiveDocument.Range(0, 0);
-                    //ContentControl contentControl = doc.ContentControls.Add(WdContentControlType.wdContentControlRichText, ref missing);
-                    //contentControl.Range.InsertFile(SaveToTemporaryFile(tempSave), ref missing, ref missing, ref missing, ref missing);
+                    //object rangeABC = range.InlineShapes.AddPicture(@"C:\Users\LeCuong\OneDrive\Desktop\Untitled.jpg");
 
 
+                    //Range rngPic = document.Tables[1].Range;
 
+                    //rngPic.InlineShapes.AddPicture(@"C:\Users\LeCuong\Desktop\Untitled.jpg");
 
-                    //document.Content.Text = tempSave;
-                    //document.Words.Last.InsertBreak();
+                    //float leftPosition = (float)this.Application.Selection.Information[WdInformation.wdHorizontalPositionRelativeToPage];
+
 
                     //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
-                    //string configLocation = requiredPath.ToString().Substring(6) + "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
+                    //string configLocation = requiredPath.ToString().Substring(6)+ "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
+
 
                     //string configText = File.ReadAllText(configLocation);
 
-                    //object filename = configText + nameFile + "new" + +id + ".docx";
-                    ////object filename = @"D:\"+nameFile + id + ".docx";
-                    //document.SaveAs2(ref filename);
-
+                    //document.Content.Text = tempSave;
+                    //object filename = configText+nameFile+"cuong"+id+".docx";
+                    object filename = @"D:\"+nameFile + id + ".docx";
+                    document.SaveAs2(ref filename);
+                    
                 }
-                //string abc = document.Content.Text;
-                //document.Close(ref missing, ref missing, ref missing);
-                //document = null;
-                //winword.Quit(ref missing, ref missing, ref missing);
-                //winword = null;
+                string abc = document.Content.Text;
+                document.Close(ref missing, ref missing, ref missing);
+                document = null;
+                winword.Quit(ref missing, ref missing, ref missing);
+                winword = null;
 
             }
             catch (Exception ex)
             {
                 throw;
             }
+            return 1;
+			
+		}
 
-            return Exam;
-
-        }
-        public string SaveToTemporaryFile(string html)
+        public IEnumerable<Exam> GetAll()
         {
-            string htmlTempFilePath = Path.Combine(Path.GetTempPath(), string.Format("{0}.html", Path.GetRandomFileName()));
-            using (StreamWriter writer = File.CreateText(htmlTempFilePath))
-            {
-                html = string.Format("<html>{0}</html>", html);
-
-                writer.WriteLine(html);
-            }
-            return htmlTempFilePath;
+            var list = context.Exams.ToList();
+     
+            return list;
         }
 
+
+
+        
     }
 }

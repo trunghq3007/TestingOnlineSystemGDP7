@@ -224,9 +224,9 @@ namespace Repository
 
 		}
 
-        public int Export_exam(int id)
+        public string Export_exam(int id)
         {
-
+            string Exam="";
             Exam exam = (from e in context.Exams
                          where e.Id == id
                          select e).SingleOrDefault();
@@ -237,7 +237,7 @@ namespace Repository
 
             try
             {
-                examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
+                //examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
 
                 Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
                 object missing = System.Reflection.Missing.Value;
@@ -283,7 +283,7 @@ namespace Repository
 
                             string quesText = itemq.Content.ToString();
 
-                            tempSave += "Question " + countExam + " : " + itemq.Content + '\r';
+                            tempSave += "<br>Question " + countExam + " : " + itemq.Content + "<br>";
                             List<Answer> answers = (from a in context.Answers
                                                     where a.Question.Id == temp
                                                     select a
@@ -293,18 +293,17 @@ namespace Repository
                             characterAbc = (int)character;
                             foreach (var itemAns in answers)
                             {
+                                //string tach = itemAns.Content.ToString().Replace("<p>","");
+                                string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString()+"<br>";
 
-                                string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString();
-
-                                tempSave += answer + "\r";
+                                tempSave += answer;
                                 characterAbc++;
                             }
                             countExam++;
-                            tempSave += "\r";
                         }
 
                     }
-                    tempSave += "\f" + "ANSWER" + "\r";
+                    tempSave += "<br><br><br><br><br><br><br><br><br><br><br><br>" + "ANSWER" + "<br>";
                     //
                     int countExamAnswer = 1;
                     foreach (var item in exams)
@@ -320,7 +319,7 @@ namespace Repository
 
                             string quesText = itemq.Content.ToString();
 
-                            tempSave += "Q" + countExamAnswer + " : ";
+                            tempSave += "Q" + countExamAnswer + ": ";
                             List<Answer> answers = (from a in context.Answers
                                                     where a.Question.Id == temp
                                                     select a
@@ -331,7 +330,7 @@ namespace Repository
                             foreach (var itemAns in answers)
                             {
 
-                                string answer = (char)(characterAbc) + "\t";
+                                string answer = (char)(characterAbc)+ "&emsp; &emsp;";
                                 if (itemAns.IsTrue)
                                 {
                                     tempSave += answer;
@@ -343,25 +342,36 @@ namespace Repository
                         }
 
                     }
+                    Exam = tempSave;
+                    ///string formatExam = tempSave;
+                    //Application wordApp = new Application();
+                    //wordApp.Visible = true;
+                    //Document doc = wordApp.Documents.Add();
+                    //Range rng = wordApp.ActiveDocument.Range(0, 0);
+                    //ContentControl contentControl = doc.ContentControls.Add(WdContentControlType.wdContentControlRichText, ref missing);
+                    //contentControl.Range.InsertFile(SaveToTemporaryFile(tempSave), ref missing, ref missing, ref missing, ref missing);
 
-                    document.Content.Text = tempSave;
-                    document.Words.Last.InsertBreak();
 
-                    var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
-                    string configLocation = requiredPath.ToString().Substring(6) + "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
 
-                    string configText = File.ReadAllText(configLocation);
 
-                    object filename = configText + nameFile + "new" + +id + ".docx";
-                    //object filename = @"D:\"+nameFile + id + ".docx";
-                    document.SaveAs2(ref filename);
+                    //document.Content.Text = tempSave;
+                    //document.Words.Last.InsertBreak();
+
+                    //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
+                    //string configLocation = requiredPath.ToString().Substring(6) + "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
+
+                    //string configText = File.ReadAllText(configLocation);
+
+                    //object filename = configText + nameFile + "new" + +id + ".docx";
+                    ////object filename = @"D:\"+nameFile + id + ".docx";
+                    //document.SaveAs2(ref filename);
 
                 }
-                string abc = document.Content.Text;
-                document.Close(ref missing, ref missing, ref missing);
-                document = null;
-                winword.Quit(ref missing, ref missing, ref missing);
-                winword = null;
+                //string abc = document.Content.Text;
+                //document.Close(ref missing, ref missing, ref missing);
+                //document = null;
+                //winword.Quit(ref missing, ref missing, ref missing);
+                //winword = null;
 
             }
             catch (Exception ex)
@@ -369,8 +379,19 @@ namespace Repository
                 throw;
             }
 
-            return 1;
+            return Exam;
 
+        }
+        public string SaveToTemporaryFile(string html)
+        {
+            string htmlTempFilePath = Path.Combine(Path.GetTempPath(), string.Format("{0}.html", Path.GetRandomFileName()));
+            using (StreamWriter writer = File.CreateText(htmlTempFilePath))
+            {
+                html = string.Format("<html>{0}</html>", html);
+
+                writer.WriteLine(html);
+            }
+            return htmlTempFilePath;
         }
 
     }

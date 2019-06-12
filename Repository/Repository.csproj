@@ -85,6 +85,7 @@
     <Compile Include="Interfaces\IQuestionRepository.cs" />
     <Compile Include="Interfaces\ITestRepository.cs" />
     <Compile Include="QuestionRepository.cs" />
+    <Compile Include="RoleActionRepository.cs" />
     <Compile Include="RoleRepository.cs" />
     <Compile Include="SemasterExamResponsitory.cs" />
     <Compile Include="SemesterExamRepository.cs" />

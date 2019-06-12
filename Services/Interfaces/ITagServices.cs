@@ -13,6 +13,6 @@ namespace Services.Interfaces
         int Insert(T t);
         int Update(T t);
         int Delete(int id);
-        T GetById(int id);
+        T GetById(int id); 
     }
 }

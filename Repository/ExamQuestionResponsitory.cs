@@ -199,13 +199,25 @@ namespace Repository
             {
                 ListLevel = new HashSet<string>(),
                 ListType = new HashSet<string>(),
-                ListCreateBy = new HashSet<string>()
+                ListCreateBy = new HashSet<string>(),
+                ListCategory = new HashSet<string>()
             };
             foreach (var it in context.Questions)
             {
                 item.ListLevel.Add(it.Level.ToString());
                 item.ListType.Add(it.Type.ToString());
                 item.ListCreateBy.Add(it.CreatedBy);
+              
+            }
+
+            foreach (var category in context.Questions)
+            {
+                var cateogories = context.Categorys.Where(c => c.Id == category.Category.Id).SingleOrDefault();
+                if (category.Category.Id == cateogories.Id)
+                {
+                    item.ListCategory.Add(category.Category.Name);
+                } 
+               
             }
 
             return item;
@@ -277,7 +289,7 @@ namespace Repository
         {
             List<ExamQuestion> list = new List<ExamQuestion>();
             var exam = context.Exams.Where(ex => ex.Id == model.ExamId).SingleOrDefault();
-            var questions = context.Questions.Where(e => e.Category.Id == exam.Category.Id).ToList();
+            var questions = context.Questions.Where(e => e.Category.Name == model.CategoryName && e.Level==model.Type).ToList();
             var examquestion = context.ExamQuestions.Where(ex => ex.ExamId == model.ExamId).ToList();
             foreach (var item in examquestion)
             {

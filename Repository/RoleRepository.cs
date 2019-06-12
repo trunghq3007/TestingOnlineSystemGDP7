@@ -170,5 +170,20 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Role> GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

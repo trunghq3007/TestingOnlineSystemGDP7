@@ -7,6 +7,7 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebApi.Controllers
             services = new UserSevices();
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 1)]
         // Get all User method
         public string GetUser()
         {

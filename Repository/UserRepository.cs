@@ -85,7 +85,7 @@ namespace Repository
             var currentUser = context.Users.Find(user.UserId);
 
             currentUser.EditedDate = DateTime.Now;
-
+            currentUser.Password = Encryptor.MD5Hash(user.Password);
             currentUser.Email = user.Email;
             currentUser.Role = context.Roles.Find(user.RoleId);
             currentUser.RoleId = user.RoleId;
@@ -306,6 +306,21 @@ namespace Repository
         }
 
         public IEnumerable<User> GetAction(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteActionRole(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertRoleAction(int idAction, int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetActionOutRole(int idRole)
         {
             throw new NotImplementedException();
         }

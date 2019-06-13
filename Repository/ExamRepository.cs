@@ -356,9 +356,5 @@ namespace Repository
             return list;
         }
 
-        string IExamRepository<Exam>.Export_exam(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

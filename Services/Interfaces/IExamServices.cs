@@ -20,8 +20,9 @@ namespace Services.Interfaces
 		T GetById(int id);
 		IEnumerable<T> Filter(ExamFilterModel filterModel);
            
+		
+		
 		string Export_exam(int id);
-	
         string GetCategoryName(int idExam);
         IEnumerable<ViewDetailExam> GetDetailExams(int id);
         IEnumerable<T> GetAll();

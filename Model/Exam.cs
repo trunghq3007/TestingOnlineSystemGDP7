@@ -26,6 +26,7 @@ namespace Model
         public DateTime? CreateAt { get; set; }
         public string Note { get; set; }
         //public virtual Category Categories { get; set; }
+       
       
         public virtual ICollection<Test> Tests { get; set; }
         public virtual ICollection<ExamQuestion> ExamQuestions { get; set; }

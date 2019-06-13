@@ -231,20 +231,21 @@ namespace Repository
 
 		}
 
-		public int Export_exam(int id)
+		public string Export_exam(int id)
 		{
-            
+
+            string Exam = "";
             Exam exam = (from e in context.Exams
                          where e.Id == id
                          select e).SingleOrDefault();
             string examName = "";
 
-            examName = "Subject : "+exam.NameExam.ToString()+"\r";
-            
+            examName = "Subject : " + exam.NameExam.ToString() + "\r";
+
 
             try
             {
-               
+
 
                 string tempSave = string.Empty;
                 int count = (from eq in context.ExamQuestions
@@ -253,78 +254,101 @@ namespace Repository
                              {
                                  QuestionId = eq.QuestionId
                              }).Count();
-                tempSave = "<h3 >" + examName + "</h3><p>" +"<h5> Question number: "+count+"<p></h5>";
-                
+                tempSave = "<h3 >" + examName + "</h3><p>" + "<h5> Question number: " + count + "<p></h5>";
 
-                    var exams = (from eq in context.ExamQuestions
-                                 where eq.ExamId == id
-                                 select new
-                                 {
-                                     QuestionId = eq.QuestionId
-                                 }).ToList();
-                    int countExam =  1;
 
-                    foreach (var item in exams)
+                var exams = (from eq in context.ExamQuestions
+                             where eq.ExamId == id
+                             select new
+                             {
+                                 QuestionId = eq.QuestionId
+                             }).ToList();
+
+                int countExam = 1;
+                foreach (var item in exams)
+                {
+
+                    long temp = Convert.ToInt64(item.QuestionId);
+                    List<Question> ques = (from q in context.Questions
+                                           where q.Id == temp
+
+                                           select q).ToList();
+                    foreach (Question itemq in ques)
                     {
-                        long temp = Convert.ToInt64(item.QuestionId);
-                        List<Question> ques = (from q in context.Questions
-                                               where q.Id == temp
 
-                                               select q).ToList();
-                        foreach (Question itemq in ques)
+                        string quesText = itemq.Content.ToString();
+
+                        tempSave += "<br>Question " + countExam + " : " + itemq.Content + "<br>";
+                        List<Answer> answers = (from a in context.Answers
+                                                where a.Question.Id == temp
+                                                select a
+                                                ).ToList();
+                        int characterAbc = 0;
+                        char character = 'A';
+                        characterAbc = (int)character;
+                        foreach (var itemAns in answers)
                         {
 
-                            ///document.Content.CopyAsPicture();
-                            string quesText = itemq.Content.ToString();
-                            
-                            //document.Content.Text = quesText + Environment.NewLine + Environment.NewLine;
+                            string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString() + "<br>";
 
-                            tempSave += "Question "+countExam+" : "+itemq.Content + '\r';
-                            List<Answer> answers = (from a in context.Answers
-                                                    where a.Question.Id == temp
-                                                    select a
-                                                    ).ToList();
-                            int characterAbc = 0;
-                            char character = 'A';
-                            characterAbc = (int)character;
-                            foreach (var itemAns in answers)
-                            {
-                                
-                                string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString()+"<br>";
-
-                                tempSave += answer;
-                                characterAbc++;
-                            }
-                            countExam++;
-                            tempSave += "\r";
+                            tempSave += answer;
+                            characterAbc++;
                         }
-                        
+                        countExam++;
                     }
-                    //object rangeABC = range.InlineShapes.AddPicture(@"C:\Users\LeCuong\OneDrive\Desktop\Untitled.jpg");
 
+                }
+                tempSave += "<br><br><br><br><br><br><br><br><br><br><br><br>" + "ANSWER" + "<br>";
+                //
+                int countExamAnswer = 1;
+                foreach (var item in exams)
+                {
 
-                    //Range rngPic = document.Tables[1].Range;
+                    long temp = Convert.ToInt64(item.QuestionId);
+                    List<Question> ques = (from q in context.Questions
+                                           where q.Id == temp
 
-                    //rngPic.InlineShapes.AddPicture(@"C:\Users\LeCuong\Desktop\Untitled.jpg");
+                                           select q).ToList();
+                    foreach (Question itemq in ques)
+                    {
 
-                    //float leftPosition = (float)this.Application.Selection.Information[WdInformation.wdHorizontalPositionRelativeToPage];
+                        string quesText = itemq.Content.ToString();
 
+                        tempSave += "Q" + countExamAnswer + ": ";
+                        List<Answer> answers = (from a in context.Answers
+                                                where a.Question.Id == temp
+                                                select a
+                                                ).ToList();
+                        int characterAbc = 0;
+                        char character = 'A';
+                        characterAbc = (int)character;
+                        foreach (var itemAns in answers)
+                        {
 
-                    //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
-                    //string configLocation = requiredPath.ToString().Substring(6)+ "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
+                            string answer = (char)(characterAbc) + "&emsp; &emsp;";
+                            if (itemAns.IsTrue)
+                            {
+                                tempSave += answer;
+                            }
 
+                            characterAbc++;
+                        }
+                        countExamAnswer++;
                     }
-                    Exam = tempSave;
-                    
+
+                }
+                Exam = tempSave;
+
 
             }
             catch (Exception ex)
             {
                 throw;
             }
-            return 1;
-			
-		}
+
+            return Exam;
+
+        }
 
         public IEnumerable<Exam> GetAll()
         {

@@ -49,19 +49,7 @@ namespace WebApi.Controllers
             }
 
         }
-        [HttpPut]
-        //Update role method
-        public string Update(int id, [FromBody]object value)
-        {
-            if (value != null)
-            {
-                var role = JsonConvert.DeserializeObject<Role>(value.ToString());
-                role.RoleId = id;
-                var result = services.Update(role);
-                return JsonConvert.SerializeObject(result);
-            }
-            return "FALSE";
-        }
+        
         [HttpPost]
         //Add user method
         public string AddRole([FromBody] object value)

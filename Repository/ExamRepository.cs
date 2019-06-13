@@ -61,14 +61,18 @@ namespace Repository
             {
                 result = result.Where(s => s.CreateBy.Equals(fillterModel.CreateBy)).ToList();
             }
+            if (fillterModel.TypeExam !=null &&!"".Equals(fillterModel.TypeExam))
+            {
+                result = result.Where(s => s.Category.Name.Equals(fillterModel.TypeExam)).ToList();
+            }
             if (fillterModel.TimeTest > 0)
             {
                 result = result.Where(s => s.Tests != null && s.Tests.Where(t => t.TestTime == fillterModel.TimeTest).Count() > 0).ToList();
             }
-            //if (fillterModel.CreateAt != null)
-            //{
-            //    result = result.Where(s => s.CreateAt == fillterModel.CreateAt).ToList();
-            //}
+            if (fillterModel.CreateAt != null)
+            {
+                result = result.Where(s => s.CreateAt == fillterModel.CreateAt).ToList();
+            }
             if (fillterModel.QuestionNumber > 0)
             {
                 result = result.Where(s => s.QuestionNumber == fillterModel.QuestionNumber).ToList();
@@ -86,10 +90,10 @@ namespace Repository
 
         }
 
-		public IEnumerable<Exam> GetAll()
-		{
-            return context.Exams.ToList();
-        }
+		//public IEnumerable<Exam> GetAll()
+		//{
+  //          return context.Exams.ToList();
+  //      }
 
         public Exam GetById(int id)
         {
@@ -204,7 +208,9 @@ namespace Repository
 			{
 				Listtmetest = new HashSet<float>(),
 				ListCreateBy = new HashSet<string>(),
-				Listquestion = new HashSet<int>()
+				Listquestion = new HashSet<int>(),
+                ListTypeExam = new HashSet<string>(),
+
 			};
 			foreach (var it in context.Tests)
 			{
@@ -213,26 +219,27 @@ namespace Repository
 			foreach (var itw in context.Exams)
 			{
 				item.ListCreateBy.Add(itw.CreateBy);
+                item.Listquestion.Add(itw.QuestionNumber);
 
 			}
-			foreach (var item1 in context.Exams)
+			foreach (var item1 in context.Categorys)
 			{
-				item.Listquestion.Add(item1.QuestionNumber);
+				item.ListTypeExam.Add(item1.Name);
 			}
 
 			return item;
 
 		}
 
-        public string Export_exam(int id)
-        {
-            string Exam="";
+		public int Export_exam(int id)
+		{
+            
             Exam exam = (from e in context.Exams
                          where e.Id == id
                          select e).SingleOrDefault();
             string examName = "";
 
-            examName = "Subject : " + exam.NameExam.ToString() + "\r";
+            examName = "Subject : "+exam.NameExam.ToString()+"\r";
             
 
             try
@@ -255,11 +262,10 @@ namespace Repository
                                  {
                                      QuestionId = eq.QuestionId
                                  }).ToList();
+                    int countExam =  1;
 
-                    int countExam = 1;
                     foreach (var item in exams)
                     {
-
                         long temp = Convert.ToInt64(item.QuestionId);
                         List<Question> ques = (from q in context.Questions
                                                where q.Id == temp
@@ -268,9 +274,12 @@ namespace Repository
                         foreach (Question itemq in ques)
                         {
 
+                            ///document.Content.CopyAsPicture();
                             string quesText = itemq.Content.ToString();
+                            
+                            //document.Content.Text = quesText + Environment.NewLine + Environment.NewLine;
 
-                            tempSave += "<br>Question " + countExam + " : " + itemq.Content + "<br>";
+                            tempSave += "Question "+countExam+" : "+itemq.Content + '\r';
                             List<Answer> answers = (from a in context.Answers
                                                     where a.Question.Id == temp
                                                     select a
@@ -287,46 +296,22 @@ namespace Repository
                                 characterAbc++;
                             }
                             countExam++;
+                            tempSave += "\r";
                         }
-
+                        
                     }
-                    tempSave += "<br><br><br><br><br><br><br><br><br><br><br><br>" + "ANSWER" + "<br>";
-                    //
-                    int countExamAnswer = 1;
-                    foreach (var item in exams)
-                    {
+                    //object rangeABC = range.InlineShapes.AddPicture(@"C:\Users\LeCuong\OneDrive\Desktop\Untitled.jpg");
 
-                        long temp = Convert.ToInt64(item.QuestionId);
-                        List<Question> ques = (from q in context.Questions
-                                               where q.Id == temp
 
-                                               select q).ToList();
-                        foreach (Question itemq in ques)
-                        {
+                    //Range rngPic = document.Tables[1].Range;
 
-                            string quesText = itemq.Content.ToString();
+                    //rngPic.InlineShapes.AddPicture(@"C:\Users\LeCuong\Desktop\Untitled.jpg");
 
-                            tempSave += "Q" + countExamAnswer + ": ";
-                            List<Answer> answers = (from a in context.Answers
-                                                    where a.Question.Id == temp
-                                                    select a
-                                                    ).ToList();
-                            int characterAbc = 0;
-                            char character = 'A';
-                            characterAbc = (int)character;
-                            foreach (var itemAns in answers)
-                            {
+                    //float leftPosition = (float)this.Application.Selection.Information[WdInformation.wdHorizontalPositionRelativeToPage];
 
-                                string answer = (char)(characterAbc)+ "&emsp; &emsp;";
-                                if (itemAns.IsTrue)
-                                {
-                                    tempSave += answer;
-                                }
 
-                                characterAbc++;
-                            }
-                            countExamAnswer++;
-                        }
+                    //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
+                    //string configLocation = requiredPath.ToString().Substring(6)+ "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
 
                     }
                     Exam = tempSave;
@@ -337,21 +322,20 @@ namespace Repository
             {
                 throw;
             }
+            return 1;
+			
+		}
 
-            return Exam;
-
-        }
-        public string SaveToTemporaryFile(string html)
+        public IEnumerable<Exam> GetAll()
         {
-            string htmlTempFilePath = Path.Combine(Path.GetTempPath(), string.Format("{0}.html", Path.GetRandomFileName()));
-            using (StreamWriter writer = File.CreateText(htmlTempFilePath))
-            {
-                html = string.Format("<html>{0}</html>", html);
-
-                writer.WriteLine(html);
-            }
-            return htmlTempFilePath;
+            var list = context.Exams.ToList();
+     
+            return list;
         }
 
+        string IExamRepository<Exam>.Export_exam(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

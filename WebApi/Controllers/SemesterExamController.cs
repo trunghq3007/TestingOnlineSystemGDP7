@@ -329,9 +329,14 @@ namespace WebApi.Controllers
         [HttpPost]
         public string Submit([FromBody] object value, int testId, string isSubmit)
         {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
             int userid = 2;
             var E = JsonConvert.DeserializeObject<List<Answer>>(value.ToString());
-            return JsonConvert.SerializeObject(E) ;
+            int F = service.Submit(E, testId, userid);
+            return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting);
 
         }
 

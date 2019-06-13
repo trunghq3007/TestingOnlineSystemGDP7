@@ -140,7 +140,7 @@ namespace Services
 
         public int Update(Role t)
         {
-            return roleRepository.Update(t);
+            throw new NotImplementedException();
         }
 
         public int Update(int id, string groupname)

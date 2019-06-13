@@ -18,7 +18,7 @@ namespace Services.Interfaces
 		int Delete(int id);
 		T Export_exam(int id);
 		List<ViewDetailTest> GetById(int id);
-        T getId(int id);
+        //T getId(int id);
 
     }
 }

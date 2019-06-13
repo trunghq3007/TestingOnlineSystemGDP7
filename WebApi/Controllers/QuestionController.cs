@@ -115,7 +115,8 @@ namespace WebApi.Controllers
             catch (Exception e)
             {
                 result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                result.Data = null;
+                return JsonConvert.SerializeObject(result);
             }
         }
 
@@ -136,6 +137,7 @@ namespace WebApi.Controllers
             catch (Exception e)
             {
                 result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                result.Data = null;
                 return JsonConvert.SerializeObject(result);
             }
         }
@@ -162,6 +164,7 @@ namespace WebApi.Controllers
             catch (Exception e)
             {
                 result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                result.Data = null;
                 return JsonConvert.SerializeObject(result);
             }
             //  return JsonConvert.SerializeObject(result);
@@ -183,6 +186,7 @@ namespace WebApi.Controllers
                 catch (Exception e)
                 {
                     result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    result.Data = null;
                     return JsonConvert.SerializeObject(result);
                 }
 
@@ -204,6 +208,7 @@ namespace WebApi.Controllers
             catch (Exception e)
             {
                 result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                result.Data = null;
                 return JsonConvert.SerializeObject(result);
             }
 

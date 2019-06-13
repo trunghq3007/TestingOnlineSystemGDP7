@@ -11,5 +11,7 @@ namespace Model.ViewModel
 		public HashSet<float> Listtmetest { get; set; }
 		public HashSet<int> Listquestion { get; set; }
 		public HashSet<string> ListCreateBy { get; set; }
-	}
+        public HashSet<string> ListTypeExam { get; set; }
+
+    }
 }

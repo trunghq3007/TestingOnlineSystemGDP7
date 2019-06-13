@@ -136,40 +136,24 @@ namespace Repository
 
 		List<ViewDetailTest> ITestRepository<Test>.GetById(int id)
 		{
-
-			var listdetail =
-			(from t in context.Tests
-			 join e in context.Exams on t.ExamId equals e.Id
-			 join r in context.TestResults on t.Id equals r.TestId
-			 join u in context.Users on r.UserId equals u.UserId
-			 join a in context.Answers on r.QuestionId equals a.Id
-			 join q in context.Questions on r.AnwserId equals q.Id
-
-			 select new
-			 {
-				 NameExam = e.NameExam,
-				 UserName = u.UserName,
-
-				 TestTime = t.TestTime,
-				 Score = r.Score,
-				 ContentQuestion = q.Content,
-				 ContentAnswer = a.Content
-			 });
-			List<ViewDetailTest> list = new List<ViewDetailTest>();
-			foreach (var item in listdetail)
-			{
-				ViewDetailTest viewDetailTest = new ViewDetailTest();
-				viewDetailTest.NameExam = item.NameExam;
-				viewDetailTest.UserName = item.UserName;
-				viewDetailTest.TestTime = item.TestTime;
-				viewDetailTest.Sorce = item.Score;
-				viewDetailTest.QuesTionContent = item.ContentQuestion;
-				viewDetailTest.AnswerContent = item.ContentAnswer;
-				list.Add(viewDetailTest);
-			}
-			return list;
-
-		}
+            var query = from t in context.Tests
+                        join ts in context.TestResults on t.Id equals ts.TestId
+                        join u in context.Users on ts.UserId equals u.UserId
+                        join e in context.Exams on t.ExamId equals e.Id
+                        join c in context.Categorys on e.Category.Id equals c.Id
+                        join s in context.SemesterExams on t.SemasterExamId equals s.ID
+                        where t.Id == id
+                        select new ViewDetailTest()
+                        {
+                            Id = t.Id,
+                            NameExam = e.NameExam,
+                            NameCategory = c.Name,
+                            TestName = t.TestName,
+                            NameUser = u.UserName,
+                            SemsesterName = s.SemesterName
+                        };
+            return query.ToList();
+        }
 
         public IEnumerable<ViewTest> GetAll()
         {
@@ -178,9 +162,9 @@ namespace Repository
             return ques.ToList();
         }
 
-        public Test GetByTestId(int id)
-        {
-            return context.Tests.Where(s => s.Id == id).SingleOrDefault();
-        }
+        //public Test GetByTestId(int id)
+        //{
+        //    return context.Tests.Where(s => s.Id == id).SingleOrDefault();
+        //}
     }
 }

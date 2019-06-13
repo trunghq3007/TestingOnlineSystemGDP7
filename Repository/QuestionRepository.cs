@@ -34,7 +34,7 @@ namespace Repository
                 }
                 return 0;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
@@ -109,17 +109,24 @@ namespace Repository
                 //return result.GetRange(start, end);
                 return result;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
-            
+
         }
 
         public IEnumerable<Question> GetAll()
         {
+            try
+            {
+                return context.Questions.Where(s => s.Status != -1).ToList();
+            }
+            catch (Exception)
+            {
+                return new List<Question>();
+            }
 
-            return context.Questions.Where(s=>s.Status!=-1).ToList();
         }
 
         public Question GetById(int id)
@@ -128,11 +135,11 @@ namespace Repository
             {
                 return context.Questions.Where(s => s.Id == id).SingleOrDefault();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
-            
+
         }
 
         public int Insert(Question t)
@@ -145,10 +152,10 @@ namespace Repository
                 {
                     t.Category = context.Categorys.SingleOrDefault(s => s.Id == t.Category.Id);
                 }
-                if(t.Tags != null)
+                if (t.Tags != null)
                 {
                     var tags = new List<Tag>();
-                    foreach(var tag in t.Tags)
+                    foreach (var tag in t.Tags)
                     {
                         tags.Add(context.Tags.SingleOrDefault(s => s.Id == tag.Id));
                     }
@@ -157,7 +164,7 @@ namespace Repository
                 context.Questions.Add(t);
                 return context.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
@@ -186,11 +193,11 @@ namespace Repository
                 var end = index * size - 1;
                 return result.GetRange(start, end);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
-           
+
         }
 
         public int Update(Question t)
@@ -198,7 +205,7 @@ namespace Repository
             var trans = context.Database.BeginTransaction();
             try
             {
-               
+
                 var currenQuestion = context.Questions.Where(s => s.Id == t.Id).SingleOrDefault();
                 var anserList = t.Answers.ToList();
                 t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
@@ -227,7 +234,7 @@ namespace Repository
                 trans.Rollback();
                 throw e;
             }
-          
+
         }
 
         public Category getCategoryByName(string cateName)
@@ -241,11 +248,20 @@ namespace Repository
             {
                 try
                 {
+                    var result = 1;
                     foreach (var question in list)
                     {
+                        var cate = context.Categorys.Where(s => s.Name.ToLower().Equals(question.Category.Name.ToLower())).ToList();
+                        question.Category = cate.Count() <= 0 ? question.Category : cate.First();
                         context.Questions.Add(question);
+                        result = context.SaveChanges();
+                        if (result <= 0)
+                        {
+                            transaction.Rollback();
+                            return result;
+                        };
                     }
-                    var result = context.SaveChanges();
+
                     transaction.Commit();
                     return result;
                 }
@@ -277,6 +293,6 @@ namespace Repository
         }
 
 
-      
+
     }
 }

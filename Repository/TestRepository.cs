@@ -117,10 +117,7 @@ namespace Repository
 			GC.SuppressFinalize(this);
 		}
 
-		public Test GetById(int id)
-		{
-			return context.Tests.Where(s => s.Id == id).SingleOrDefault();
-		}
+		
 
 		public IEnumerable<Question> Filter(object t)
 		{
@@ -160,6 +157,11 @@ namespace Repository
             var ques = context.Database.SqlQuery<ViewTest>
                 ("select t.Id,t.TestName,t.CreateBy,PassScore, e.NameExam,s.SemesterName,t.Status from Tests t join Exams e on t.ExamId = e.Id join SemesterExam s on t.SemasterExamId = s.ID").ToList();
             return ques.ToList();
+        }
+
+        public Test GetByTestId(int id)
+        {
+            return context.Tests.Where(s => s.Id == id).SingleOrDefault();
         }
 
         //public Test GetByTestId(int id)

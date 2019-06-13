@@ -80,6 +80,11 @@ namespace Services
             return examRepository.GetCategoryName(idExam);
         }
 
+        //public IEnumerable<ViewDetailExam> GetDetailExams(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         public IEnumerable<ViewDetailExam> GetDetailExams(int id)
         {
             return examRepository.GetDetailExams(id);

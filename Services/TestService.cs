@@ -52,10 +52,10 @@ namespace Services
             return repository.GetById(id);
 		}
 
-        //public Test getId(int id)
-        //{
-        //    return repository.GetByTestId(id);
-        //}
+        public Test getByTestId(int id)
+        {
+            return repository.GetByTestId(id);
+        }
 
         public int Insert(Test t)
         {

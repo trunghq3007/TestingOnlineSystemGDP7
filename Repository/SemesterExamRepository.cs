@@ -420,21 +420,24 @@ namespace Repository
                 select Q;
 
 
+
             List<Question> questions = queryQuestions.ToList();
             List<Question> listRandom = new List<Question>();
             Random random = new Random();
             int b = questions.Count;
-            if(b>0)
+            if (b > 0)
             {
                 for (int i = 0; i < test.Exam.QuestionNumber; i++)
                 {
-                    int a = random.Next(1, b);
+
+                    int a = random.Next(0, b);
+                    if (b!= 0)
                     b--;
                     listRandom.Add(questions[a]);
                     questions.Remove(questions[a]);
                 }
             }
-           
+
 
             testProcessing.Questions = listRandom;
             int asdafas = 0;

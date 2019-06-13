@@ -57,7 +57,7 @@ namespace Repository
             examInformation.TestTime = query.FirstOrDefault().TestTime;
             examInformation.CategoryName = query.FirstOrDefault().Name;
             examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
-            examInformation.TotalScore = 100;
+            examInformation.TotalScore = 10;
             return examInformation;
         }
 

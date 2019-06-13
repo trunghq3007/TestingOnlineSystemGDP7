@@ -126,15 +126,15 @@ namespace Repository
             TestResult testResult = context.TestResults.Find(id);
             Test test = context.Tests.Find(id);
             Result result = new Result();
-
-            result.ID = user.UserId;
+            try
+            {
+                result.ID = user.UserId;
             result.TestName = test.TestName;
             if (semesterExam_Users != null)
                 result.FullName = semesterExam_Users.UserName;
             result.SemesterName = semesterExam.SemesterName;
             result.Email = user.Email;
-            try
-            {
+           
                 result.Score = Convert.ToInt32(testResult.Score);
                 if (result.Score <= 50)
                     result.Category = "Trượt";
@@ -436,7 +436,8 @@ namespace Repository
             }
            
 
-            testProcessing.Questions = questions;
+            testProcessing.Questions = listRandom;
+            int asdafas = 0;
             return testProcessing;
 
 

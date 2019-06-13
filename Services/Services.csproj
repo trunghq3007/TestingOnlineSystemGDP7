@@ -72,6 +72,7 @@
     <Compile Include="Interfaces\IExamServices.cs" />
     <Compile Include="Interfaces\IGroupServices.cs" />
     <Compile Include="Interfaces\IQuestionServices.cs" />
+    <Compile Include="Interfaces\ISemesterCustomerService.cs" />
     <Compile Include="Interfaces\ISemesterExamServices.cs" />
     <Compile Include="Interfaces\ISemesterExamUserServices.cs" />
     <Compile Include="Interfaces\ITagServices.cs" />

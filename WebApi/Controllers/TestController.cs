@@ -68,25 +68,45 @@ namespace WebApi.Controllers
         }
         
         [HttpGet]
-		public string Get(int id)
+		public string Get([FromUri]string action,int id)
 		{
             ResultObject resultt = new ResultObject();
-
-            try
+            if ("detail".Equals(action))
             {
-                var result = testServices.getByTestId(id);
-                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                try
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
+                    var result = testServices.GetById(id);
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
             }
-            catch (Exception e)
+            if ("DetailUpdate".Equals(action))
             {
-                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-                return JsonConvert.SerializeObject(resultt);
+                try
+                {
+                    var result = testServices.getByTestId(id);
+                    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                }
+                catch (Exception e)
+                {
+                    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                    return JsonConvert.SerializeObject(resultt);
+                }
             }
+            return "false";
 			
         }
+
 
 
 

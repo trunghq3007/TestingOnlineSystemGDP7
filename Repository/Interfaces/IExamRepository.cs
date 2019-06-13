@@ -21,6 +21,5 @@ namespace Repository.Interfaces
 		IEnumerable<T> Filter(Model.ViewModel.ExamFilterModel filterModel);
 		string Export_exam(int id);
         string GetCategoryName(int idExam);
-        //IEnumerable<ViewDetailExam> GetDetailExams(int id);
     }
 }

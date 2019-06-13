@@ -233,34 +233,21 @@ namespace Repository
             string examName = "";
 
             examName = "Subject : " + exam.NameExam.ToString() + "\r";
-            string nameFile = exam.NameExam.ToString();
+            
 
             try
             {
-                //examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
-
-                Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
-                object missing = System.Reflection.Missing.Value;
-
-                Microsoft.Office.Interop.Word.Document document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
-                Microsoft.Office.Interop.Word.Range range = document.Range();
-                foreach (Microsoft.Office.Interop.Word.Section section in document.Sections)
-                {
-
-                    Microsoft.Office.Interop.Word.Range headerRange = section.Headers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                    headerRange.Fields.Add(headerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
-                    headerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                    headerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdBlue;
-                    headerRange.Font.Size = 24;
-
-                    headerRange.Text = examName;
-                    break;
-                }
+               
 
                 string tempSave = string.Empty;
-
-                foreach (Microsoft.Office.Interop.Word.Section wordSection in document.Sections)
-                {
+                int count = (from eq in context.ExamQuestions
+                             where eq.ExamId == id
+                             select new
+                             {
+                                 QuestionId = eq.QuestionId
+                             }).Count();
+                tempSave = "<h3 >" + examName + "</h3><p>" +"<h5> Question number: "+count+"<p></h5>";
+                
 
                     var exams = (from eq in context.ExamQuestions
                                  where eq.ExamId == id
@@ -293,7 +280,7 @@ namespace Repository
                             characterAbc = (int)character;
                             foreach (var itemAns in answers)
                             {
-                                //string tach = itemAns.Content.ToString().Replace("<p>","");
+                                
                                 string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString()+"<br>";
 
                                 tempSave += answer;
@@ -343,35 +330,7 @@ namespace Repository
 
                     }
                     Exam = tempSave;
-                    ///string formatExam = tempSave;
-                    //Application wordApp = new Application();
-                    //wordApp.Visible = true;
-                    //Document doc = wordApp.Documents.Add();
-                    //Range rng = wordApp.ActiveDocument.Range(0, 0);
-                    //ContentControl contentControl = doc.ContentControls.Add(WdContentControlType.wdContentControlRichText, ref missing);
-                    //contentControl.Range.InsertFile(SaveToTemporaryFile(tempSave), ref missing, ref missing, ref missing, ref missing);
-
-
-
-
-                    //document.Content.Text = tempSave;
-                    //document.Words.Last.InsertBreak();
-
-                    //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
-                    //string configLocation = requiredPath.ToString().Substring(6) + "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
-
-                    //string configText = File.ReadAllText(configLocation);
-
-                    //object filename = configText + nameFile + "new" + +id + ".docx";
-                    ////object filename = @"D:\"+nameFile + id + ".docx";
-                    //document.SaveAs2(ref filename);
-
-                }
-                //string abc = document.Content.Text;
-                //document.Close(ref missing, ref missing, ref missing);
-                //document = null;
-                //winword.Quit(ref missing, ref missing, ref missing);
-                //winword = null;
+                    
 
             }
             catch (Exception ex)

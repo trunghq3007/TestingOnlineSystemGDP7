@@ -240,46 +240,21 @@ namespace Repository
             string examName = "";
 
             examName = "Subject : "+exam.NameExam.ToString()+"\r";
-            string nameFile = exam.NameExam.ToString();
+            
 
             try
             {
-                examName += "Question number: " + exam.QuestionNumber.ToString() + "\r";
-                //titleExam += (from t in context.Tests
-                //              where t.ExamId == id
-                //              select new
-                //              {
-                //                  TestTime = t.TestTime
-                //              }
-                //              ).ToString() +"\r";
-
-                Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
-                object missing = System.Reflection.Missing.Value;
                
-                Microsoft.Office.Interop.Word.Document document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
-                Microsoft.Office.Interop.Word.Range range = document.Range();
-                foreach (Microsoft.Office.Interop.Word.Section section in document.Sections)
-                {
-                    //Get the header range and add the header details.  
-                    Microsoft.Office.Interop.Word.Range headerRange = section.Headers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                    headerRange.Fields.Add(headerRange, Microsoft.Office.Interop.Word.WdFieldType.wdFieldPage);
-                    headerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                    headerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdBlue;
-                    headerRange.Font.Size = 24;
-                    
-                    headerRange.Text = examName;
 
-                }
                 string tempSave = string.Empty;
-
-                foreach (Microsoft.Office.Interop.Word.Section wordSection in document.Sections)
-                {
-                    //Get the footer range and add the footer details.  
-                    Microsoft.Office.Interop.Word.Range footerRange = wordSection.Footers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                    footerRange.Font.ColorIndex = Microsoft.Office.Interop.Word.WdColorIndex.wdDarkRed;
-                    footerRange.Font.Size = 10;
-                    footerRange.ParagraphFormat.Alignment = Microsoft.Office.Interop.Word.WdParagraphAlignment.wdAlignParagraphCenter;
-                    footerRange.Text = "Footer text goes here";
+                int count = (from eq in context.ExamQuestions
+                             where eq.ExamId == id
+                             select new
+                             {
+                                 QuestionId = eq.QuestionId
+                             }).Count();
+                tempSave = "<h3 >" + examName + "</h3><p>" +"<h5> Question number: "+count+"<p></h5>";
+                
 
                     var exams = (from eq in context.ExamQuestions
                                  where eq.ExamId == id
@@ -315,9 +290,9 @@ namespace Repository
                             foreach (var itemAns in answers)
                             {
                                 
-                                string answer = (char)(characterAbc) + ". "+ itemAns.Content.ToString();
-                                
-                                tempSave += answer + "\r";
+                                string answer = (char)(characterAbc) + ". " + itemAns.Content.ToString()+"<br>";
+
+                                tempSave += answer;
                                 characterAbc++;
                             }
                             countExam++;
@@ -338,20 +313,9 @@ namespace Repository
                     //var requiredPath = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)));
                     //string configLocation = requiredPath.ToString().Substring(6)+ "\\WebApi\\Content\\ConfigLocation\\ConfigLocation.txt";
 
-
-                    //string configText = File.ReadAllText(configLocation);
-
-                    //document.Content.Text = tempSave;
-                    //object filename = configText+nameFile+"cuong"+id+".docx";
-                    object filename = @"D:\"+nameFile + id + ".docx";
-                    document.SaveAs2(ref filename);
+                    }
+                    Exam = tempSave;
                     
-                }
-                string abc = document.Content.Text;
-                document.Close(ref missing, ref missing, ref missing);
-                document = null;
-                winword.Quit(ref missing, ref missing, ref missing);
-                winword = null;
 
             }
             catch (Exception ex)

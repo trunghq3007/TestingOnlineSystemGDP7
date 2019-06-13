@@ -49,13 +49,13 @@ namespace Services
 
         public List<ViewDetailTest> GetById(int id)
 		{
-			throw new NotImplementedException();
+            return repository.GetById(id);
 		}
 
-        public Test getId(int id)
-        {
-            return repository.GetByTestId(id);
-        }
+        //public Test getId(int id)
+        //{
+        //    return repository.GetByTestId(id);
+        //}
 
         public int Insert(Test t)
         {

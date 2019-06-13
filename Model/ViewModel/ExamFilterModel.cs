@@ -14,7 +14,7 @@ namespace Model.ViewModel
 
 		public string CreateBy { get; set; }
 		public DateTime? CreateAt { get; set; }
-
+         public string TypeExam { get; set; }
 		public int? Status { get; set; }
 	}
 }

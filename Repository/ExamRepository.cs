@@ -61,14 +61,18 @@ namespace Repository
             {
                 result = result.Where(s => s.CreateBy.Equals(fillterModel.CreateBy)).ToList();
             }
+            if (fillterModel.TypeExam !=null &&!"".Equals(fillterModel.TypeExam))
+            {
+                result = result.Where(s => s.Category.Name.Equals(fillterModel.TypeExam)).ToList();
+            }
             if (fillterModel.TimeTest > 0)
             {
                 result = result.Where(s => s.Tests != null && s.Tests.Where(t => t.TestTime == fillterModel.TimeTest).Count() > 0).ToList();
             }
-            //if (fillterModel.CreateAt != null)
-            //{
-            //    result = result.Where(s => s.CreateAt == fillterModel.CreateAt).ToList();
-            //}
+            if (fillterModel.CreateAt != null)
+            {
+                result = result.Where(s => s.CreateAt == fillterModel.CreateAt).ToList();
+            }
             if (fillterModel.QuestionNumber > 0)
             {
                 result = result.Where(s => s.QuestionNumber == fillterModel.QuestionNumber).ToList();
@@ -365,8 +369,9 @@ namespace Repository
             return list;
         }
 
-
-
-        
+        string IExamRepository<Exam>.Export_exam(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

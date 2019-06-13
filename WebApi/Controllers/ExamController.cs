@@ -52,9 +52,9 @@ namespace WebApi.Controllers
 
             try
             {
-                var result = services.GetById(id);
+                resultt.Data = services.GetDetailExams(id);
                 
-                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                return JsonConvert.SerializeObject(resultt, Formatting.Indented, new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });

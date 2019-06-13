@@ -8,13 +8,11 @@ namespace Model.ViewModel
 {
 	public	class ViewDetailTest
 	{
-		public int Id { get; set; }
-		public string TypeExam { get; set; }
-		public string QuesTionContent { get; set; }
-		public string UserName { get; set; }
-		public string AnswerContent { get; set; }
-		public string NameExam { get; set; }
-		public float Sorce { get; set; }
-		public float TestTime { get; set; }
-	}
+        public int Id { get; set; }
+        public string NameExam { get; set; }
+        public string NameCategory { get; set; }
+        public string TestName { get; set; }
+        public string NameUser { get; set; }
+        public string SemsesterName { get; set; }
+    }
 }

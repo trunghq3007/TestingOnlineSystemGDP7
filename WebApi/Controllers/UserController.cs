@@ -43,6 +43,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 5)]
         // Get User by Id me thod
         public string GetUser(int userid)
         {
@@ -55,6 +56,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 5)]
         // Get Detail User method
         public string GET(int id)
         {
@@ -67,6 +69,7 @@ namespace WebApi.Controllers
             }
         
         [HttpPost]
+        [ValidateSSID(ActionId = 2)]
         //Add user method
         public string AddUser([FromBody] object value)
         {
@@ -96,6 +99,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpPut]
+        [ValidateSSID(ActionId = 3)]
         //Update user method
         public string Update(int id, [FromBody]object value)
         {
@@ -109,6 +113,7 @@ namespace WebApi.Controllers
             return "FALSE";
         }
         [HttpDelete]
+        [ValidateSSID(ActionId = 4)]
         //Delete user method
         public string Delete(int id)
         {
@@ -130,6 +135,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 6)]
         //Search user method
         public string Get(string searchString)
         {
@@ -152,6 +158,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 6)]
         //Filter User method
         public string Get([FromUri]string action, [FromBody] object value)
         {
@@ -186,6 +193,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 2)]
         //Check UserName
         public string CheckUserName(string userName)
         {

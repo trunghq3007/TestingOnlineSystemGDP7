@@ -116,6 +116,7 @@ namespace Repository
                             Note = e.Note,
                             Status = e.Status,
                             NameCategory = c.Name,
+                            CategoryId = c.Id
                         };
             return query.ToList();
 

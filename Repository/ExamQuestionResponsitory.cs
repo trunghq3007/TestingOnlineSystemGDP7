@@ -212,12 +212,24 @@ namespace Repository
 
             foreach (var category in context.Questions)
             {
-                var cateogories = context.Categorys.Where(c => c.Id == category.Category.Id).SingleOrDefault();
-                if (category.Category.Id == cateogories.Id)
+                try
                 {
-                    item.ListCategory.Add(category.Category.Name);
-                } 
-               
+                    var cateogories = context.Categorys.Where(c => c.Id == category.Category.Id).SingleOrDefault();
+
+                    if (category.Category.Id == cateogories.Id)
+                    {
+                        item.ListCategory.Add(category.Category.Name);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+
+                }
+
+
+
+
             }
 
             return item;
@@ -363,9 +375,18 @@ namespace Repository
 
             foreach (var item in ListModel)
             {
-                var List = context.ExamQuestions
-                    .Where(eq => eq.ExamId == item.ExamId && eq.QuestionId == item.QuestionId).SingleOrDefault();
-                context.ExamQuestions.Remove(List);
+                try
+                {
+                    var List = context.ExamQuestions
+                        .Where(eq => eq.ExamId == item.ExamId && eq.QuestionId == item.QuestionId).SingleOrDefault();
+                    context.ExamQuestions.Remove(List);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    
+                }
+                
             }
 
             return context.SaveChanges();

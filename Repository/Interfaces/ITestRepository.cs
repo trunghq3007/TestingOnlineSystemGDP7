@@ -17,6 +17,6 @@ namespace Repository.Interfaces
 		int Delete(int id);
 		T Export_exam(int id);
 		List<ViewDetailTest> GetById(int id);
-        //T GetByTestId(int id);
+        T GetByTestId(int id);
     }
 }

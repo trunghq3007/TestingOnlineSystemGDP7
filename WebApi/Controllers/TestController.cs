@@ -74,7 +74,7 @@ namespace WebApi.Controllers
 
             try
             {
-                var result = testServices.GetById(id);
+                var result = testServices.getByTestId(id);
                 return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore

@@ -64,6 +64,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web.Cors, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.4\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -233,15 +235,23 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AllowCrossSiteAttribute.cs" />
+    <Compile Include="Commons\AllowCrossSiteAttribute.cs" />
+    <Compile Include="Commons\CommonConstants.cs" />
+    <Compile Include="Commons\DeleteFileAttribute.cs" />
+    <Compile Include="Commons\HasCredentialAttribute.cs" />
+    <Compile Include="Commons\UserLogin.cs" />
+    <Compile Include="Commons\ValidateSSIDAttribute.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\ExamQuestionsController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
+    <Compile Include="Controllers\RoleActionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SemasterController.cs" />
+    <Compile Include="Controllers\SemesterCustomerController.cs" />
     <Compile Include="Controllers\SemesterExamController.cs" />
     <Compile Include="Controllers\SemesterExamUserController.cs" />
     <Compile Include="Controllers\TagController.cs" />
@@ -318,8 +328,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Commons\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="NewFolder1\" />
     <Folder Include="Providers\" />
   </ItemGroup>
   <ItemGroup>

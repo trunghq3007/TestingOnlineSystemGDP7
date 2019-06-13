@@ -27,8 +27,7 @@ namespace Repository
         }
         public int Update(Role t)
         {
-            context.Entry(t).State = EntityState.Modified;
-            return context.SaveChanges();
+            throw new NotImplementedException();
         }
 
         public int Delete(int id)

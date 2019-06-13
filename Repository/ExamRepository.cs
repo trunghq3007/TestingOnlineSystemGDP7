@@ -233,7 +233,6 @@ namespace Repository
 
 		public string Export_exam(int id)
 		{
-
             string Exam = "";
             Exam exam = (from e in context.Exams
                          where e.Id == id
@@ -339,14 +338,13 @@ namespace Repository
                 }
                 Exam = tempSave;
 
-
+                return Exam;
             }
             catch (Exception ex)
             {
                 throw;
             }
-
-            return Exam;
+            return "false";
 
         }
 

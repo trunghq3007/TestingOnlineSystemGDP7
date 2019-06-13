@@ -201,22 +201,23 @@ namespace WebApi.Controllers
 		public string Export_Exam(int id, [FromUri] string action)
 		{
             ResultObject resultt = new ResultObject();
-            
-            if (action.Equals("export"))
-			{
-				try
-				{
-					services.Export_exam(id);
-				}
-				catch (Exception e)
-				{
+
+            if ("exportExam".Equals(action))
+            {
+                try
+                {
+                    resultt.Message = services.Export_exam(id);
+                    return JsonConvert.SerializeObject(resultt);
+                }
+                catch (Exception e)
+                {
                     resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-                    return "false";
-				}
-				return "true";
-			}
-			return null;
-		}
+                    return JsonConvert.SerializeObject(resultt);
+                }
+
+            }
+            return "false";
+        }
         [HttpGet]
         public string Get(int idExam)
         {

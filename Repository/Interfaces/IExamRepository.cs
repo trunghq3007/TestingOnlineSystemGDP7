@@ -10,7 +10,7 @@ namespace Repository.Interfaces
 {
   public	interface IExamRepository<T>
 	{
-		IEnumerable<T> GetAll();
+		//IEnumerable<T> GetAll();
 		IEnumerable<T> Search(string searchString);
 		IEnumerable<T> Filter(T t);
 	 ListFilter listFilters();
@@ -19,8 +19,10 @@ namespace Repository.Interfaces
 		int Delete(int id);
 		T GetById(int id);
 		IEnumerable<T> Filter(Model.ViewModel.ExamFilterModel filterModel);
+		
 		string Export_exam(int id);
         string GetCategoryName(int idExam);
-        //IEnumerable<ViewDetailExam> GetDetailExams(int id);
+        IEnumerable<ViewDetailExam> GetDetailExams(int id);
+        IEnumerable<T> GetAll();
     }
 }

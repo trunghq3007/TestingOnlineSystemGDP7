@@ -329,6 +329,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="NewFolder1\" />
     <Folder Include="Providers\" />
   </ItemGroup>
   <ItemGroup>

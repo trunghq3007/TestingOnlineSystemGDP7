@@ -82,7 +82,12 @@ namespace Services
 
         //public IEnumerable<ViewDetailExam> GetDetailExams(int id)
         //{
-        //    return examRepository.GetDetailExams(id);
+        //    throw new NotImplementedException();
         //}
+
+        public IEnumerable<ViewDetailExam> GetDetailExams(int id)
+        {
+            return examRepository.GetDetailExams(id);
+        }
     }
 }

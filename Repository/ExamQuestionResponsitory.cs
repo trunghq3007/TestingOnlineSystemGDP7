@@ -372,24 +372,41 @@ namespace Repository
 
         public int DeleteMutiple(List<ExamQuestion> ListModel)
         {
-
-            foreach (var item in ListModel)
+            var index = ListModel.ElementAt(0).ExamId;
+            var exam = context.Exams.Where(e => e.Id == index).SingleOrDefault();
+            if (exam.Status == false)
             {
-                try
-                {
-                    var List = context.ExamQuestions
-                        .Where(eq => eq.ExamId == item.ExamId && eq.QuestionId == item.QuestionId).SingleOrDefault();
-                    context.ExamQuestions.Remove(List);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    
-                }
+                foreach (var item in ListModel)
+            {
+                
+               
+                    try
+                    {
+                        var List = context.ExamQuestions
+                            .Where(eq => eq.ExamId == item.ExamId && eq.QuestionId == item.QuestionId).SingleOrDefault();
+                        if (List != null)
+                        {
+                            context.ExamQuestions.Remove(List);
+                        }
+                       
+                      
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+
+                    }
+                
+               
                 
             }
-
-            return context.SaveChanges();
+                return context.SaveChanges();
+            }
+            else
+            {
+                return -1;
+            }
+          
         }
 
 

@@ -141,6 +141,11 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
+        [HttpGet]
+        public string Get(string actionName)
+        {
+            return "";
+        }
 
         [HttpPost]
         public string Post([FromBody]object value)

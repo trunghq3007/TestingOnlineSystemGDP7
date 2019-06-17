@@ -7,6 +7,7 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -19,6 +20,7 @@ namespace WebApi.Controllers
             services = new RoleServices();
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 20)]
         // GET: Role
         public string GetRole()
         {
@@ -30,6 +32,7 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
         }
         [HttpDelete]
+        [ValidateSSID(ActionId = 21)]
         public string Delete(int id)
         {
             ResultObject result = new ResultObject();
@@ -51,6 +54,7 @@ namespace WebApi.Controllers
         }
         
         [HttpPost]
+        [ValidateSSID(ActionId = 22)]
         //Add user method
         public string AddRole([FromBody] object value)
         {

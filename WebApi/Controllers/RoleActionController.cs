@@ -7,6 +7,8 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
+
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -19,6 +21,7 @@ namespace WebApi.Controllers
             services = new RoleActionServices();
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 23)]
         // Get User In Group method
         public string GetActionInRole(int roleId)
         {
@@ -41,6 +44,7 @@ namespace WebApi.Controllers
         }
         //Delete Action in Role
         [HttpDelete]
+        [ValidateSSID(ActionId = 24)]
         public string Delete(int idAction, int idRole)
         {
             ResultObject result = new ResultObject();
@@ -61,6 +65,7 @@ namespace WebApi.Controllers
         }
         //Insert Action to Role
         [HttpPost]
+        [ValidateSSID(ActionId = 25)]
         public string InsertRoleAction(int idAction, int idRole)
         {
             ResultObject result = new ResultObject();
@@ -81,6 +86,7 @@ namespace WebApi.Controllers
         }
         //Get Action not in Role
         [HttpGet]
+        [ValidateSSID(ActionId = 26)]
         public string GetActionOutRole(int idRole)
         {
             ResultObject result = new ResultObject();

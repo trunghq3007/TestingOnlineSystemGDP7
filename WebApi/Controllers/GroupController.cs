@@ -23,8 +23,8 @@ namespace WebApi.Controllers
         }
         // GET: Group
         [HttpGet]
-        //[HasCredential(ActionId = 1)]
-        [ValidateSSID(ActionId =1)]
+        //[HasCredential(ActionId = 11)]
+        [ValidateSSID(ActionId =11)]
         public string Get()
         {
             var jsonSetting = new JsonSerializerSettings
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
         }
         //Add new Group method
         [HttpPost]
-        [ValidateSSID(ActionId = 2)]
+        [ValidateSSID(ActionId = 12)]
         public string Post([FromBody]object value)
         {
             ResultObject result = new ResultObject();
@@ -78,7 +78,7 @@ namespace WebApi.Controllers
         }
         //Get Group by Id method
         [HttpGet]
-        [ValidateSSID(ActionId = 5)]
+        [ValidateSSID(ActionId = 13)]
         public string Get(int id)
         {
             ResultObject result = new ResultObject();
@@ -101,7 +101,7 @@ namespace WebApi.Controllers
         }
         //Search Group method
         [HttpGet]
-        [ValidateSSID(ActionId = 6)]
+        [ValidateSSID(ActionId = 11)]
         public string Get(string searchString)
         {
             ResultObject result = new ResultObject();
@@ -124,7 +124,7 @@ namespace WebApi.Controllers
         }
         //Delete Group method
         [HttpDelete]
-        [ValidateSSID(ActionId = 4)]
+        [ValidateSSID(ActionId = 14)]
         public string Delete(int id)
         {
             ResultObject result = new ResultObject();
@@ -146,7 +146,7 @@ namespace WebApi.Controllers
         }
         //Filter Group method
         [HttpPost]
-        [ValidateSSID(ActionId = 6)]
+        [ValidateSSID(ActionId = 11)]
         public string Get([FromUri]string action, [FromBody] object value)
         {
             ResultObject result = new ResultObject();
@@ -179,7 +179,7 @@ namespace WebApi.Controllers
         }
         //Update Group method
         [HttpPut]
-        [ValidateSSID(ActionId = 3)]
+        [ValidateSSID(ActionId = 15)]
         public string Put(int id, string groupname)
         {
             ResultObject result = new ResultObject();
@@ -203,6 +203,7 @@ namespace WebApi.Controllers
             }           
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 15)]
         public string CheckNameGroup(string groupName)
         {
             return services.CheckNameGroup(groupName).ToString();

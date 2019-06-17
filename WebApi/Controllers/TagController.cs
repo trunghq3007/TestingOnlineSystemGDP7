@@ -7,6 +7,7 @@ using Model;
 using Newtonsoft.Json;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace WebApi.Controllers
             service = new TagServices();
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 50)]
         public string Get()
         {
             var result = service.GetAll().ToList();
@@ -31,6 +33,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 51)]
         public string Get(int id)
         {
 
@@ -46,6 +49,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 52)]
         public string Get([FromUri]string action, [FromBody]string value)
         {
             if (value != null && !"".Equals(value))
@@ -64,6 +68,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
+        [ValidateSSID(ActionId = 53)]
         public string Post([FromBody]object value)
         {
             ResultObject result = new ResultObject();
@@ -90,6 +95,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut]
+        [ValidateSSID(ActionId = 51)]
         public string Put(int id, [FromBody]object value)
         {
             ResultObject result = new ResultObject();
@@ -116,6 +122,7 @@ namespace WebApi.Controllers
 
 
         [HttpDelete]
+        [ValidateSSID(ActionId = 52)]
         public string Put(int id)
         {
             ResultObject result = new ResultObject();

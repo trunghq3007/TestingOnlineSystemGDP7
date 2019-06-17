@@ -16,6 +16,7 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
 using System.Net;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -30,6 +31,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 16)]
         public string Post([FromUri]string action, [FromBody]object value)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -98,6 +100,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 16)]
         public string Get()
         {
             var jsonSetting = new JsonSerializerSettings
@@ -121,6 +124,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 18)]
         public string Get(int id)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -143,6 +147,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 17)]
         public string Post([FromBody]object value)
         {
 
@@ -171,6 +176,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [ValidateSSID(ActionId = 18)]
         public string Put(int id, [FromBody]object value)
         {
             ResultObject result = new ResultObject();
@@ -197,6 +203,7 @@ namespace WebApi.Controllers
 
 
         [HttpDelete]
+        [ValidateSSID(ActionId = 19)]
         public string Put(int id)
         {
             ResultObject result = new ResultObject();

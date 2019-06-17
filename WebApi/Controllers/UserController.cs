@@ -21,7 +21,7 @@ namespace WebApi.Controllers
             services = new UserSevices();
         }
         [HttpGet]
-        [ValidateSSID(ActionId = 1)]
+        [ValidateSSID(ActionId = 64)]
         // Get all User method
         public string GetUser()
         {
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpGet]
-        [ValidateSSID(ActionId = 5)]
+        [ValidateSSID(ActionId = 65)]
         // Get User by Id me thod
         public string GetUser(int userid)
         {
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [ValidateSSID(ActionId = 5)]
+        [ValidateSSID(ActionId = 66)]
         // Get Detail User method
         public string GET(int id)
         {
@@ -69,7 +69,7 @@ namespace WebApi.Controllers
             }
         
         [HttpPost]
-        [ValidateSSID(ActionId = 2)]
+        [ValidateSSID(ActionId = 67)]
         //Add user method
         public string AddUser([FromBody] object value)
         {
@@ -99,7 +99,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpPut]
-        [ValidateSSID(ActionId = 3)]
+        [ValidateSSID(ActionId = 65)]
         //Update user method
         public string Update(int id, [FromBody]object value)
         {
@@ -113,7 +113,7 @@ namespace WebApi.Controllers
             return "FALSE";
         }
         [HttpDelete]
-        [ValidateSSID(ActionId = 4)]
+        [ValidateSSID(ActionId = 68)]
         //Delete user method
         public string Delete(int id)
         {
@@ -135,7 +135,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [ValidateSSID(ActionId = 6)]
+        [ValidateSSID(ActionId = 64)]
         //Search user method
         public string Get(string searchString)
         {
@@ -158,7 +158,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [ValidateSSID(ActionId = 6)]
+        [ValidateSSID(ActionId = 64)]
         //Filter User method
         public string Get([FromUri]string action, [FromBody] object value)
         {
@@ -193,7 +193,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [ValidateSSID(ActionId = 2)]
+        [ValidateSSID(ActionId = 67)]
         //Check UserName
         public string CheckUserName(string userName)
         {
@@ -201,6 +201,7 @@ namespace WebApi.Controllers
         }
         // Get RoleName of user
         [HttpGet]
+        [ValidateSSID(ActionId = 66)]
         public string GetRoleName(int idUser)
         {
             return services.GetRoleName(idUser);

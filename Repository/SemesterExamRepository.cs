@@ -127,24 +127,44 @@ namespace Repository
             List<User> users = context.Users.ToList();
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
-            User semesterExam_Users =
-                context.Users.Where(SU => SU.UserId == id).FirstOrDefault();
-         //   SemesterExam semesterExam = context.SemesterExams.Find(id);
-           // User user = context.Users.Find(id);
-         TestResult testResult = context.TestResults.Find(id);
-          //  Test test = context.Tests.Find(id);
+
+            // Test test = context.Tests.Find(id);
+
+            // User user = context.Users.Find(id);
+            TestResult testResult = context.TestResults.Find(id);
+
             Result result = new Result();
             try
             {
-                result.ID = testResult.UserId;
-           // result.TestName = tests.TestName;
-            if (semesterExam_Users != null)
-                result.FullName = semesterExam_Users.UserName;
-          //  result.SemesterName = semesterExam.SemesterName;
-         //   result.Email = user.Email;
-           
-           //     result.Score = Convert.ToInt32(testResult.Score);
-                if (result.Score <= 50)
+                result.ID = testResult.Id;
+
+                var query1 = from TR in context.TestResults
+                             join T in context.Tests
+                             on TR.TestId equals T.Id
+                             select T.TestName;
+                result.TestName = query1.FirstOrDefault();
+
+
+                var query2 = from TR in context.TestResults
+                             join T in context.Tests
+                             on TR.TestId equals T.Id
+                             join SE in context.SemesterExams
+                             on T.SemasterExamId equals SE.ID
+                             select new { T.Id, T.TestName, SE.SemesterName };
+
+                result.SemesterName = query2.FirstOrDefault().SemesterName;
+
+                var query3 = from TR in context.TestResults
+                             join U in context.Users
+                             on TR.UserId equals U.UserId
+                             select new { U.FullName, U.Email };
+
+                result.FullName = query3.FirstOrDefault().FullName;
+                result.Email = query3.FirstOrDefault().Email;
+
+
+                result.Score = Convert.ToInt32(testResult.Score);
+                if (result.Score <= 4)
                     result.Category = "Trượt";
                 else
                     result.Category = "Đỗ";
@@ -153,10 +173,10 @@ namespace Repository
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
-            
-            
 
-           
+
+
+
 
             return result;
 

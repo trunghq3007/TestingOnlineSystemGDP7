@@ -119,30 +119,7 @@ namespace WebApi.Controllers
         [HttpPost]
 		public string Post([FromUri]string action, [FromBody]object value)
 		{
-			if (value != null)
-			{
-
-				if ("fillter".Equals(action))
-				{
-					try
-					{
-						var filterObject = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());
-						return JsonConvert.SerializeObject(examQuestion.Filter(filterObject), Formatting.Indented, new JsonSerializerSettings
-                        {
-                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                        });
-                       
-                    }
-					catch (Exception ex)
-					{
-
-						return "Object fillter not convert valid";
-					}
-				}
-
-
-
-			}
+			
 
             if ("AddMutiple".Equals(action))
             {
@@ -195,13 +172,7 @@ namespace WebApi.Controllers
                 }
                
             }
-			//if ("getfillter".Equals(action))
-			//{
-   //             return JsonConvert.SerializeObject(examQuestion.listFilters());
-   //             //return "";
-
-
-   //         }
+			
 			var result = QuestionServices.GetAll().ToList();
 			return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
 			{

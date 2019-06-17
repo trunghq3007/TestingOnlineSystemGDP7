@@ -209,14 +209,21 @@ namespace Repository
                 var currenQuestion = context.Questions.Where(s => s.Id == t.Id).SingleOrDefault();
                 var anserList = t.Answers.ToList();
                 t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
-
+                var tags = new List<Tag>();
+                if (t.Tags != null)
+                {
+                    foreach(var tag in t.Tags)
+                    {
+                        tags.Add(context.Tags.Find(tag.Id));
+                    }
+                }
                 currenQuestion.Answers = null;
                 currenQuestion.Category = t.Category;
                 currenQuestion.Content = t.Content;
                 currenQuestion.ExamQuestions = t.ExamQuestions;
                 currenQuestion.Level = t.Level;
                 currenQuestion.Media = t.Media;
-                currenQuestion.Tags = t.Tags;
+                currenQuestion.Tags = tags;
                 currenQuestion.Type = t.Type;
                 currenQuestion.Suggestion = t.Suggestion;
                 currenQuestion.UpdatedBy = "anonymous user";
@@ -251,9 +258,16 @@ namespace Repository
                     var result = 1;
                     foreach (var question in list)
                     {
+                        if(question.Category != null)
+                        {
+                            question.Category.CreatedBy = "user import";
+                            question.Category.CreatedDate = DateTime.Now;
+                            question.Category.Status = 1;
+                        }
+
                         var cate = context.Categorys.Where(s => s.Name.ToLower().Equals(question.Category.Name.ToLower())).ToList();
                         question.Category = cate.Count() <= 0 ? question.Category : cate.First();
-                        context.Questions.Add(question);
+                        Update(question);
                         result = context.SaveChanges();
                         if (result <= 0)
                         {

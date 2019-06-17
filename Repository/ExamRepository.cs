@@ -123,14 +123,14 @@ namespace Repository
         }
         public int Insert(Exam exam)
 		{
-
+            bool status = default(bool);
             //exam.Category = context.Categorys.Where(s => s.Category.Id == exam.Id).SingleOrDefault();
             context.Exams.Add(new Exam
             {
                 NameExam = exam.NameExam,
                 CreateBy = exam.CreateBy,
                 QuestionNumber = exam.QuestionNumber,
-                Status = exam.Status,
+                Status = exam.Status = default(bool),
                 SpaceQuestionNumber = exam.SpaceQuestionNumber,
                 CreateAt = DateTime.Now,
                 Note = exam.Note,
@@ -154,24 +154,30 @@ namespace Repository
 
             //context.Entry(exam).State = EntityState.Modified;
             //return context.SaveChanges();
+            
             var currentExam = context.Exams.Find(exam.Id);
+            if (currentExam.Status !=true)
+            {
+                currentExam.CreateAt = DateTime.Now;
 
-            currentExam.CreateAt = DateTime.Now;
+
+                //currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
+                exam.Category = context.Categorys.Where(s => s.Id == currentExam.Category.Id).SingleOrDefault();
+               
+                currentExam.NameExam = exam.NameExam;
+                currentExam.CreateBy = exam.CreateBy;
+                currentExam.QuestionNumber = exam.QuestionNumber;
+                currentExam.Status = exam.Status;
+                currentExam.SpaceQuestionNumber = exam.SpaceQuestionNumber;
+
+                currentExam.Note = exam.Note;
 
 
-            currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
+                context.Entry(currentExam).State = EntityState.Modified;
+                return context.SaveChanges();
+            }
+            return 0;
            
-            currentExam.NameExam = exam.NameExam;
-            currentExam.CreateBy = exam.CreateBy;
-            currentExam.QuestionNumber = exam.QuestionNumber;
-            currentExam.Status = exam.Status;
-            currentExam.SpaceQuestionNumber = exam.SpaceQuestionNumber;
-           
-            currentExam.Note = exam.Note;
-
-
-            context.Entry(currentExam).State = EntityState.Modified;
-            return context.SaveChanges();
 
 
         }

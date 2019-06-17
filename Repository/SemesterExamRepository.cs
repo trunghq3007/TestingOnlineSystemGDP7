@@ -413,7 +413,7 @@ namespace Repository
 
         public Model.ViewModel.TestProcessing GeTestProcessings(int id)
         {
-            TestProcessing testProcessing = new TestProcessing();
+                TestProcessing testProcessing = new TestProcessing();
             Test test = context.Tests.Find(id);
             testProcessing.Id = id;
             testProcessing.TestName = test.TestName;

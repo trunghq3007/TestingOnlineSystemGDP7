@@ -36,7 +36,7 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
             var result = from t in context.Tests
                          join e in context.Exams on t.ExamId equals e.Id
                          join s in context.SemesterExams on t.SemasterExamId equals s.ID
-                         where t.Status != 0
+                        // where t.Status != 0
                          select new
                          
                          {

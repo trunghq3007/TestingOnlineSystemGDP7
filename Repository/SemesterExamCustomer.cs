@@ -33,6 +33,14 @@ namespace Repository
         public IEnumerable<Test> getListExam(int id)
         {
             var list = context.Tests.Where(s => s.SemasterExamId == id).ToList();
+            //var list = (from t in context.Tests
+            //            join s in context.SemesterExams
+            //            on t.SemasterExamId equals s.ID
+            //            where t.SemasterExamId == id
+            //            select new  {
+            //                name=s.SemesterName
+            //}
+            //          ).ToList();
             return list;
         }
         public object getDetailExam(int id)

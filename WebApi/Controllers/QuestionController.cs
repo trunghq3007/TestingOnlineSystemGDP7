@@ -22,22 +22,24 @@ namespace WebApi.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class QuestionController : ApiController
     {
+        private JsonSerializerSettings jsonSetting;
         private QuestionServices service;
 
         public QuestionController()
         {
             service = new QuestionServices();
+            jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
         }
 
         [HttpPost]
         public string Post([FromUri]string action, [FromBody]object value)
         {
-            var jsonSetting = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
+
             ResultObject result = new ResultObject();
-            if (value == null && !"import".Equals(action.ToLower()))
+            if (value == null)
             {
                 result.Message = "Data null";
                 return JsonConvert.SerializeObject(result);
@@ -59,34 +61,6 @@ namespace WebApi.Controllers
                     if (result.Data != null) result.Success = 1;
                     return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
                 }
-                //if ("export".Equals(action.ToLower()))
-                //{
-                //    result.Message = Export(service.GetAll().ToList());
-                //    if (!"".Equals(result.Message)) result.Success = 1;
-                //    return JsonConvert.SerializeObject(result);
-                //}
-                //if ("import".Equals(action.ToLower()))
-                //{
-                   
-                //    string _tempUploadFolder = ConfigurationManager.AppSettings["MediaTempUploadFolder"];
-                //    string _storeFolder = ConfigurationManager.AppSettings["MediaUploadFolder"];
-                //    if (HttpContext.Current.Request.Files.Count < 1)
-                //    {
-                //        result.Message = "Not file upload";
-                //        return JsonConvert.SerializeObject(result);
-                //    }
-                //    HttpPostedFile file = HttpContext.Current.Request.Files[0];
-                //    if (file.ContentLength <= 0)
-                //    {
-                //        result.Message = "content file null";
-                //        return JsonConvert.SerializeObject(result);
-                //    }
-                //    else
-                //    {
-                //        result = importZip(file, _tempUploadFolder, _storeFolder);
-                //        return JsonConvert.SerializeObject(result);
-                //    }
-                //}
             }
             catch (Exception e)
             {
@@ -98,12 +72,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public string Get()
+        public string GetAll()
         {
-            var jsonSetting = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
+
             ResultObject result = new ResultObject();
             try
             {
@@ -121,12 +92,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public string Get(int id)
+        public string GetById(int id)
         {
-            var jsonSetting = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
+
             ResultObject result = new ResultObject();
             try
             {
@@ -140,11 +108,6 @@ namespace WebApi.Controllers
                 result.Data = null;
                 return JsonConvert.SerializeObject(result);
             }
-        }
-        [HttpGet]
-        public string Get(string actionName)
-        {
-            return "";
         }
 
         [HttpPost]
@@ -172,7 +135,6 @@ namespace WebApi.Controllers
                 result.Data = null;
                 return JsonConvert.SerializeObject(result);
             }
-            //  return JsonConvert.SerializeObject(result);
         }
 
         [HttpPut]
@@ -222,7 +184,7 @@ namespace WebApi.Controllers
 
 
 
-        
+
     }
 }
 

@@ -123,14 +123,14 @@ namespace Repository
         }
         public int Insert(Exam exam)
 		{
-
+            bool status = default(bool);
             //exam.Category = context.Categorys.Where(s => s.Category.Id == exam.Id).SingleOrDefault();
             context.Exams.Add(new Exam
             {
                 NameExam = exam.NameExam,
                 CreateBy = exam.CreateBy,
                 QuestionNumber = exam.QuestionNumber,
-                Status = exam.Status,
+                Status = exam.Status = default(bool),
                 SpaceQuestionNumber = exam.SpaceQuestionNumber,
                 CreateAt = DateTime.Now,
                 Note = exam.Note,

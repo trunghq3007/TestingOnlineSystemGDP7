@@ -11,13 +11,14 @@ namespace Services.Interfaces
     public interface IExamQuestionServices<T> where T : class
     {
         IEnumerable<Model.ViewModel.ViewQuestionExam> GetListQuestionById(int id);
-        int Insert(ExamQuestion model);
+        //int Insert(ExamQuestion model);
         Model.ViewModel.GetFill listFilters();
         int AddMutipleQuestion(List<ExamQuestion> ListModel);
         IEnumerable<ViewQuestionExam> GetAll();
         int RandomQuestion(ViewQuestionExam model);
         IEnumerable<ViewQuestionExam> GetById(int id);
         int DeleteMutiple(List<ExamQuestion> ListModel);
-        IEnumerable<T> Search(string searchString);
+        IEnumerable<ViewQuestionExam> Search(string searchString);
+        IEnumerable<ViewQuestionExam> Filter(ViewQuestionExam filterModel);
     }
 }

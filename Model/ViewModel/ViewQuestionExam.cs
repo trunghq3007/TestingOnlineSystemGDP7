@@ -13,9 +13,9 @@ namespace Model.ViewModel
         public int QuesId { get; set; }
         public string nameExam { get; set; }
         public string Content { get; set; }
-        public int Level { get; set; }
+        public int? Level { get; set; }
         public string Suggestion { get; set; }
-        public int Type { get; set; }
+        public int? Type { get; set; }
 
         public int Status { get; set; }
         public string CreatedBy { get; set; }

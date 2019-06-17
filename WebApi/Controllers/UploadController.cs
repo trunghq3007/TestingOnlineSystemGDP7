@@ -4,6 +4,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using Services;
+using Simple.ImageResizer;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,6 +13,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Cors;
 using System.Web.Mvc;
@@ -34,7 +36,6 @@ namespace WebApi.Controllers
             dynamic result = new ExpandoObject();
             try
             {
-
                 if (Request.Files.Count > 0)
                 {
                     var file = Request.Files[0];
@@ -49,8 +50,8 @@ namespace WebApi.Controllers
                         if (supportExtensions.Contains(fileExtension.ToLower()))
                         {
                             var url = (Request.Url.GetLeftPart(UriPartial.Authority));
-                            var folder = ConfigurationManager.AppSettings["MediaUploadFolder"];
-                            var _pathForder = Server.MapPath(folder);
+                            var _pathForder = ConfigurationManager.AppSettings["ImagesStorePath"];
+                            //var _pathForder = Server.MapPath(folder);
                             string _path = Path.Combine(_pathForder, _FileName);
                             if (!Directory.Exists(_pathForder))
                             {
@@ -58,7 +59,7 @@ namespace WebApi.Controllers
                             }
                             file.SaveAs(_path);
                             result.uploaded = "true";
-                            result.url = url + folder + _FileName;
+                            result.url = url + "/images/" + _FileName;
                             return JsonConvert.SerializeObject(result);
                         }
                     }
@@ -79,10 +80,8 @@ namespace WebApi.Controllers
             var result = new ResultObject();
             try
             {
-
-
                 string _tempUploadFolder = ConfigurationManager.AppSettings["MediaTempUploadFolder"];
-                string _storeFolder = ConfigurationManager.AppSettings["MediaUploadFolder"];
+                string _storeFolder = ConfigurationManager.AppSettings["ImagesStorePath"];
                 if (HttpContext.Request.Files.Count < 1)
                 {
                     result.Message = "Not file upload";
@@ -96,7 +95,7 @@ namespace WebApi.Controllers
                 }
                 else
                 {
-                    result = importZip(file, _tempUploadFolder, Server.MapPath(_storeFolder));
+                    result = importZip(file, _tempUploadFolder,_storeFolder);
 
                     return JsonConvert.SerializeObject(result);
                 }
@@ -111,7 +110,8 @@ namespace WebApi.Controllers
         [ValidateSSID(ActionId = 61)]
         public string ExportQuestion()
         {
-            if (("OPTIONS").Equals(HttpContext.Request.HttpMethod)){
+            if (("OPTIONS").Equals(HttpContext.Request.HttpMethod))
+            {
                 Response.StatusCode = 200;
                 return "";
             }
@@ -119,7 +119,7 @@ namespace WebApi.Controllers
             try
             {
                 string _tempUploadFolder = ConfigurationManager.AppSettings["MediaTempUploadFolder"];
-                string _storeFolder = Server.MapPath(ConfigurationManager.AppSettings["MediaUploadFolder"]);
+                string _storeFolder = Server.MapPath(ConfigurationManager.AppSettings["ImagesStorePath"]);
                 string fileName = "export_" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string _tempStoreFolder = Server.MapPath(_tempUploadFolder + "/" + fileName);
                 if (!Directory.Exists(_tempStoreFolder)) Directory.CreateDirectory(_tempStoreFolder);
@@ -152,7 +152,43 @@ namespace WebApi.Controllers
             return File(fullPath, "application/zip", fileName);
         }
 
-        // private method
+        [Route("images/{fileName}")]
+        public async Task<ActionResult> Images(string fileName)
+        {
+            var a = Request.Url;
+
+            string fullPath = Path.Combine(ConfigurationManager.AppSettings["ImagesStorePath"], fileName);
+            if (!System.IO.File.Exists(fullPath))
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            else
+            {
+                byte[] fileBytes = System.IO.File.ReadAllBytes(fullPath);
+                return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// remove file
+        /// </summary>
+        /// <param name="_path">path file</param>
         private void ClearFile(string _path)
         {
             if (System.IO.File.Exists(_path))
@@ -173,6 +209,12 @@ namespace WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Fill question to row excel
+        /// </summary>
+        /// <param name="row">Row containt question data</param>
+        /// <param name="a">answer object</param>
+        /// <returns>Row excel include question data</returns>
         private IRow FilltoRow(IRow row, Question q)
         {
             row.CreateCell(0);
@@ -182,6 +224,7 @@ namespace WebApi.Controllers
             row.CreateCell(4);
             row.CreateCell(5);
             row.CreateCell(6);
+            row.CreateCell(8);
             row.GetCell(0).SetCellValue("1");
             row.GetCell(1).SetCellValue(q.Content);
             row.GetCell(2).SetCellValue(q.Level.ToString());
@@ -189,9 +232,16 @@ namespace WebApi.Controllers
             row.GetCell(4).SetCellValue(q.Status.ToString());
             row.GetCell(5).SetCellValue(q.Category == null ? "" : q.Category.Name);
             row.GetCell(6).SetCellValue(q.Suggestion);
+            row.GetCell(8).SetCellValue(q.Id);
             return row;
         }
 
+        /// <summary>
+        /// Fill answer to row excel
+        /// </summary>
+        /// <param name="row">Row containt answer data</param>
+        /// <param name="a">answer object</param>
+        /// <returns>Row excel include answer data</returns>
         private IRow FilltoRow(IRow row, Answer a)
         {
             row.CreateCell(0);
@@ -204,7 +254,13 @@ namespace WebApi.Controllers
             row.GetCell(7).SetCellValue(a.IsTrue ? "1" : "0");
             return row;
         }
-
+        /// <summary>
+        /// export list question 
+        /// </summary>
+        /// <param name="questions">List question to export</param>
+        /// <param name="_localStoreFolder">folder store image</param>
+        /// <param name="_tempStoreFolder">temp store file zip</param>
+        /// <returns></returns>
         private ResultObject Export(List<Question> questions, string _localStoreFolder, string _tempStoreFolder)
         {
             var result = new ResultObject();
@@ -261,7 +317,12 @@ namespace WebApi.Controllers
         }
 
 
-
+        /// <summary>
+        /// accept file from content question in src img tag. Move file from srcFolder to destFolder
+        /// </summary>
+        /// <param name="content">Content Question with html code</param>
+        /// <param name="srcFolder">folder include image file</param>
+        /// <param name="destFolder">folder save image file</param>
         private void AcceptFile(string content, string srcFolder, string destFolder)
         {
             try
@@ -276,12 +337,55 @@ namespace WebApi.Controllers
                     Directory.CreateDirectory(destFolder);
                 }
                 var files = GetFileName(content);
+
                 foreach (var fileName in files)
                 {
                     if (System.IO.File.Exists(srcFolder + fileName))
                     {
                         if (System.IO.File.Exists(destFolder + fileName)) System.IO.File.Delete(destFolder + fileName);
                         System.IO.File.Copy(srcFolder + fileName, destFolder + fileName);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        /// <summary>
+        /// accept file from content question in src img tag. Move file from srcFolder to destFolder
+        /// </summary>
+        /// <param name="content">Content Question with html code</param>
+        /// <param name="srcFolder">folder include image file</param>
+        /// <param name="destFolder">folder save image file</param>
+        /// <param name="w">with image when resize</param>
+        /// <param name="h">height image when resize</param>
+        /// <param name="encoding">image encoding</param>
+        private void AcceptFile(string content, string srcFolder, string destFolder, int w, int h, ImageEncoding encoding)
+        {
+            try
+            {
+                if (w <= 0 || h <= 0) AcceptFile(content, srcFolder, destFolder);
+
+                if (!Directory.Exists(srcFolder))
+                {
+                    throw new FileNotFoundException("Thư mục chứa ảnh không tồn tại", srcFolder);
+                }
+                if (!Directory.Exists(destFolder))
+                {
+                    Directory.CreateDirectory(destFolder);
+                }
+                var files = GetFileName(content);
+
+                foreach (var fileName in files)
+                {
+                    if (System.IO.File.Exists(srcFolder + fileName))
+                    {
+                        if (System.IO.File.Exists(destFolder + fileName)) System.IO.File.Delete(destFolder + fileName);
+                        System.IO.File.Copy(srcFolder + fileName, destFolder + fileName);
+                        var resize = new ImageResizer(destFolder + fileName);
+                        resize.Resize(w, h, encoding);
+                        resize.SaveToFile(destFolder + fileName);
                     }
                 }
 
@@ -291,25 +395,36 @@ namespace WebApi.Controllers
                 throw e;
             }
         }
-
+        /// <summary>
+        /// Get file name in src img tag from string Htmlcode, with media extension config in webconfig key="MediaExtensionsSupport"
+        /// </summary>
+        /// <param name="content">string html code</param>
+        /// <returns>List string file name pass</returns>
         private List<string> GetFileName(string content)
         {
+            string acceptExtension = ConfigurationManager.AppSettings["MediaExtensionsSupport"];
             List<string> result = new List<string>();
+            if (acceptExtension == null || content == null) return result;
 
             Regex reg = new Regex("<img.+?src=[\"'](.+?)[\"'].*?>");
             foreach (Match m in reg.Matches(content))
             {
                 if (m.Value != null)
                 {
-                    if (m.Value.Split('/').Last() != null)
-                    {
-                        result.Add(m.Value.Split('/').Last().Split('\"').First());
-                    }
+                    var fileName = m.Value.Split('/').Last().Split('\"').First();
+                    var extension = fileName.Split('.').Last();
+                    if (acceptExtension.Contains(extension)) result.Add(fileName);
                 }
             }
             return result;
         }
-
+        /// <summary>
+        /// import question from zip file
+        /// </summary>
+        /// <param name="file">file upload</param>
+        /// <param name="_tempUploadFolder">temp folder save file to unzip</param>
+        /// <param name="_storePath">folder store when complete</param>
+        /// <returns>Result object</returns>
         private ResultObject importZip(HttpPostedFileBase file, string _tempUploadFolder, string _storePath)
         {
             try
@@ -346,7 +461,7 @@ namespace WebApi.Controllers
                 }
                 else
                 {
-                    result.Message = _pathExcel + ".xls or " + _pathExcel + ".xlsx NOT FOUND!";
+                    result.Message = "File excel NOT FOUND!!!!! Question.xls or Question.xlsx NOT FOUND!";
                     return result;
                 }
                 if (!Directory.Exists(_tempImagepath))
@@ -365,7 +480,13 @@ namespace WebApi.Controllers
                 throw e;
             }
         }
-
+        /// <summary>
+        /// import question from excel file
+        /// </summary>
+        /// <param name="_path">path file excel</param>
+        /// <param name="_tempUploadFolder">temp folder save file to unzip</param>
+        /// <param name="_storePath">folder store when complete</param>
+        /// <returns>Result object</returns>
         private ResultObject ImportExcel(string _path, string _tempUploadFolder, string _storeFolder)
         {
 
@@ -419,6 +540,7 @@ namespace WebApi.Controllers
                 {
                     foreach (var question in listFromFiles)
                     {
+
                         AcceptFile(question.Content, _tempUploadFolder, _storeFolder);
                     }
                     result.Success = service.Import(listFromFiles);
@@ -438,7 +560,13 @@ namespace WebApi.Controllers
             }
 
         }
-
+        /// <summary>
+        /// get question from row excel
+        /// </summary>
+        /// <param name="currentRow">IRow include question data</param>
+        /// <param name="rowIndex">row index in sheet</param>
+        /// <param name="errMesage">ref error message if throw</param>
+        /// <returns>Question from row</returns>
         private Question GetQuestionFromRow(IRow currentRow, int rowIndex, ref string errMesage)
         {
             string err = "";
@@ -447,6 +575,7 @@ namespace WebApi.Controllers
             var leveIsNumber = int.TryParse(GetValueCell(currentRow.GetCell(2)), out int level);
             var typeIsNumber = int.TryParse(GetValueCell(currentRow.GetCell(3)), out int type);
             var statusIsNumber = int.TryParse(GetValueCell(currentRow.GetCell(4)), out int status);
+            var idIsNumber = int.TryParse(GetValueCell(currentRow.GetCell(8)), out int idQuestion);
             string categoryName = GetValueCell(currentRow.GetCell(5));
             string suggestion = GetValueCell(currentRow.GetCell(6));
             var cate = service.getCategoryByName(categoryName);
@@ -458,7 +587,8 @@ namespace WebApi.Controllers
             {
                 return new Question
                 {
-                    Content = content,
+                    Id = idQuestion,
+                    Content = RemoveXSS(content),
                     Level = level,
                     Type = type,
                     Status = status,
@@ -475,7 +605,13 @@ namespace WebApi.Controllers
                 return null;
             }
         }
-
+        /// <summary>
+        /// get answer from row excel
+        /// </summary>
+        /// <param name="currentRow">IRow include answer data</param>
+        /// <param name="rowIndex">row index in sheet mark to error message</param>
+        /// <param name="errMesage">ref error message if throw</param>
+        /// <returns>answer from row</returns>
         private Answer GetAnswerFromRow(IRow currentRow, int rowIndex, ref string errMesage)
         {
             string err = "";
@@ -488,7 +624,7 @@ namespace WebApi.Controllers
             {
                 return new Answer
                 {
-                    Content = content,
+                    Content = RemoveXSS(content),
                     Status = status,
                     CreatedBy = "anonymous user import",
                     CreatedDate = DateTime.Now,
@@ -501,7 +637,13 @@ namespace WebApi.Controllers
                 return null;
             }
         }
-
+        /// <summary>
+        /// validate question
+        /// </summary>
+        /// <param name="ques">object question</param>
+        /// <param name="rowIndex">row index in sheet mark to error message</param>
+        /// <param name="errMesage">ref error message if throw</param>
+        /// <returns>true if has least one answer is true, false if no answer is true</returns>
         private bool ValidateQuestion(Question ques, int rowIndex, ref string err)
         {
             var hasIsTrue = false;
@@ -520,6 +662,10 @@ namespace WebApi.Controllers
             return ques != null;
         }
 
+        /// <summary>
+        /// delete directory(using with temp folder)
+        /// </summary>
+        /// <param name="target_dir">directory need delete</param>
         private void DeleteDirectory(string target_dir)
         {
             try
@@ -545,6 +691,16 @@ namespace WebApi.Controllers
                 throw e;
             }
 
+        }
+        /// <summary>
+        /// remove script tag from html string to block XSS
+        /// </summary>
+        /// <param name="input">string containt html code</param>
+        /// <returns></returns>
+        private string RemoveXSS(string input)
+        {
+            Regex rRemScript = new Regex(@"<script[^>]*>[\s\S]*?</script>");
+            return rRemScript.Replace(input, "");
         }
     }
 }

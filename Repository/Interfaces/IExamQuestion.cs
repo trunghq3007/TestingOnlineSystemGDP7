@@ -11,11 +11,11 @@ namespace Repository.Interfaces
     public interface IExamQuestion<T> where T : class
     {
         IEnumerable<ViewQuestionExam> GetAll();
-        IEnumerable<T> Search(string searchString);
-        IEnumerable<T> Filter(T t);
-        int Insert(ExamQuestion model);
-        int Update(T t);
-        int Delete(ExamQuestion model);
+        IEnumerable<ViewQuestionExam> Search(string searchString);
+        IEnumerable<ViewQuestionExam> Filter(ViewQuestionExam t);
+        //int Insert(ExamQuestion model);
+        //int Update(T t);
+        //int Delete(ExamQuestion model);
         IEnumerable<ViewQuestionExam> GetListQuestionById(int id);
 
         IEnumerable<ViewQuestionExam> GetById(int id);
@@ -23,5 +23,6 @@ namespace Repository.Interfaces
         int AddMutipleQuestion(List<ExamQuestion> ListModel);
         int RandomQuestion(ViewQuestionExam model);
         int DeleteMutiple(List<ExamQuestion> ListModel);
+       
     }
 }

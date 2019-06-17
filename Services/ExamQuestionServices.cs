@@ -25,15 +25,7 @@ namespace Services
             return repository.GetListQuestionById(id);
         }
 
-        public int Delete(ExamQuestion model)
-        {
-            return repository.Delete(model);
-        }
-        public int Insert(Model.ExamQuestion model)
-        {
-            return repository.Insert(model);
-
-        }
+      
         public GetFill listFilters()
         {
             return repository.listFilters();
@@ -66,9 +58,14 @@ namespace Services
             return repository.DeleteMutiple(ListModel);
         }
 
-        public IEnumerable<Question> Search(string searchString)
+        public IEnumerable<ViewQuestionExam> Search(string searchString)
         {
             return repository.Search(searchString);
+        }
+
+        public IEnumerable<ViewQuestionExam> Filter(ViewQuestionExam filterModel)
+        {
+            return repository.Filter(filterModel);
         }
     }
 }

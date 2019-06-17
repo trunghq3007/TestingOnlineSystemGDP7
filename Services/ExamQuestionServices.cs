@@ -66,9 +66,14 @@ namespace Services
             return repository.DeleteMutiple(ListModel);
         }
 
-        public IEnumerable<Question> Search(string searchString)
+        public IEnumerable<ViewQuestionExam> Search(string searchString)
         {
             return repository.Search(searchString);
+        }
+
+        public IEnumerable<ViewQuestionExam> Filter(ViewQuestionExam filterModel)
+        {
+            return repository.Filter(filterModel);
         }
     }
 }

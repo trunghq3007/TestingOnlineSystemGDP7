@@ -87,81 +87,39 @@ namespace WebApi.Controllers
                
             }
 
+            if ("getfillter".Equals(action))
+            {
+                return JsonConvert.SerializeObject(examQuestion.listFilters());
+            }
 
             return "true";
 
         }
-       
-		[HttpPost]
-		public string Post([FromBody] object value)
-		{
-            ResultObject resultt = new ResultObject();
 
-            try
-            {
-                if (value != null)
-                {
-                    var exam = JsonConvert.DeserializeObject<ExamQuestion>(value.ToString());
-                    var result = examQuestion.Insert(exam);
-                    return JsonConvert.SerializeObject(result);
-
-                }
-            }
-            catch (Exception e)
-            {
-                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-                return JsonConvert.SerializeObject(resultt);
-            }
-			
-			return "FALSE";
-		}
-        [HttpDelete]
-        public string Delete(List<ExamQuestion> ListModel)
-        {
-            ResultObject resultt = new ResultObject();
-
-            try
-            {
-                var exam = JsonConvert.DeserializeObject<List<ExamQuestion>>(ListModel.ToString());
-                var result = examQuestion.DeleteMutiple(exam);
-                return JsonConvert.SerializeObject(result);
-            }
-            catch (Exception e)
-            {
-                resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-                return JsonConvert.SerializeObject(resultt);
-            }
-
-        }
 
 
         [HttpPost]
-		public string Getfilter([FromUri]string action, [FromBody]object value)
+        public string Filter([FromBody] object value)
+        {
+            try
+            {
+                var filterObject = JsonConvert.DeserializeObject<ViewQuestionExam>(value.ToString());
+                return JsonConvert.SerializeObject(examQuestion.Filter(filterObject), Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+            }
+            catch (Exception ex)
+            {
+
+                return "Object fillter not convert valid";
+            }
+        }
+        [HttpPost]
+		public string Post([FromUri]string action, [FromBody]object value)
 		{
-			if (value != null)
-			{
-
-				if ("fillter".Equals(action))
-				{
-					try
-					{
-						var filterObject = JsonConvert.DeserializeObject<QuestionFillterModel>(value.ToString());
-						return JsonConvert.SerializeObject(QuestionServices.Filter(filterObject), Formatting.Indented, new JsonSerializerSettings
-                        {
-                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                        });
-                       
-                    }
-					catch (Exception ex)
-					{
-
-						return "Object fillter not convert valid";
-					}
-				}
-
-
-
-			}
+			
 
             if ("AddMutiple".Equals(action))
             {
@@ -214,13 +172,7 @@ namespace WebApi.Controllers
                 }
                
             }
-			if ("getfillter".Equals(action))
-			{
-                return JsonConvert.SerializeObject(examQuestion.listFilters());
-                //return "";
-
-
-            }
+			
 			var result = QuestionServices.GetAll().ToList();
 			return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
 			{

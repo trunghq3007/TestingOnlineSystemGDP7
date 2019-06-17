@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 namespace WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
         
 
         [HttpGet]
+        [ValidateSSID(ActionId = 28)]
         public string Index()
         {
             var jsonSetting = new JsonSerializerSettings
@@ -44,6 +46,7 @@ namespace WebApi.Controllers
 
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 29)]
         public string getExamById(int id)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -66,6 +69,7 @@ namespace WebApi.Controllers
         }
         [Route("ExamDetails/{id}")]
         [HttpGet]
+        [ValidateSSID(ActionId = 30)]
         public string getExam(int id)
         {
          
@@ -81,6 +85,7 @@ namespace WebApi.Controllers
 
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 31)]
         public string Get(string code)
         {
             ResultObject resultt = new ResultObject();

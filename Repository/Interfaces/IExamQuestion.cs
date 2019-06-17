@@ -13,9 +13,9 @@ namespace Repository.Interfaces
         IEnumerable<ViewQuestionExam> GetAll();
         IEnumerable<ViewQuestionExam> Search(string searchString);
         IEnumerable<ViewQuestionExam> Filter(ViewQuestionExam t);
-        int Insert(ExamQuestion model);
-        int Update(T t);
-        int Delete(ExamQuestion model);
+        //int Insert(ExamQuestion model);
+        //int Update(T t);
+        //int Delete(ExamQuestion model);
         IEnumerable<ViewQuestionExam> GetListQuestionById(int id);
 
         IEnumerable<ViewQuestionExam> GetById(int id);

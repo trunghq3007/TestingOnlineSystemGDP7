@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 using Model;
 using Newtonsoft.Json;
 using Services;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -21,6 +22,8 @@ namespace WebApi.Controllers
             service = new CategoryService();
         }
         [HttpGet]
+        //[HasCredential(ActionId = 1)]
+        [ValidateSSID(ActionId = 1)]
         public string Get()
         {
 
@@ -32,6 +35,7 @@ namespace WebApi.Controllers
             });
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 2)]
         public string Get(int id)
         {
 
@@ -44,6 +48,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 3)]
         public string Get([FromUri]string action, [FromBody]string value)
         {
             if (value != null && !"".Equals(value))
@@ -63,6 +68,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 4)]
         public string Post([FromBody]object value)
         {
             if (value != null)
@@ -77,6 +83,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [ValidateSSID(ActionId = 2)]
         public string Put(int id, [FromBody]object value)
         {
             if (value != null)
@@ -91,6 +98,7 @@ namespace WebApi.Controllers
             return "FALSE";
         }
         [HttpDelete]
+        [ValidateSSID(ActionId = 3)]
         public string Put(int id)
         {
             try

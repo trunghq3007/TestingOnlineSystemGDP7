@@ -16,18 +16,7 @@ namespace Repository
             this.context = context;
         }
 
-        public int Delete(ExamQuestion model)
-        {
-            var examQuestion = context.ExamQuestions.Where(eq => eq.ExamId == model.ExamId && eq.QuestionId == model.QuestionId).SingleOrDefault();
-            if (examQuestion != null)
-            {
-                context.ExamQuestions.Remove(examQuestion);
-                return context.SaveChanges();
-            }
-
-            return 0;
-        }
-
+       
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -225,18 +214,7 @@ namespace Repository
             return list;
         }
 
-        public int Insert(Model.ExamQuestion model)
-        {
-            var DetailQues = context.ExamQuestions
-                .Where(q => q.QuestionId == model.QuestionId && q.ExamId == model.ExamId).ToList();
-            if (DetailQues.Count <= 0)
-            {
-                context.ExamQuestions.Add(model);
-                return context.SaveChanges();
-            }
-
-            return 0;
-        }
+       
 
         public IEnumerable<ViewQuestionExam> Search(string searchString)
         {
@@ -318,11 +296,7 @@ namespace Repository
             
         }
 
-        public int Update(Question t)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public GetFill listFilters()
         {
             GetFill item = new GetFill()

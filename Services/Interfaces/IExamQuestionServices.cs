@@ -18,6 +18,7 @@ namespace Services.Interfaces
         int RandomQuestion(ViewQuestionExam model);
         IEnumerable<ViewQuestionExam> GetById(int id);
         int DeleteMutiple(List<ExamQuestion> ListModel);
-        IEnumerable<T> Search(string searchString);
+        IEnumerable<ViewQuestionExam> Search(string searchString);
+        IEnumerable<ViewQuestionExam> Filter(ViewQuestionExam filterModel);
     }
 }

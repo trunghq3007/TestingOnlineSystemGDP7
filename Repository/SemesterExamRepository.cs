@@ -80,32 +80,40 @@ namespace Repository
                 context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).FirstOrDefault();
             SemesterExam semesterExam = context.SemesterExams.Find(id);
             SemesterDetail semesterDetail = new SemesterDetail();
-            semesterDetail.ID = semesterExam.ID;
-            semesterDetail.SemesterName = semesterExam.SemesterName;
-            if (semesterExam.StartDay != null)
+            try
             {
+                semesterDetail.ID = semesterExam.ID;
+                semesterDetail.SemesterName = semesterExam.SemesterName;
+                if (semesterExam.StartDay != null)
+                {
 
+                }
+
+                semesterDetail.StartDay = semesterExam.StartDay.ToString();
+                semesterDetail.EndDay = semesterExam.EndDay.ToString();
+                if (semesterExam_Users != null)
+                    semesterDetail.Creator = semesterExam_Users.User.FullName;
+                semesterDetail.Code = semesterExam.Code;
+                if (semesterExam.status == 1)
+                    semesterDetail.status = "Public";
+                if (semesterExam.status == 2)
+                    semesterDetail.status = "Draft";
+                if (semesterExam.status == 0)
+                    semesterDetail.status = "No Public";
+
+                var QT = from TR in context.TestResults
+                         join U in context.Users on TR.UserId equals U.UserId
+                         join SU in context.SemesterExamUsers on U.UserId equals SU.User.UserId
+                         where SU.Type == 2 && SU.SemesterExam.ID == id
+                         select TR;
+                int participation = QT.ToList().Count;
+                semesterDetail.NumberInvite = Convert.ToString(participation);
             }
-
-            semesterDetail.StartDay = semesterExam.StartDay.ToString();
-            semesterDetail.EndDay = semesterExam.EndDay.ToString();
-            if (semesterExam_Users != null)
-                semesterDetail.Creator = semesterExam_Users.User.FullName;
-            semesterDetail.Code = semesterExam.Code;
-            if (semesterExam.status == 1)
-                semesterDetail.status = "Public";
-            if (semesterExam.status == 2)
-                semesterDetail.status = "Draft";
-            if (semesterExam.status == 0)
-                semesterDetail.status = "Done";
-
-            var QT = from TR in context.TestResults
-                join U in context.Users on TR.UserId equals U.UserId
-                join SU in context.SemesterExamUsers on U.UserId equals SU.User.UserId
-                where SU.Type == 2 && SU.SemesterExam.ID == id
-                select TR;
-            int participation = QT.ToList().Count;
-            semesterDetail.NumberInvite = Convert.ToString(participation);
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+           
 
 
             return semesterDetail;
@@ -119,24 +127,44 @@ namespace Repository
             List<User> users = context.Users.ToList();
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
-            User semesterExam_Users =
-                context.Users.Where(SU => SU.UserId == id).FirstOrDefault();
-            SemesterExam semesterExam = context.SemesterExams.Find(id);
-            User user = context.Users.Find(id);
+
+            // Test test = context.Tests.Find(id);
+
+            // User user = context.Users.Find(id);
             TestResult testResult = context.TestResults.Find(id);
-            Test test = context.Tests.Find(id);
+
             Result result = new Result();
             try
             {
-                result.ID = user.UserId;
-            result.TestName = test.TestName;
-            if (semesterExam_Users != null)
-                result.FullName = semesterExam_Users.UserName;
-            result.SemesterName = semesterExam.SemesterName;
-            result.Email = user.Email;
-           
+                result.ID = testResult.Id;
+
+                var query1 = from TR in context.TestResults
+                             join T in context.Tests
+                             on TR.TestId equals T.Id
+                             select T.TestName;
+                result.TestName = query1.FirstOrDefault();
+
+
+                var query2 = from TR in context.TestResults
+                             join T in context.Tests
+                             on TR.TestId equals T.Id
+                             join SE in context.SemesterExams
+                             on T.SemasterExamId equals SE.ID
+                             select new { T.Id, T.TestName, SE.SemesterName };
+
+                result.SemesterName = query2.FirstOrDefault().SemesterName;
+
+                var query3 = from TR in context.TestResults
+                             join U in context.Users
+                             on TR.UserId equals U.UserId
+                             select new { U.FullName, U.Email };
+
+                result.FullName = query3.FirstOrDefault().FullName;
+                result.Email = query3.FirstOrDefault().Email;
+
+
                 result.Score = Convert.ToInt32(testResult.Score);
-                if (result.Score <= 50)
+                if (result.Score <= 4)
                     result.Category = "Trượt";
                 else
                     result.Category = "Đỗ";
@@ -145,10 +173,10 @@ namespace Repository
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
-            
-            
 
-           
+
+
+
 
             return result;
 
@@ -405,7 +433,7 @@ namespace Repository
 
         public Model.ViewModel.TestProcessing GeTestProcessings(int id)
         {
-            TestProcessing testProcessing = new TestProcessing();
+                TestProcessing testProcessing = new TestProcessing();
             Test test = context.Tests.Find(id);
             testProcessing.Id = id;
             testProcessing.TestName = test.TestName;

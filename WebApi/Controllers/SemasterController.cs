@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -19,9 +20,10 @@ namespace WebApi.Controllers
 		{
 			services = new SemasterServices();
 		}
-		// GET: Group
+		// GET: 
 		[HttpGet]
-		public string Get()
+        [ValidateSSID(ActionId = 27)]
+        public string Get()
 		{
 			var result = services.GetAll().ToList();
             return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings

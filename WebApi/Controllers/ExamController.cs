@@ -9,6 +9,7 @@ using Services;
 using Model;
 using System.Web.Http.Cors;
 using Model.ViewModel;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -25,7 +26,8 @@ namespace WebApi.Controllers
 		}
 	
          [HttpGet]
-		public string Getall()
+        [ValidateSSID(ActionId = 5)]
+        public string Getall()
         {
             ResultObject resultt = new ResultObject();
             try
@@ -45,8 +47,9 @@ namespace WebApi.Controllers
         }
 
 		[HttpGet]
+        [ValidateSSID(ActionId = 10)]
 
-		public string GetExam(int id)
+        public string GetExam(int id)
 		{
             ResultObject resultt = new ResultObject();
 
@@ -68,7 +71,8 @@ namespace WebApi.Controllers
 
         }
 		[HttpPost]
-		public string Filter([FromUri]string action, [FromBody]object value)
+        [ValidateSSID(ActionId = 5)]
+        public string Filter([FromUri]string action, [FromBody]object value)
 		{
             ResultObject resultt = new ResultObject();
             try
@@ -114,7 +118,8 @@ namespace WebApi.Controllers
            
         }
 		[HttpPost]
-		public string InsertExam([FromBody] object value)
+        [ValidateSSID(ActionId = 7)]
+        public string InsertExam([FromBody] object value)
 		{
             ResultObject resultt = new ResultObject();
 
@@ -137,7 +142,8 @@ namespace WebApi.Controllers
 			
 		}
 		[HttpPut]
-		public string Update(int id, [FromBody]object value)
+        [ValidateSSID(ActionId = 6)]
+        public string Update(int id, [FromBody]object value)
 		{
             ResultObject resultt = new ResultObject();
             try
@@ -159,7 +165,8 @@ namespace WebApi.Controllers
             
 		}
 		[HttpGet]
-		public string Get(string searchString)
+        [ValidateSSID(ActionId = 5)]
+        public string Get(string searchString)
 		{
             ResultObject resultt = new ResultObject();
 
@@ -179,7 +186,8 @@ namespace WebApi.Controllers
 			
 		}
 		[HttpDelete]
-		public string Delete(int id)
+        [ValidateSSID(ActionId = 8)]
+        public string Delete(int id)
 		{
             ResultObject resultt = new ResultObject();
 
@@ -198,7 +206,9 @@ namespace WebApi.Controllers
 
 
 		[System.Web.Http.HttpGet]
-		public string Export_Exam(int id, [FromUri] string action)
+        [ValidateSSID(ActionId = 9)]
+
+        public string Export_Exam(int id, [FromUri] string action)
 		{
             ResultObject resultt = new ResultObject();
 
@@ -219,6 +229,7 @@ namespace WebApi.Controllers
             return "false";
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 6)]
         public string Get(int idExam)
         {
             return services.GetCategoryName(idExam);

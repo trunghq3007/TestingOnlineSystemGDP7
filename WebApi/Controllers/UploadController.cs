@@ -30,6 +30,7 @@ namespace WebApi.Controllers
         }
         private QuestionServices service;
 
+        [ValidateSSID(ActionId = 59)]
         public string UploadCkeditor()
         {
             dynamic result = new ExpandoObject();
@@ -73,6 +74,7 @@ namespace WebApi.Controllers
             }
         }
 
+        [ValidateSSID(ActionId = 60)]
         public string ImportQuestion()
         {
             var result = new ResultObject();
@@ -105,7 +107,7 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
-
+        [ValidateSSID(ActionId = 61)]
         public string ExportQuestion()
         {
             if (("OPTIONS").Equals(HttpContext.Request.HttpMethod))
@@ -135,7 +137,7 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
-
+        [ValidateSSID(ActionId = 62)]
         public ActionResult DownloadFileExport(string fileName)
         {
             //get the temp folder and file path in server

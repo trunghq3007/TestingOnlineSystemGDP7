@@ -10,8 +10,8 @@ namespace Services.Interfaces
  public	interface ITestServices<T> where T : class
 	{
 		IEnumerable<ViewTest> GetAll();
-        IEnumerable<ViewTest> SearchName(string searchString);
-        IEnumerable<T> Search(string searchString);
+        IEnumerable<ViewTest> Search(string searchString);
+        //IEnumerable<T> Search(string searchString);
 		IEnumerable<T> Filter(T t);
 		int Insert(T t);
 		int Update(T t);

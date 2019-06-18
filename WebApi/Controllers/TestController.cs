@@ -135,7 +135,7 @@ namespace WebApi.Controllers
             ResultObject resultt = new ResultObject();
             try
             {
-                var result = testServices.SearchName(searchString).ToList();
+                var result = testServices.Search(searchString).ToList();
                 return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)

@@ -13,14 +13,14 @@ namespace Services
 {
 	public class TestService : Interfaces.ITestServices<Test>
 	{
-		private ITestRepository<ViewTest> viewtestrepository;
+		//private ITestRepository<ViewTest> viewtestrepository;
 		private ITestRepository<Test> repository;
 		private DBEntityContext context;
 
 		public TestService()
 		{
 			repository = new TestRepository(new DBEntityContext());
-			viewtestrepository = new ViewTestRepository(new DBEntityContext());
+			//viewtestrepository = new ViewTestRepository(new DBEntityContext());
 		}
 		public int Delete(int id)
 		{
@@ -39,7 +39,7 @@ namespace Services
 
         public IEnumerable<ViewTest> GetAll()
         {
-            return viewtestrepository.GetAll();
+            return repository.GetAll();
         }
 
         //public IEnumerable<Test> GetAll()
@@ -62,14 +62,14 @@ namespace Services
             return repository.Insert(t);
         }
 
-		public IEnumerable<Test> Search(string searchString)
+		//public IEnumerable<Test> Search(string searchString)
+  //      {
+  //          return repository.Search(searchString);
+  //      }
+
+        public IEnumerable<ViewTest> Search(string searchString)
         {
             return repository.Search(searchString);
-        }
-
-        public IEnumerable<ViewTest> SearchName(string searchString)
-        {
-            return viewtestrepository.Search(searchString);
         }
 
         public int Update(Test test)

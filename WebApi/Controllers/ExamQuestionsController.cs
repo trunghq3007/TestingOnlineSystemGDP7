@@ -8,6 +8,7 @@ using Model;
 using Model.ViewModel;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
 		}
 
         [HttpGet]
+        [ValidateSSID(ActionId =74 )]
         public string Search(string searchString)
         {
             ResultObject resultt = new ResultObject();
@@ -44,6 +46,7 @@ namespace WebApi.Controllers
            
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 74)]
         public string Get([FromUri] string action, [FromUri] int id)
         {
 
@@ -99,6 +102,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
+        [ValidateSSID(ActionId = 74)]
         public string Filter([FromBody] object value)
         {
             try
@@ -117,7 +121,8 @@ namespace WebApi.Controllers
             }
         }
         [HttpPost]
-		public string Post([FromUri]string action, [FromBody]object value)
+        [ValidateSSID(ActionId = 75)]
+        public string Post([FromUri]string action, [FromBody]object value)
 		{
 			
 

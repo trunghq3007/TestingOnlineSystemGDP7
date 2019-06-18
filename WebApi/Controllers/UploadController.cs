@@ -30,6 +30,10 @@ namespace WebApi.Controllers
         }
         private QuestionServices service;
 
+        /// <summary>
+        /// Allow upload image, using for CKEDITOR
+        /// </summary>
+        /// <returns>object containt uploaded save status(true,false) and url image if susscess </returns>
         [ValidateSSID(ActionId = 59)]
         public string UploadCkeditor()
         {
@@ -74,7 +78,11 @@ namespace WebApi.Controllers
             }
         }
 
-        [ValidateSSID(ActionId = 60)]
+        /// <summary>
+        /// Import Question from client
+        /// </summary>
+        /// <returns>json string of ResultObject</returns>
+		[ValidateSSID(ActionId = 60)]
         public string ImportQuestion()
         {
             var result = new ResultObject();
@@ -107,7 +115,12 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
-        [ValidateSSID(ActionId = 61)]
+
+        /// <summary>
+        /// Export Question from client
+        /// </summary>
+        /// <returns>json string of ResultObject containt file name save in server</returns>
+		[ValidateSSID(ActionId = 61)]
         public string ExportQuestion()
         {
             if (("OPTIONS").Equals(HttpContext.Request.HttpMethod))
@@ -137,7 +150,13 @@ namespace WebApi.Controllers
                 return JsonConvert.SerializeObject(result);
             }
         }
-        [ValidateSSID(ActionId = 62)]
+
+        /// <summary>
+        /// Using download file export from server
+        /// </summary>
+        /// <param name="fileName">file name need to download</param>
+        /// <returns>a File if found</returns>
+		[ValidateSSID(ActionId = 62)]
         public ActionResult DownloadFileExport(string fileName)
         {
             //get the temp folder and file path in server
@@ -152,6 +171,11 @@ namespace WebApi.Controllers
             return File(fullPath, "application/zip", fileName);
         }
 
+        /// <summary>
+        /// Action get Link image show in HTML code
+        /// </summary>
+        /// <param name="fileName">file image name</param>
+        /// <returns>File image if founded</returns>
         [Route("images/{fileName}")]
         public async Task<ActionResult> Images(string fileName)
         {
@@ -196,16 +220,20 @@ namespace WebApi.Controllers
                 System.IO.File.Delete(_path);
             }
         }
-
+        /// <summary>
+        /// Get Value String from Cell
+        /// </summary>
+        /// <param name="cell">Cell contain data</param>
+        /// <returns>string value in cell, return empty string if cell null or type not string</returns>
         private string GetValueCell(ICell cell)
         {
-            if (cell != null)
+            if (cell != null && CellType.String == cell.CellType)
             {
                 return cell.StringCellValue;
             }
             else
             {
-                return "";
+                return String.Empty;
             }
         }
 

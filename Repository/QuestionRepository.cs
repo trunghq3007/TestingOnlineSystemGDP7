@@ -217,24 +217,30 @@ namespace Repository
                         tags.Add(context.Tags.Find(tag.Id));
                     }
                 }
-                currenQuestion.Answers = null;
-                currenQuestion.Category = t.Category;
-                currenQuestion.Content = t.Content;
-                currenQuestion.ExamQuestions = t.ExamQuestions;
-                currenQuestion.Level = t.Level;
-                currenQuestion.Media = t.Media;
-                currenQuestion.Tags = tags;
-                currenQuestion.Type = t.Type;
-                currenQuestion.Suggestion = t.Suggestion;
-                currenQuestion.UpdatedBy = "anonymous user";
-                currenQuestion.UpdatedDate = DateTime.Now;
-                context.Entry(currenQuestion).State = EntityState.Modified;
-                context.Answers.RemoveRange(context.Answers.Where(s => s.Question.Id == t.Id));
-                var result = context.SaveChanges();
-                currenQuestion.Answers = t.Answers;
-                context.SaveChanges();
-                trans.Commit();
-                return result;
+                
+                if (currenQuestion.Status != -3)
+                {
+                    currenQuestion.Answers = null;
+                    currenQuestion.Category = t.Category;
+                    currenQuestion.Content = t.Content;
+                    currenQuestion.ExamQuestions = t.ExamQuestions;
+                    currenQuestion.Level = t.Level;
+                    currenQuestion.Media = t.Media;
+                    currenQuestion.Tags = tags;
+                    currenQuestion.Type = t.Type;
+                    currenQuestion.Suggestion = t.Suggestion;
+                    currenQuestion.UpdatedBy = "anonymous user";
+                    currenQuestion.UpdatedDate = DateTime.Now;
+                    context.Entry(currenQuestion).State = EntityState.Modified;
+                    context.Answers.RemoveRange(context.Answers.Where(s => s.Question.Id == t.Id));
+                    var result = context.SaveChanges();
+                    currenQuestion.Answers = t.Answers;
+                    context.SaveChanges();
+                    trans.Commit();
+                    return result;
+                }
+                return -9;
+        
             }
             catch (Exception e)
             {

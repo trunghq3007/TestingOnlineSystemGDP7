@@ -128,15 +128,15 @@ namespace Repository
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
 
-            // Test test = context.Tests.Find(id);
+             Test test = context.Tests.Find(id);
 
             // User user = context.Users.Find(id);
-            TestResult testResult = context.TestResults.Find(id);
+           // TestResult testResult = context.TestResults.Find(id);
 
             Result result = new Result();
             try
             {
-                result.ID = testResult.UserId;
+                result.ID = test.Id;
 
                 var query1 = from TR in context.TestResults
                              join T in context.Tests
@@ -164,6 +164,8 @@ namespace Repository
 
                 var query4 = from TR in context.TestResults
                              where TR.UserId == 2
+                             && TR.TestTimeNo == 0
+                             && TR.TestId == id
                              select TR.Score;
                 result.Score = Convert.ToInt32(query4.Sum());
 

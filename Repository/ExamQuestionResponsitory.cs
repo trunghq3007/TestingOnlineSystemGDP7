@@ -3,6 +3,7 @@ using Model;
 using Model.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Repository
@@ -379,6 +380,12 @@ namespace Repository
                             examQuestion.QuestionId = checkQuestion.Id;
 
                             context.ExamQuestions.Add(examQuestion);
+
+                            var currentQuestion = context.Questions.Find(examQuestion.QuestionId);
+                            currentQuestion.Status = -3;
+
+                            context.Entry(currentQuestion).State = EntityState.Modified;
+                            //context.SaveChanges();
                         }
                     }
                 }
@@ -396,7 +403,12 @@ namespace Repository
                             examQuestion.QuestionId = checkQuestion.Id;
 
                             context.ExamQuestions.Add(examQuestion);
-                    }
+
+                            var currentQuestion = context.Questions.Find(examQuestion.QuestionId);
+                            currentQuestion.Status = -3;
+
+                            context.Entry(currentQuestion).State = EntityState.Modified;
+                        }
                 }
                 }
 
@@ -451,12 +463,16 @@ namespace Repository
                         count--;
                         int randomnumber = random.Next(0, count);
 
+                        var currentQuestion = context.Questions.Find(list.ElementAt(randomnumber).QuestionId);
+                        currentQuestion.Status = -3;
 
+                        context.Entry(currentQuestion).State = EntityState.Modified;
+                        //context.SaveChanges();
 
                         context.ExamQuestions.Add(list.ElementAt(randomnumber));
                         list.Remove(list.ElementAt(randomnumber));
 
-
+                       
 
                     }
                 }
@@ -470,6 +486,11 @@ namespace Repository
                         int randomnumber = random.Next(0, count);
 
 
+                        var currentQuestion = context.Questions.Find(list.ElementAt(randomnumber).QuestionId);
+                        currentQuestion.Status = -3;
+
+                        context.Entry(currentQuestion).State = EntityState.Modified;
+                        //context.SaveChanges();
 
                         context.ExamQuestions.Add(list.ElementAt(randomnumber));
                         list.Remove(list.ElementAt(randomnumber));
@@ -503,7 +524,11 @@ namespace Repository
                     foreach (var item in ListModel)
                     {
 
+                        var currentQuestion = context.Questions.Find(item.QuestionId);
+                        currentQuestion.Status = 1;
 
+                        context.Entry(currentQuestion).State = EntityState.Modified;
+                        //context.SaveChanges();
                         try
                         {
                             var List = context.ExamQuestions

@@ -99,7 +99,6 @@
     <Compile Include="TestRepository.cs" />
     <Compile Include="UserGroupRepository.cs" />
     <Compile Include="UserRepository.cs" />
-    <Compile Include="ViewTestRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

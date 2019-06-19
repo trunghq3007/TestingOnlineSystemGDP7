@@ -267,8 +267,17 @@ namespace Repository
 
                         var cate = context.Categorys.Where(s => s.Name.ToLower().Equals(question.Category.Name.ToLower())).ToList();
                         question.Category = cate.Count() <= 0 ? question.Category : cate.First();
-                        Update(question);
-                        result = context.SaveChanges();
+                        var currentQuestion = context.Questions.Find(question.Id);
+                        if(currentQuestion == null)
+                        {
+                            context.Questions.Add(question);
+                            result = context.SaveChanges();
+                        }
+                        else
+                        {
+                            question.Tags = currentQuestion.Tags;
+                            result = Update(question);
+                        }
                         if (result <= 0)
                         {
                             transaction.Rollback();
@@ -305,6 +314,8 @@ namespace Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        
 
 
 

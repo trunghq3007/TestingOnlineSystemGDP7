@@ -99,7 +99,7 @@ namespace Repository
                 if (semesterExam.status == 2)
                     semesterDetail.status = "Draft";
                 if (semesterExam.status == 0)
-                    semesterDetail.status = "No Public";
+                    semesterDetail.status = "Done";
 
                 var QT = from TR in context.TestResults
                          join U in context.Users on TR.UserId equals U.UserId
@@ -128,15 +128,15 @@ namespace Repository
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
 
-            // Test test = context.Tests.Find(id);
+             Test test = context.Tests.Find(id);
 
             // User user = context.Users.Find(id);
-            TestResult testResult = context.TestResults.Find(id);
+           // TestResult testResult = context.TestResults.Find(id);
 
             Result result = new Result();
             try
             {
-                result.ID = testResult.Id;
+                result.ID = test.Id;
 
                 var query1 = from TR in context.TestResults
                              join T in context.Tests
@@ -162,8 +162,17 @@ namespace Repository
                 result.FullName = query3.FirstOrDefault().FullName;
                 result.Email = query3.FirstOrDefault().Email;
 
+                var query4 = from TR in context.TestResults
+                             where TR.UserId == 2
+                             && TR.TestTimeNo == 0
+                             && TR.TestId == id
+                             select TR.Score;
+                result.Score = Convert.ToInt32(query4.Sum());
 
-                result.Score = Convert.ToInt32(testResult.Score);
+
+
+
+            //    result.Score = Convert.ToInt32(testResult.Score);
                 if (result.Score <= 4)
                     result.Category = "Trượt";
                 else
@@ -521,7 +530,7 @@ namespace Repository
             examInformation.TestTime = query.FirstOrDefault().TestTime;
             examInformation.CategoryName = query.FirstOrDefault().Name;
             examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
-            examInformation.TotalScore = 100;
+            examInformation.TotalScore = 10;
             return examInformation;
         }
 
@@ -545,7 +554,7 @@ namespace Repository
                 testResult.QuestionId = item.Question.Id;
                 testResult.UserId = userID;
                 testResult.TestId = testId;
-                if (item.IsTrue == true) testResult.Score = 2;
+                if (item.IsTrue == true) testResult.Score = 1;
                 context.TestResults.Add(testResult);
                 context.SaveChanges();
 

@@ -91,7 +91,7 @@ namespace WebApi.Controllers
                     return JsonConvert.SerializeObject(resultt);
                 }
             }
-            if ("DetailUpdate".Equals(action))
+         if ("DetailUpdate".Equals(action))
             {
                 try
                 {

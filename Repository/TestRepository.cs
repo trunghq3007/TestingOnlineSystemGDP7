@@ -232,9 +232,6 @@ namespace Repository
         }
 
 
-        //public Test GetByTestId(int id)
-        //{
-        //    return context.Tests.Where(s => s.Id == id).SingleOrDefault();
-        //}
+        
     }
 }

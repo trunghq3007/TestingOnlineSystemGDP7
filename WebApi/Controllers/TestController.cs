@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
         }
         
         [HttpPost]
+        [ValidateSSID(ActionId = 54)]
         public string Post([FromBody] object value)
         {
             ResultObject resultt = new ResultObject();
@@ -48,6 +50,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ValidateSSID(ActionId = 55)]
         public string Getall()
         {
             ResultObject resultt = new ResultObject();
@@ -68,7 +71,8 @@ namespace WebApi.Controllers
         }
         
         [HttpGet]
-		public string Get([FromUri]string action,int id)
+        [ValidateSSID(ActionId = 56)]
+        public string Get([FromUri]string action,int id)
 		{
             ResultObject resultt = new ResultObject();
             if ("detail".Equals(action))
@@ -87,7 +91,7 @@ namespace WebApi.Controllers
                     return JsonConvert.SerializeObject(resultt);
                 }
             }
-            if ("DetailUpdate".Equals(action))
+         if ("DetailUpdate".Equals(action))
             {
                 try
                 {
@@ -111,7 +115,8 @@ namespace WebApi.Controllers
 
 
 		[HttpDelete]
-		public string Put(int id)
+        [ValidateSSID(ActionId = 58)]
+        public string Put(int id)
 		{
             ResultObject resultt = new ResultObject();
 
@@ -130,12 +135,13 @@ namespace WebApi.Controllers
 	
 
 		[HttpGet]
-		public string Get(string searchString)
+        [ValidateSSID(ActionId = 55)]
+        public string Get(string searchString)
 		{
             ResultObject resultt = new ResultObject();
             try
             {
-                var result = testServices.SearchName(searchString).ToList();
+                var result = testServices.Search(searchString).ToList();
                 return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)
@@ -147,6 +153,7 @@ namespace WebApi.Controllers
 		}
 
         [HttpPut]
+        [ValidateSSID(ActionId = 57)]
         public string Put(int id, [FromBody] object value)
         {
             ResultObject resultt = new ResultObject();

@@ -10,7 +10,7 @@ using Model;
 using Model.ViewModel;
 using Newtonsoft.Json;
 using Services;
-
+using WebApi.Commons;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace WebApi.Controllers
@@ -27,6 +27,7 @@ namespace WebApi.Controllers
         // GET: SemesterExam
         [Route("SemesterExam")]
         [System.Web.Http.HttpGet]
+        [ValidateSSID(ActionId = 32)]
         public string Index()
         {
             var jsonSetting = new JsonSerializerSettings
@@ -57,6 +58,7 @@ namespace WebApi.Controllers
         //}
         [Route("SemesterExam/Post/")]
         [HttpPost]
+        [ValidateSSID(ActionId = 33)]
         public string Post([FromBody]object value)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -87,6 +89,7 @@ namespace WebApi.Controllers
 
         [Route("SemesterExam/{id}")]
         [System.Web.Http.HttpPut]
+        [ValidateSSID(ActionId = 39)]
         public string Update(SemesterExam semesterExam, int id)
         {
 
@@ -96,12 +99,14 @@ namespace WebApi.Controllers
         }
         [Route("SemesterExam/{id}")]
         [System.Web.Http.HttpDelete]
+        [ValidateSSID(ActionId = 35)]
         public string Delete( int id)
         {
             var result = service.Delete(id);
             return JsonConvert.SerializeObject(result);
         }
         [System.Web.Http.HttpGet]
+        [ValidateSSID(ActionId = 36)]
         public string Report(int id)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -137,6 +142,7 @@ namespace WebApi.Controllers
         //    return JsonConvert.SerializeObject(result);
         //}
         [HttpGet]
+        [ValidateSSID(ActionId = 32)]
         public string Get(string searchString)
         {
             var result = service.Search(searchString).ToList();
@@ -148,6 +154,7 @@ namespace WebApi.Controllers
         }
         [Route("SemesterExam/detail/{id}")]
         [HttpGet]
+        [ValidateSSID(ActionId = 37)]
         public string Detail(int id)
         {
             var result = service.GetById(id);
@@ -155,6 +162,7 @@ namespace WebApi.Controllers
         }
 
         [Route("SemesterExam/result/{id}")]
+        [ValidateSSID(ActionId = 38)]
         [HttpGet]
         public string Result(int id)
         {
@@ -163,6 +171,7 @@ namespace WebApi.Controllers
         }
         [Route("SemesterExam/Update/")]
         [HttpPost]
+        [ValidateSSID(ActionId = 34)]
         public string Update([FromBody]object value)
         {
             if (value != null)
@@ -214,12 +223,14 @@ namespace WebApi.Controllers
 
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 40)]
         public string Code(string code, string InputCode)
         {
             var result = service.InputCode(code).ToList();
             return JsonConvert.SerializeObject(result);
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 41)]
         public string GetByCandidateId(int candidateId, string SemesterExamAssign)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -232,12 +243,14 @@ namespace WebApi.Controllers
             );
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 42)]
         public string GetExams(int id, [FromUri] string IsGetExams)
         {
             var result = service.GetExams(id);
             return JsonConvert.SerializeObject(result);
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 43)]
         public string GetTests(int id, [FromUri] string IsGetTests)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -249,6 +262,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        [ValidateSSID(ActionId = 32)]
         public string Filter([FromUri]string action, [FromBody] object value)
         {
             if (value != null)
@@ -271,6 +285,7 @@ namespace WebApi.Controllers
 
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 32)]
         public string Search(string searchString, string isSearch)
         {
             var jsonSetting = new JsonSerializerSettings
@@ -290,6 +305,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpGet]
+        [ValidateSSID(ActionId = 44)]
         public string SearchExams(string searchString, int id , string searchExams)
         {
 
@@ -297,6 +313,7 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(result);
         }
          [HttpGet]
+        [ValidateSSID(ActionId = 45)]
         public string GetTestDetail(int id, string IsGetTestDetail)
         {
             var result = service.GetTestDetail(id);

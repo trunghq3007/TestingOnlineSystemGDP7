@@ -9,6 +9,7 @@ using Services;
 
 using Model;
 using Model.ViewModel;
+using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
@@ -24,6 +25,7 @@ namespace WebApi.Controllers
             service = new SemesterExamUserServices();
         }
         [System.Web.Http.HttpGet]
+        [ValidateSSID(ActionId = 46)]
         public string Get(int id)
         {
             var result = service.candidates(id);
@@ -39,6 +41,7 @@ namespace WebApi.Controllers
 
         //-----------------------------DELETE-------------------------------------------------------
         [System.Web.Http.HttpDelete]
+        [ValidateSSID(ActionId = 47)]
         public string Delete(int id, [FromUri]int semesterid)
         {
             var result = service.DeleteCandidates(id, semesterid);
@@ -49,6 +52,7 @@ namespace WebApi.Controllers
 
         //-----------------------------Compare-SemesterId-----------------------------------------
         [System.Web.Http.HttpGet]
+        [ValidateSSID(ActionId = 48)]
         public string GetUserOutSemester(int semesterid)
         {
             var result = service.GetUserOutSemester(semesterid);
@@ -58,6 +62,7 @@ namespace WebApi.Controllers
 
         //------------------------------------------INSERT------------------------------------------
         [System.Web.Http.HttpPost]
+        [ValidateSSID(ActionId = 49)]
         public string InsertUserGroup(int userid, int semesterid)
         {
             var result = service.InsertCandidates(userid, semesterid);
@@ -66,6 +71,7 @@ namespace WebApi.Controllers
         //------------------------------------------INSERT------------------------------------------
 
         [System.Web.Http.HttpGet]
+        [ValidateSSID(ActionId = 46)]
         public string Get(string searchString, int id, int type)
         {
             var result = service.Search(searchString, id, type).ToList();
@@ -73,6 +79,7 @@ namespace WebApi.Controllers
         }
 
         [System.Web.Http.HttpPost]
+        [ValidateSSID(ActionId = 46)]
         public string Get([FromUri]string action, [FromBody] object value, int id)
         {
             if (value != null)

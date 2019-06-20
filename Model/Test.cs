@@ -35,7 +35,7 @@ namespace Model
         public float TestTime { get; set; }
         public  ICollection<TestResult> TestResults { get; set; }
         public virtual Exam Exam { get; set; }
-        public  SemesterExam SemesterExam { get; set; }
+        public virtual SemesterExam SemesterExam { get; set; }
 
     }
 }

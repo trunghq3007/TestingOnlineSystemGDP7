@@ -209,25 +209,38 @@ namespace Repository
                 var currenQuestion = context.Questions.Where(s => s.Id == t.Id).SingleOrDefault();
                 var anserList = t.Answers.ToList();
                 t.Category = context.Categorys.Where(s => s.Id == t.Category.Id).SingleOrDefault();
-
-                currenQuestion.Answers = null;
-                currenQuestion.Category = t.Category;
-                currenQuestion.Content = t.Content;
-                currenQuestion.ExamQuestions = t.ExamQuestions;
-                currenQuestion.Level = t.Level;
-                currenQuestion.Media = t.Media;
-                currenQuestion.Tags = t.Tags;
-                currenQuestion.Type = t.Type;
-                currenQuestion.Suggestion = t.Suggestion;
-                currenQuestion.UpdatedBy = "anonymous user";
-                currenQuestion.UpdatedDate = DateTime.Now;
-                context.Entry(currenQuestion).State = EntityState.Modified;
-                context.Answers.RemoveRange(context.Answers.Where(s => s.Question.Id == t.Id));
-                var result = context.SaveChanges();
-                currenQuestion.Answers = t.Answers;
-                context.SaveChanges();
-                trans.Commit();
-                return result;
+                var tags = new List<Tag>();
+                if (t.Tags != null)
+                {
+                    foreach(var tag in t.Tags)
+                    {
+                        tags.Add(context.Tags.Find(tag.Id));
+                    }
+                }
+                
+                if (currenQuestion.Status != -3)
+                {
+                    currenQuestion.Answers = null;
+                    currenQuestion.Category = t.Category;
+                    currenQuestion.Content = t.Content;
+                    currenQuestion.ExamQuestions = t.ExamQuestions;
+                    currenQuestion.Level = t.Level;
+                    currenQuestion.Media = t.Media;
+                    currenQuestion.Tags = tags;
+                    currenQuestion.Type = t.Type;
+                    currenQuestion.Suggestion = t.Suggestion;
+                    currenQuestion.UpdatedBy = "anonymous user";
+                    currenQuestion.UpdatedDate = DateTime.Now;
+                    context.Entry(currenQuestion).State = EntityState.Modified;
+                    context.Answers.RemoveRange(context.Answers.Where(s => s.Question.Id == t.Id));
+                    var result = context.SaveChanges();
+                    currenQuestion.Answers = t.Answers;
+                    context.SaveChanges();
+                    trans.Commit();
+                    return result;
+                }
+                return -9;
+        
             }
             catch (Exception e)
             {
@@ -251,10 +264,26 @@ namespace Repository
                     var result = 1;
                     foreach (var question in list)
                     {
+                        if(question.Category != null)
+                        {
+                            question.Category.CreatedBy = "user import";
+                            question.Category.CreatedDate = DateTime.Now;
+                            question.Category.Status = 1;
+                        }
+
                         var cate = context.Categorys.Where(s => s.Name.ToLower().Equals(question.Category.Name.ToLower())).ToList();
                         question.Category = cate.Count() <= 0 ? question.Category : cate.First();
-                        context.Questions.Add(question);
-                        result = context.SaveChanges();
+                        var currentQuestion = context.Questions.Find(question.Id);
+                        if(currentQuestion == null)
+                        {
+                            context.Questions.Add(question);
+                            result = context.SaveChanges();
+                        }
+                        else
+                        {
+                            question.Tags = currentQuestion.Tags;
+                            result = Update(question);
+                        }
                         if (result <= 0)
                         {
                             transaction.Rollback();
@@ -291,6 +320,8 @@ namespace Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        
 
 
 

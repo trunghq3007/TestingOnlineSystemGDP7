@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using WebApi.Commons;
 using Model.ViewModel;
+using System.Dynamic;
 
 namespace WebApi.Controllers
 {
@@ -36,7 +37,7 @@ namespace WebApi.Controllers
             {
                 var user = services.GetByUsername(model.UserName);
                 var listAction = services.GetListAction(user.UserName);
-
+                //string token = services.createToken(user.UserName);
                 //var userSession = new UserLogin();
                 //userSession.UserName = user.UserName;
                 //userSession.UserId = user.UserId;
@@ -47,7 +48,11 @@ namespace WebApi.Controllers
 
                 //HttpContext.Current.Session.Add(Commons.CommonConstants.SESSION_CREDENTIALS, listRoleActions);
                 //HttpContext.Current.Session.Add(Commons.CommonConstants.USER_SESSION, userSession);
-                result.Data = JsonConvert.SerializeObject(listAction);
+                dynamic data = new ExpandoObject();
+                data.ListAction = listAction;
+                //data.Token = token;
+                data.Name = user.UserId;
+                result.Data = JsonConvert.SerializeObject(data);
                 return result;
             }
             return result;

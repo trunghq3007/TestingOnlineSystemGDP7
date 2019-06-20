@@ -21,7 +21,7 @@ namespace WebApi.Controllers
             services = new UserGroupServices();
         }
         [HttpGet]
-        [ValidateSSID(ActionId = 5)]
+        [ValidateSSID(ActionId = 69)]
         // Get User In Group method
         public string GetUserInGroup(int id)
         {
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
             }
         }
         [HttpGet]
-        [ValidateSSID(ActionId = 6)]
+        [ValidateSSID(ActionId = 69)]
         // Search User In Group method
         public string Get(int id, string searchString)
         {
@@ -67,7 +67,7 @@ namespace WebApi.Controllers
         }
         //Delete User In Group
         [HttpDelete]
-        [ValidateSSID(ActionId = 4)]
+        [ValidateSSID(ActionId = 70)]
         public string Delete(int iduser, int idgroup)
         {
             ResultObject result = new ResultObject();
@@ -88,7 +88,7 @@ namespace WebApi.Controllers
         }
         //Filter User In Group
         [HttpPost]
-        [ValidateSSID(ActionId = 6)]
+        [ValidateSSID(ActionId = 71)]
         public string Get([FromUri]string action, [FromBody] object value, int id)
         {
             ResultObject result = new ResultObject();
@@ -122,7 +122,7 @@ namespace WebApi.Controllers
         }
         //Add User Into Group
         [HttpPost]
-        [ValidateSSID(ActionId = 2)]
+        [ValidateSSID(ActionId = 72)]
         public string InsertUserGroup(int iduser, int idgroup)
         {
             ResultObject result = new ResultObject();
@@ -143,7 +143,7 @@ namespace WebApi.Controllers
         }
         //Get User not add to Group
         [HttpGet]
-        [ValidateSSID(ActionId = 2)]
+        [ValidateSSID(ActionId = 73)]
         public string GetUserOutGroup(int idgroup)
         {
             ResultObject result = new ResultObject();

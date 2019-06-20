@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -19,9 +20,14 @@ namespace WebApi.Commons
             if (keys == null || keys.Length < 0) return false;
             else
             {
-                var listActionId = JsonConvert.DeserializeObject<List<int>>(keys[0]);
-                
-                foreach(var item in listActionId)
+                dynamic data = JsonConvert.DeserializeObject<ExpandoObject>(keys[0]);
+                long userId = data.Name;
+
+
+                //List<int> listAction = JsonConvert.DeserializeObject<List<int>>(val.ToString());
+                //string UserID = data.Name;
+
+                foreach (var item in data.ListAction)
                 {
                     if (item == ActionId) return true;
                 }
@@ -44,5 +50,5 @@ namespace WebApi.Commons
             //    return false;
             //}
         }
-    } 
+    }
 }

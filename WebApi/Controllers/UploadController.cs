@@ -132,7 +132,7 @@ namespace WebApi.Controllers
             try
             {
                 string _tempUploadFolder = ConfigurationManager.AppSettings["MediaTempUploadFolder"];
-                string _storeFolder = Server.MapPath(ConfigurationManager.AppSettings["ImagesStorePath"]);
+                string _storeFolder = ConfigurationManager.AppSettings["ImagesStorePath"];
                 string fileName = "export_" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string _tempStoreFolder = Server.MapPath(_tempUploadFolder + "/" + fileName);
                 if (!Directory.Exists(_tempStoreFolder)) Directory.CreateDirectory(_tempStoreFolder);

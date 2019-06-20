@@ -16,6 +16,7 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [AllowCrossSite]
     public class SemesterExamController : ApiController
     {
         private SemesterExamServices service;
@@ -356,7 +357,7 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting); 
 
         }
-        [Route("SemesterExam/{testId}")]
+        [Route("SemesterExam/submid/{testId}")]
         [HttpPost]
         public string Submits( int testId, [FromBody] object value, int userID)
         {
@@ -365,17 +366,11 @@ namespace WebApi.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             var E = JsonConvert.SerializeObject(value);
-            userID = 2;
+           
             int F = service.Submits(testId,E, userID);
             return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting);
 
         }
-
-
-
-
-
-
 
     }
 }

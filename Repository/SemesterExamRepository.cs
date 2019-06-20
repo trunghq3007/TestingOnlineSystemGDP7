@@ -583,22 +583,59 @@ namespace Repository
             // {
 
             // }
-            string listQ = "";
-           for(var i=0;i<answers.Count()-1;i++)
+            string listQ ="";
+           for(var i=0;i<answers.Count();i++)
             {
-                for(var j=1;j<answers.Count();j++)
+                for(var j=i+1;j<answers.Count();j++)
                 {
                     if(answers[i].Question.Id==answers[j].Question.Id&&answers[i].Id!=answers[j].Id)
                     {
-                         listQ += answers[i].Question.Id +",";
+                       
 
+                         listQ += answers[i].Id +",";
+                        
                     }
                 }
             }
+          
             var listqs = listQ.Split(',');
-            foreach(var item in listqs)
+            HashSet<string> listhashset = new HashSet<string>();
+           foreach(var i in listqs)
             {
+                listhashset.Add(i);
+            }
+            foreach(var item in listhashset)
+            {
+                if(item!=null && !"".Equals(item))
+                {
+                    var listQuetions_1 = answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault();
 
+                    TestResult testResult = new TestResult();
+                    testResult.AnwserId = listQuetions_1.Id;
+                    testResult.QuestionId = listQuetions_1.Question.Id;
+                    testResult.UserId = userID;
+                    testResult.TestId = testId;
+                    testResult.Score = 0;
+                    context.TestResults.Add(testResult);
+                    context.SaveChanges();
+                    answers.Remove(answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault());
+                }
+
+            }
+            foreach(var item in answers)
+            {
+                TestResult testResult = new TestResult();
+                testResult.AnwserId = item.Id;
+                testResult.QuestionId = item.Question.Id;
+                testResult.UserId = userID;
+                testResult.TestId = testId;
+               
+                if(item.IsTrue==true)
+                {
+                    testResult.Score = 1;
+                }
+                context.TestResults.Add(testResult);
+                context.SaveChanges();
             }
             return 1;
         }

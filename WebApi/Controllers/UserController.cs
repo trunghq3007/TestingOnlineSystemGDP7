@@ -206,5 +206,21 @@ namespace WebApi.Controllers
         {
             return services.GetRoleName(idUser);
         }
+
+        [HttpGet]
+        public string GetByUserId(string action,int id)
+        {
+            if ("GetUser".Equals(action))
+            {
+                var result = services.GetById(id);
+                return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                
+            }
+
+            return "true";
+        }
     }
 }

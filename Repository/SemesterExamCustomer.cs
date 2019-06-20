@@ -27,7 +27,7 @@ namespace Repository
 
         public IEnumerable<SemesterExam> getAll()
         {
-            return context.SemesterExams.Where(SE => SE.status != 0).ToList();
+            return context.SemesterExams.Where(SE => SE.status == 1).ToList();
         }
 
         public IEnumerable<Test> getListExam(int id)

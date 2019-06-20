@@ -66,6 +66,7 @@
     <Compile Include="Answer.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Exam.cs" />
+    <Compile Include="ExamCategory.cs" />
     <Compile Include="ExamQuestion.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupFilterModel.cs" />

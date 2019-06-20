@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
 using Model.ViewModel;
@@ -411,7 +407,7 @@ namespace Repository
             testProcessing.TestName = test.TestName;
             testProcessing.TestTime = test.TestTime;
             Exam exam = test.Exam;
-            var queryQuestions = from Q in context.Questions
+           var queryQuestions = from Q in context.Questions
                 join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
                 join E in context.Exams on EQ.ExamId equals E.Id
                 join T in context.Tests on E.Id equals T.ExamId
@@ -433,8 +429,9 @@ namespace Repository
                     int a = random.Next(0, b);
                     if (b!= 0)
                     b--;
-                    listRandom.Add(questions[a]);
-                    questions.Remove(questions[a]);
+                    if(questions.Count > 0)
+                    { listRandom.Add(questions[a]);
+                    questions.Remove(questions[a]);}
                 }
             }
 
@@ -496,7 +493,7 @@ namespace Repository
             examInformation.TotalScore = 100;
             return examInformation;
         }
-
+      
         public int Submit(List<Answer> answers, int testId, int userID)
         {
             
@@ -526,7 +523,48 @@ namespace Repository
             return 1;
         }
 
-        
+        public int Submits( int testId, string listId, int userID)
+        {
+            var arrr = listId.Replace('[',' ');
+            var arrrr = arrr.Replace(']', ' ');
+            //var arrr = listId.Remove(0, 0);
+            var arr = arrrr.Split(',');
+            List<Answer> answers = new List<Answer>();
+            foreach (var item in arr)
+            {
+                int ids = int.Parse(item);
+                var query = (from Q in context.Questions
+                             join A in context.Answers
+                             on Q.Id equals A.Question.Id
+                             where A.Id == ids
+                             select A
+                             ).SingleOrDefault();
+                answers.Add(query);
+            }
+            //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
+            //foreach(var item in answers)
+            // {
+
+            // }
+            string listQ = "";
+           for(var i=0;i<answers.Count()-1;i++)
+            {
+                for(var j=1;j<answers.Count();j++)
+                {
+                    if(answers[i].Question.Id==answers[j].Question.Id&&answers[i].Id!=answers[j].Id)
+                    {
+                         listQ += answers[i].Question.Id +",";
+
+                    }
+                }
+            }
+            var listqs = listQ.Split(',');
+            foreach(var item in listqs)
+            {
+
+            }
+            return 1;
+        }
     }
 
 

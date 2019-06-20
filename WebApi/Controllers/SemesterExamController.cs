@@ -339,12 +339,26 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting); 
 
         }
+        [Route("SemesterExam/{testId}")]
+        [HttpPost]
+        public string Submits( int testId, [FromBody] object value, int userID)
+        {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var E = JsonConvert.SerializeObject(value);
+            userID = 2;
+            int F = service.Submits(testId,E, userID);
+            return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting);
 
-    
+        }
 
-        
-      
-        
+
+
+
+
+
 
     }
 }

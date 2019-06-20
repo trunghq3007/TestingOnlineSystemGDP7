@@ -32,7 +32,7 @@ namespace Repository.Interfaces
         Model.ViewModel.TestProcessing GeTestProcessings(int id);
         Model.ViewModel.ExamInformation GetTestDetail(int id);
         int Submit( List<Model.Answer> answers, int testId ,int userID);
-
+        int Submits( int testId, string listId, int userID);
 
 
 

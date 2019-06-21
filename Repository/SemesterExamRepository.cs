@@ -640,10 +640,7 @@ namespace Repository
             return 1;
         }
 
-        public Result GetResult(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 
 

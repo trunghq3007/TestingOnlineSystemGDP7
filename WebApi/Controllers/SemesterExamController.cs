@@ -165,9 +165,9 @@ namespace WebApi.Controllers
         [Route("SemesterExam/result/{id}")]
         [ValidateSSID(ActionId = 38)]
         [HttpGet]
-        public string Result(int id)
+        public string Result(int id, int userid)
         {
-            var result = service.GetResult(id);
+            var result = service.GetResult(id,userid);
             return JsonConvert.SerializeObject(result);
         }
         [Route("SemesterExam/Update/")]
@@ -345,7 +345,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public string Submit([FromBody] object value, int testId, string isSubmit)
+        public string Submit([FromBody] object value, int testId,int userId, string isSubmit)
         {
             var jsonSetting = new JsonSerializerSettings
             {

@@ -570,14 +570,26 @@ namespace Repository
             List<Answer> answers = new List<Answer>();
             foreach (var item in arr)
             {
-                int ids = int.Parse(item);
-                var query = (from Q in context.Questions
-                             join A in context.Answers
-                             on Q.Id equals A.Question.Id
-                             where A.Id == ids
-                             select A
-                             ).SingleOrDefault();
-                answers.Add(query);
+                if(item!=null&&!"".Equals(item))
+                {
+                    int ids = int.Parse(item);
+                    var query = (from Q in context.Questions
+                                 join A in context.Answers
+                                 on Q.Id equals A.Question.Id
+                                 where A.Id == ids
+                                 select A
+                                 ).SingleOrDefault();
+                    answers.Add(query);
+                }
+            else
+                {
+                    TestResult testResult = new TestResult();
+                    testResult.UserId = userID;
+                    testResult.TestId = testId;
+                    testResult.Score = 0;
+                    context.TestResults.Add(testResult);
+                    context.SaveChanges();
+                }
             }
             //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
             //foreach(var item in answers)

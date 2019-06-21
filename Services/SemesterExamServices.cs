@@ -39,9 +39,9 @@ namespace Services
             return SemesterExamRepository.GetById(id);
         }
 
-       public Result GetResult(int id)
+       public Result GetResult(int id, int userId)
         {
-            return SemesterExamRepository.GetResult(id);
+            return SemesterExamRepository.GetResult(id,userId);
         }
 
         public int Insert(SemesterExam t)
@@ -121,6 +121,11 @@ public IEnumerable<Test> GetTestsNotAdd(int id)
         public int Submits(int testId, string listId, int userID)
         {
             return SemesterExamRepository.Submits(testId, listId,userID);
+        }
+
+        public Result GetResult(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

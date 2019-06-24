@@ -66,7 +66,7 @@ namespace WebApi.Controllers
         //Insert Action to Role
         [HttpPost]
         [ValidateSSID(ActionId = 25)]
-        public string InsertRoleAction(int idAction, int idRole)
+        public string InsertRoleAction([FromBody]object roleAction)
         {
             ResultObject result = new ResultObject();
             var jsonSetting = new JsonSerializerSettings
@@ -75,8 +75,9 @@ namespace WebApi.Controllers
             };
             try
             {
-                result.Success = services.InsertRoleAction(idAction, idRole);
-                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                var roleActionn = JsonConvert.DeserializeObject<RoleAction>(roleAction.ToString());
+                result.Success = services.InsertRoleAction(roleActionn);
+                return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)
             {

@@ -12,6 +12,7 @@ using WebApi.Commons;
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    
     public class UserGroupController : ApiController
     {
         private UserGroupServices services;
@@ -122,8 +123,9 @@ namespace WebApi.Controllers
         }
         //Add User Into Group
         [HttpPost]
+        //[AllowAnonymous]
         [ValidateSSID(ActionId = 72)]
-        public string InsertUserGroup(int iduser, int idgroup)
+        public string InsertUserGroup([FromBody]object  userGroup)
         {
             ResultObject result = new ResultObject();
             var jsonSetting = new JsonSerializerSettings
@@ -132,8 +134,11 @@ namespace WebApi.Controllers
             };
             try
             {
-                result.Success = services.InsertUserGroup(iduser, idgroup);
-                return JsonConvert.SerializeObject(result, Formatting.Indented, jsonSetting);
+                var userGroupp = JsonConvert.DeserializeObject<UserGroup>(userGroup.ToString());
+               
+                result.Success = services.InsertUserGroup(userGroupp);
+                return JsonConvert.SerializeObject(result);
+
             }
             catch (Exception e)
             {

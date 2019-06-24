@@ -171,11 +171,11 @@ namespace Repository
             context.RoleActions.Remove(del);
             return context.SaveChanges();
         }
-        public int InsertRoleAction(int idAction, int idRole)
+        public int InsertRoleAction(RoleAction roleAction)
         {
             RoleAction item = new RoleAction();
-            item.ActionId = idAction;
-            item.RoleId = idRole;
+            item.ActionId = roleAction.ActionId;
+            item.RoleId = roleAction.RoleId;
             item.IsTrue = true;
             context.RoleActions.Add(item);
             return context.SaveChanges();
@@ -190,6 +190,11 @@ namespace Repository
             }
             var remainaction = action.ToList();
             return remainaction;
+        }
+
+        public int InsertUserGroup(UserGroup userGroup)
+        {
+            throw new NotImplementedException();
         }
     }
 }

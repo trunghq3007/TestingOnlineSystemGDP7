@@ -21,7 +21,7 @@ namespace Services.Interfaces
         IEnumerable<T> FilterGroup(GroupFilterModel model);
         IEnumerable<T> FilterUserInGroup(GroupFilterModel model, int id);
         IEnumerable<T> GetUserOutGroup(int idgroup);
-        int InsertUserGroup(int iduser, int idgroup);
+        int InsertRoleAction(RoleAction roleAction);
         int DeleteUserGroup(int iduser, int idgroup);
         IEnumerable<T> FilterUser(UserFilterModel model);
         bool Login(string userName, string passWord);

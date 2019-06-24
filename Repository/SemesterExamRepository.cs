@@ -116,7 +116,7 @@ namespace Repository
 
         }
 
-        public Result GetResult(int id)
+        public Result GetResult(int id, int userId)
         {
             context.Configuration.LazyLoadingEnabled = false;
             List<TestResult> testResults = context.TestResults.ToList();
@@ -159,7 +159,8 @@ namespace Repository
                 result.Email = query3.FirstOrDefault().Email;
 
                 var query4 = from TR in context.TestResults
-                             where TR.UserId == 2
+                          
+                             where TR.UserId == userId
                              && TR.TestTimeNo == 0
                              && TR.TestId == id
                              select TR.Score;
@@ -569,14 +570,26 @@ namespace Repository
             List<Answer> answers = new List<Answer>();
             foreach (var item in arr)
             {
-                int ids = int.Parse(item);
-                var query = (from Q in context.Questions
-                             join A in context.Answers
-                             on Q.Id equals A.Question.Id
-                             where A.Id == ids
-                             select A
-                             ).SingleOrDefault();
-                answers.Add(query);
+                if(item!=null&&!"".Equals(item))
+                {
+                    int ids = int.Parse(item);
+                    var query = (from Q in context.Questions
+                                 join A in context.Answers
+                                 on Q.Id equals A.Question.Id
+                                 where A.Id == ids
+                                 select A
+                                 ).SingleOrDefault();
+                    answers.Add(query);
+                }
+            else
+                {
+                    TestResult testResult = new TestResult();
+                    testResult.UserId = userID;
+                    testResult.TestId = testId;
+                    testResult.Score = 0;
+                    context.TestResults.Add(testResult);
+                    context.SaveChanges();
+                }
             }
             //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
             //foreach(var item in answers)
@@ -639,6 +652,8 @@ namespace Repository
             }
             return 1;
         }
+
+       
     }
 
 

@@ -161,17 +161,17 @@ namespace Repository
                 currentExam.CreateAt = DateTime.Now;
 
 
-                //currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
-                exam.Category = context.Categorys.Where(s => s.Id == currentExam.Category.Id).SingleOrDefault();
-               
+                currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
+                //exam.Category = context.Categorys.Where(s => s.Id == currentExam.Category.Id).SingleOrDefault();
+
                 currentExam.NameExam = exam.NameExam;
                 currentExam.CreateBy = exam.CreateBy;
                 currentExam.QuestionNumber = exam.QuestionNumber;
                 currentExam.Status = exam.Status;
                 currentExam.SpaceQuestionNumber = exam.SpaceQuestionNumber;
-
+                //currentExam.Category.Id = exam.Category.Id;
                 currentExam.Note = exam.Note;
-
+                
 
                 context.Entry(currentExam).State = EntityState.Modified;
                 return context.SaveChanges();

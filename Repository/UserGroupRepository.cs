@@ -126,11 +126,11 @@ namespace Repository
             return user;
         }
 
-        public int InsertUserGroup(int iduser, int idgroup)
+        public int InsertUserGroup(UserGroup userGroup)
         {
             UserGroup item = new UserGroup();
-            item.UserId = iduser;
-            item.GroupId = idgroup;
+            item.UserId = userGroup.UserId;
+            item.GroupId = userGroup.GroupId;
             item.CreatedOn = DateTime.Now;
             context.UserGroups.Add(item);
             return context.SaveChanges();
@@ -207,6 +207,11 @@ namespace Repository
         }
 
         public IEnumerable<User> GetActionOutRole(int idRole)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertRoleAction(RoleAction roleAction)
         {
             throw new NotImplementedException();
         }

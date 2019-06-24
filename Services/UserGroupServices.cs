@@ -109,9 +109,14 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public int InsertUserGroup(int iduser, int idgroup)
+        public int InsertRoleAction(RoleAction roleAction)
         {
-            return usergroupRepository.InsertUserGroup(iduser, idgroup);
+            throw new NotImplementedException();
+        }
+
+        public int InsertUserGroup(UserGroup userGroup)
+        {
+            return usergroupRepository.InsertUserGroup(userGroup);
         }
 
         public bool Login(string userName, string passWord)

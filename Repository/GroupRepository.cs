@@ -214,5 +214,15 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public int InsertUserGroup(UserGroup userGroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertRoleAction(RoleAction roleAction)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

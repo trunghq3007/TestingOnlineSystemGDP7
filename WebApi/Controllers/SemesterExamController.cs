@@ -16,6 +16,7 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [AllowCrossSite]
     public class SemesterExamController : ApiController
     {
         private SemesterExamServices service;
@@ -164,9 +165,9 @@ namespace WebApi.Controllers
         [Route("SemesterExam/result/{id}")]
         [ValidateSSID(ActionId = 38)]
         [HttpGet]
-        public string Result(int id)
+        public string Result(int id, int userid)
         {
-            var result = service.GetResult(id);
+            var result = service.GetResult(id,userid);
             return JsonConvert.SerializeObject(result);
         }
         [Route("SemesterExam/Update/")]
@@ -344,7 +345,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public string Submit([FromBody] object value, int testId, string isSubmit)
+        public string Submit([FromBody] object value, int testId,int userId, string isSubmit)
         {
             var jsonSetting = new JsonSerializerSettings
             {
@@ -356,12 +357,20 @@ namespace WebApi.Controllers
             return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting); 
 
         }
+        [Route("SemesterExam/submid/{testId}")]
+        [HttpPost]
+        public string Submits( int testId, [FromBody] object value, int userID)
+        {
+            var jsonSetting = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            var E = JsonConvert.SerializeObject(value);
+           
+            int F = service.Submits(testId,E, userID);
+            return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting);
 
-    
-
-        
-      
-        
+        }
 
     }
 }

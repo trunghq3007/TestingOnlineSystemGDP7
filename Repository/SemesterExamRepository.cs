@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
 using Model.ViewModel;
@@ -120,7 +116,7 @@ namespace Repository
 
         }
 
-        public Result GetResult(int id)
+        public Result GetResult(int id, int userId)
         {
             context.Configuration.LazyLoadingEnabled = false;
             List<TestResult> testResults = context.TestResults.ToList();
@@ -163,7 +159,8 @@ namespace Repository
                 result.Email = query3.FirstOrDefault().Email;
 
                 var query4 = from TR in context.TestResults
-                             where TR.UserId == 2
+                          
+                             where TR.UserId == userId
                              && TR.TestTimeNo == 0
                              && TR.TestId == id
                              select TR.Score;
@@ -448,7 +445,7 @@ namespace Repository
             testProcessing.TestName = test.TestName;
             testProcessing.TestTime = test.TestTime;
             Exam exam = test.Exam;
-            var queryQuestions = from Q in context.Questions
+           var queryQuestions = from Q in context.Questions
                 join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
                 join E in context.Exams on EQ.ExamId equals E.Id
                 join T in context.Tests on E.Id equals T.ExamId
@@ -470,8 +467,9 @@ namespace Repository
                     int a = random.Next(0, b);
                     if (b!= 0)
                     b--;
-                    listRandom.Add(questions[a]);
-                    questions.Remove(questions[a]);
+                    if(questions.Count > 0)
+                    { listRandom.Add(questions[a]);
+                    questions.Remove(questions[a]);}
                 }
             }
 
@@ -533,7 +531,7 @@ namespace Repository
             examInformation.TotalScore = 10;
             return examInformation;
         }
-
+      
         public int Submit(List<Answer> answers, int testId, int userID)
         {
             
@@ -563,7 +561,99 @@ namespace Repository
             return 1;
         }
 
-        
+        public int Submits( int testId, string listId, int userID)
+        {
+            var arrr = listId.Replace('[',' ');
+            var arrrr = arrr.Replace(']', ' ');
+            //var arrr = listId.Remove(0, 0);
+            var arr = arrrr.Split(',');
+            List<Answer> answers = new List<Answer>();
+            foreach (var item in arr)
+            {
+                if(item!=null&&!"".Equals(item))
+                {
+                    int ids = int.Parse(item);
+                    var query = (from Q in context.Questions
+                                 join A in context.Answers
+                                 on Q.Id equals A.Question.Id
+                                 where A.Id == ids
+                                 select A
+                                 ).SingleOrDefault();
+                    answers.Add(query);
+                }
+            else
+                {
+                    TestResult testResult = new TestResult();
+                    testResult.UserId = userID;
+                    testResult.TestId = testId;
+                    testResult.Score = 0;
+                    context.TestResults.Add(testResult);
+                    context.SaveChanges();
+                }
+            }
+            //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
+            //foreach(var item in answers)
+            // {
+
+            // }
+            string listQ ="";
+           for(var i=0;i<answers.Count();i++)
+            {
+                for(var j=i+1;j<answers.Count();j++)
+                {
+                    if(answers[i].Question.Id==answers[j].Question.Id&&answers[i].Id!=answers[j].Id)
+                    {
+                       
+
+                         listQ += answers[i].Id +",";
+                        
+                    }
+                }
+            }
+          
+            var listqs = listQ.Split(',');
+            HashSet<string> listhashset = new HashSet<string>();
+           foreach(var i in listqs)
+            {
+                listhashset.Add(i);
+            }
+            foreach(var item in listhashset)
+            {
+                if(item!=null && !"".Equals(item))
+                {
+                    var listQuetions_1 = answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault();
+
+                    TestResult testResult = new TestResult();
+                    testResult.AnwserId = listQuetions_1.Id;
+                    testResult.QuestionId = listQuetions_1.Question.Id;
+                    testResult.UserId = userID;
+                    testResult.TestId = testId;
+                    testResult.Score = 0;
+                    context.TestResults.Add(testResult);
+                    context.SaveChanges();
+                    answers.Remove(answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault());
+                }
+
+            }
+            foreach(var item in answers)
+            {
+                TestResult testResult = new TestResult();
+                testResult.AnwserId = item.Id;
+                testResult.QuestionId = item.Question.Id;
+                testResult.UserId = userID;
+                testResult.TestId = testId;
+               
+                if(item.IsTrue==true)
+                {
+                    testResult.Score = 1;
+                }
+                context.TestResults.Add(testResult);
+                context.SaveChanges();
+            }
+            return 1;
+        }
+
+       
     }
 
 

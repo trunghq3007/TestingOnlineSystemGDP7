@@ -25,6 +25,7 @@ namespace Services.Interfaces
         Model.ViewModel.ExamInformation GetTestDetail(int id);
         Model.ViewModel.TestProcessing GeTestProcessings(int id);
         int Submit(List<Model.Answer> answers, int testId, int userID);
+        int Submits( int testId, string listId, int userID);
     }
 }
     

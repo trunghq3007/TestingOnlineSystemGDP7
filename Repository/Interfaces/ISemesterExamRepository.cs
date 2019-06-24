@@ -19,7 +19,7 @@ namespace Repository.Interfaces
         //T GetById(int id);
         Model.ViewModel.ReportSemester Report(int id);
         Model.ViewModel.SemesterDetail GetById(int id);
-        Model.ViewModel.Result GetResult(int id);
+        Model.ViewModel.Result GetResult(int id, int userid);
         IEnumerable<Model.Test> GetTests(int id);
         IEnumerable<Model.Exam> GetExamsNotAdd(int id);
         int AddMany(int[] listId, int semesterId);
@@ -32,7 +32,7 @@ namespace Repository.Interfaces
         Model.ViewModel.TestProcessing GeTestProcessings(int id);
         Model.ViewModel.ExamInformation GetTestDetail(int id);
         int Submit( List<Model.Answer> answers, int testId ,int userID);
-
+        int Submits( int testId, string listId, int userID);
 
 
 

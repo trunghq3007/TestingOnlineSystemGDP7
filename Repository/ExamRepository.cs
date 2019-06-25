@@ -124,6 +124,14 @@ namespace Repository
         public int Insert(Exam exam)
 		{
             bool status = default(bool);
+            var exams = context.Exams.ToList();
+            foreach (var item in exams)
+            {
+                if (item.NameExam == exam.NameExam)
+                {
+                    return -2;
+                }
+            }
             //exam.Category = context.Categorys.Where(s => s.Category.Id == exam.Id).SingleOrDefault();
             context.Exams.Add(new Exam
             {
@@ -149,12 +157,13 @@ namespace Repository
 		}
 		public int Update(Exam exam)
 		{
+           
 
             //exam.CreateAt=DateTime.Now;
 
             //context.Entry(exam).State = EntityState.Modified;
             //return context.SaveChanges();
-            
+
             var currentExam = context.Exams.Find(exam.Id);
             if (currentExam.Status !=true)
             {

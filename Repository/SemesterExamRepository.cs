@@ -167,7 +167,7 @@ namespace Repository
                              select TR.Score;
                 var query5 = context.TestResults.Where(s=>s.TestId==id&&s.UserId==userId).GroupBy(x => new { x.TestTimeNo }).OrderByDescending(x => x.Key.TestTimeNo).Select(x => new { dep = x.Key.TestTimeNo, sum = x.Sum(c => c.Score) }).FirstOrDefault();
                 var list = query5.sum;
-                result.Score = Convert.ToInt32(query4.Sum());
+                result.Score = Convert.ToInt32(list);
 
                 
 

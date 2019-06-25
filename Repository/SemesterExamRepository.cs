@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using DataAccessLayer;
 using Model;
@@ -60,7 +61,7 @@ namespace Repository
 
         public IEnumerable<SemesterExam> GetAll()
         {
-            return (IEnumerable<SemesterExam>) context.SemesterExams.ToList();
+            return (IEnumerable<SemesterExam>)context.SemesterExams.ToList();
         }
 
         public SemesterDetail GetById(int id)
@@ -105,11 +106,11 @@ namespace Repository
                 int participation = QT.ToList().Count;
                 semesterDetail.NumberInvite = Convert.ToString(participation);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
-           
+
 
 
             return semesterDetail;
@@ -124,10 +125,10 @@ namespace Repository
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
 
-             Test test = context.Tests.Find(id);
+            Test test = context.Tests.Find(id);
 
             // User user = context.Users.Find(id);
-           // TestResult testResult = context.TestResults.Find(id);
+            // TestResult testResult = context.TestResults.Find(id);
 
             Result result = new Result();
             try
@@ -159,17 +160,19 @@ namespace Repository
                 result.Email = query3.FirstOrDefault().Email;
 
                 var query4 = from TR in context.TestResults
-                          
+
                              where TR.UserId == userId
                              && TR.TestTimeNo == 0
                              && TR.TestId == id
                              select TR.Score;
-                result.Score = Convert.ToInt32(query4.Sum());
+                var query5 = context.TestResults.Where(s=>s.TestId==id&&s.UserId==userId).GroupBy(x => new { x.TestTimeNo }).OrderByDescending(x => x.Key.TestTimeNo).Select(x => new { dep = x.Key.TestTimeNo, sum = x.Sum(c => c.Score) }).FirstOrDefault();
+                var list = query5.sum;
+                result.Score = Convert.ToInt32(list);
+
+                
 
 
-
-
-            //    result.Score = Convert.ToInt32(testResult.Score);
+                //    result.Score = Convert.ToInt32(testResult.Score);
                 if (result.Score <= 4)
                     result.Category = "Trượt";
                 else
@@ -225,9 +228,9 @@ namespace Repository
             SemesterExam_User semesterExam_Users =
                 context.SemesterExamUsers.Where(SU => SU.SemesterExam.ID == id && SU.Type == 1).FirstOrDefault();
             var query = from E in context.Exams
-                join T in context.Tests on E.Id equals T.ExamId
-                join SE in context.SemesterExamUsers on T.ExamId equals SE.ID
-                select E;
+                        join T in context.Tests on E.Id equals T.ExamId
+                        join SE in context.SemesterExamUsers on T.ExamId equals SE.ID
+                        select E;
             //var queryCandiates = from SEU in context.SemesterExamUsers
             //    join SE in context.SemesterExams on SEU.SemesterExam.ID equals id
             //    //where SEU.Type == 2
@@ -238,10 +241,10 @@ namespace Repository
                 .Where(SEU => SEU.SemesterExam.ID == id && SEU.Type == 2).ToList();
 
             var QT = from TR in context.TestResults
-                join U in context.Users on TR.UserId equals U.UserId
-                join SU in context.SemesterExamUsers on U.UserId equals SU.User.UserId
-                where SU.Type == 2 && SU.SemesterExam.ID == id
-                select TR;
+                     join U in context.Users on TR.UserId equals U.UserId
+                     join SU in context.SemesterExamUsers on U.UserId equals SU.User.UserId
+                     where SU.Type == 2 && SU.SemesterExam.ID == id
+                     select TR;
             int low = 0;
             int medium = 0;
             int good = 0;
@@ -327,9 +330,9 @@ namespace Repository
         public IEnumerable<Exam> GetExams(int id)
         {
             var query = from E in context.Exams
-                join T in context.Tests on E.Id equals T.ExamId
-                where T.SemesterExam.ID == id
-                select E;
+                        join T in context.Tests on E.Id equals T.ExamId
+                        where T.SemesterExam.ID == id
+                        select E;
             List<Exam> list = query.ToList();
             int a = 0;
             return query.ToList();
@@ -343,11 +346,11 @@ namespace Repository
         public IEnumerable<SemesterExam> GetByCandidateId(int candidateId)
         {
             var query = from SE in context.SemesterExams
-                join
-                    SEU in context.SemesterExamUsers on
-                    SE.ID equals SEU.SemesterExam.ID
-                where SEU.Type == 2 && SEU.User.UserId == candidateId
-                select SE;
+                        join
+                            SEU in context.SemesterExamUsers on
+                            SE.ID equals SEU.SemesterExam.ID
+                        where SEU.Type == 2 && SEU.User.UserId == candidateId
+                        select SE;
             return query.ToList();
         }
 
@@ -360,9 +363,9 @@ namespace Repository
         public IEnumerable<Exam> GetExamsNotAdd(int id)
         {
             var query = from E in context.Exams
-                join T in context.Tests on E.Id equals T.ExamId
-                where T.SemesterExam.ID == id
-                select E;
+                        join T in context.Tests on E.Id equals T.ExamId
+                        where T.SemesterExam.ID == id
+                        select E;
             List<Exam> list1 = query.ToList();
             //var query2 = from E in context.Exams
             //             where !E.Equals(from Ex in context.Exams
@@ -424,10 +427,10 @@ namespace Repository
         public IEnumerable<Exam> SearchExams(string examName, int id)
         {
             var query = from E in context.Exams
-                join T in context.Tests on
-                    E.Id equals T.ExamId
-                where E.NameExam.Contains(examName) && T.SemasterExamId == id
-                select E;
+                        join T in context.Tests on
+                            E.Id equals T.ExamId
+                        where E.NameExam.Contains(examName) && T.SemasterExamId == id
+                        select E;
             return query.ToList();
 
         }
@@ -439,19 +442,19 @@ namespace Repository
 
         public Model.ViewModel.TestProcessing GeTestProcessings(int id)
         {
-                TestProcessing testProcessing = new TestProcessing();
+            TestProcessing testProcessing = new TestProcessing();
             Test test = context.Tests.Find(id);
             testProcessing.Id = id;
             testProcessing.TestName = test.TestName;
             testProcessing.TestTime = test.TestTime;
             Exam exam = test.Exam;
-           var queryQuestions = from Q in context.Questions
-                join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
-                join E in context.Exams on EQ.ExamId equals E.Id
-                join T in context.Tests on E.Id equals T.ExamId
-                where T.Id == id && E.Category.Id == Q.Category.Id
-                //where E.Category.Id == Q.Category.Id
-                select Q;
+            var queryQuestions = from Q in context.Questions
+                                 join EQ in context.ExamQuestions on Q.Id equals EQ.QuestionId
+                                 join E in context.Exams on EQ.ExamId equals E.Id
+                                 join T in context.Tests on E.Id equals T.ExamId
+                                 where T.Id == id && E.Category.Id == Q.Category.Id
+                                 //where E.Category.Id == Q.Category.Id
+                                 select Q;
 
 
 
@@ -465,11 +468,13 @@ namespace Repository
                 {
 
                     int a = random.Next(0, b);
-                    if (b!= 0)
-                    b--;
-                    if(questions.Count > 0)
-                    { listRandom.Add(questions[a]);
-                    questions.Remove(questions[a]);}
+                    if (b != 0)
+                        b--;
+                    if (questions.Count > 0)
+                    {
+                        listRandom.Add(questions[a]);
+                        questions.Remove(questions[a]);
+                    }
                 }
             }
 
@@ -485,16 +490,16 @@ namespace Repository
         public IEnumerable<ExamInformation> GetTestDetail(int id)
         {
             var query = from T in context.Tests
-                join E in context.Exams on T.ExamId equals E.Id
-                join C in context.Categorys
-                    on E.Category.Id equals C.Id
-                select new
-                {
-                    T.TestName,
-                    T.TestTime,
-                    E.QuestionNumber,
-                    C.Name,
-                };
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                            on E.Category.Id equals C.Id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,
+                        };
             ExamInformation examInformation = new ExamInformation();
             examInformation.TestName = query.FirstOrDefault().TestName;
             examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4;
@@ -510,16 +515,16 @@ namespace Repository
         ExamInformation ISemesterExamRepository<SemesterExam>.GetTestDetail(int id)
         {
             var query = from T in context.Tests
-                join E in context.Exams on T.ExamId equals E.Id
-                join C in context.Categorys
-                    on E.Category.Id equals C.Id
-                select new
-                {
-                    T.TestName,
-                    T.TestTime,
-                    E.QuestionNumber,
-                    C.Name,
-                };
+                        join E in context.Exams on T.ExamId equals E.Id
+                        join C in context.Categorys
+                            on E.Category.Id equals C.Id
+                        select new
+                        {
+                            T.TestName,
+                            T.TestTime,
+                            E.QuestionNumber,
+                            C.Name,
+                        };
             ExamInformation examInformation = new ExamInformation();
             examInformation.TestName = query.FirstOrDefault().TestName;
             examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4;
@@ -531,10 +536,107 @@ namespace Repository
             examInformation.TotalScore = 10;
             return examInformation;
         }
-      
+        private void SubmitAnswer(int testId, string listId, int userID)
+        {
+            try
+            {
+
+
+                var arrr = listId.Replace('[', ' ');
+                var arrrr = arrr.Replace(']', ' ');
+                //var arrr = listId.Remove(0, 0);
+                var arr = arrrr.Trim().Split(',');
+                List<Answer> answers = new List<Answer>();
+                foreach (var item in arr)
+                {
+                    if (item != null && !"".Equals(item))
+                    {
+                        int ids = int.Parse(item);
+                        var query = (from Q in context.Questions
+                                     join A in context.Answers
+                                     on Q.Id equals A.Question.Id
+                                     where A.Id == ids
+                                     select A
+                                     ).SingleOrDefault();
+                        answers.Add(query);
+
+
+                    }
+                    else
+                    {
+                        TestResult testResult = new TestResult();
+                        testResult.UserId = userID;
+                        testResult.TestId = testId;
+                        testResult.Score = 0;
+                        context.TestResults.Add(testResult);
+                        context.SaveChanges();
+                    }
+                }
+                //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
+                //foreach(var item in answers)
+                // {
+
+                // }
+
+                string listQ = "";
+                for (var i = 0; i < answers.Count(); i++)
+                {
+                    for (var j = i + 1; j < answers.Count(); j++)
+                    {
+                        if (answers[i].Question.Id == answers[j].Question.Id && answers[i].Id != answers[j].Id)
+                        {
+
+
+                            listQ += answers[i].Id + ",";
+
+                        }
+                    }
+                }
+
+                var listqs = listQ.Split(',');
+                HashSet<string> listhashset = new HashSet<string>();
+                foreach (var i in listqs)
+                {
+                    listhashset.Add(i);
+                }
+                foreach (var item in listhashset)
+                {
+                    if (item != null && !"".Equals(item))
+                    {
+                        var listQuetions_1 = answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault();
+                        TestResult testResult = new TestResult();
+                        testResult.AnwserId = listQuetions_1.Id;
+                        testResult.QuestionId = listQuetions_1.Question.Id;
+                        testResult.UserId = userID;
+                        testResult.TestId = testId;
+                        testResult.Score = 0;
+                        context.TestResults.Add(testResult);
+                        context.SaveChanges();
+                        answers.Remove(answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault());
+                    }
+
+                }
+                foreach (var item in answers)
+                {
+                    TestResult testResult = new TestResult();
+                    testResult.AnwserId = item.Id;
+                    testResult.QuestionId = item.Question.Id;
+                    testResult.UserId = userID;
+                    testResult.TestId = testId;
+
+                    if (item.IsTrue == true)
+                    {
+                        testResult.Score = 1;
+                    }
+                    context.TestResults.Add(testResult);
+                    context.SaveChanges();
+                }
+            }
+            catch { }
+        }
         public int Submit(List<Answer> answers, int testId, int userID)
         {
-            
+
             foreach (Answer item in answers)
             {
                 var query = from Q in context.Questions
@@ -543,9 +645,9 @@ namespace Repository
                             where A.Id == item.Id
                             select Q;
                 item.Question = query.FirstOrDefault();
-                            
+
             }
-            foreach (Answer item  in answers)
+            foreach (Answer item in answers)
             {
                 TestResult testResult = new TestResult();
                 testResult.AnwserId = item.Id;
@@ -561,99 +663,133 @@ namespace Repository
             return 1;
         }
 
-        public int Submits( int testId, string listId, int userID)
+        public int Submits(int testId, string listId, int userID)
         {
-            var arrr = listId.Replace('[',' ');
-            var arrrr = arrr.Replace(']', ' ');
-            //var arrr = listId.Remove(0, 0);
-            var arr = arrrr.Split(',');
-            List<Answer> answers = new List<Answer>();
-            foreach (var item in arr)
+            var listTest = context.TestResults.Where(s => s.UserId == userID && s.TestId == testId).Count();
+            if(listTest==0)
             {
-                if(item!=null&&!"".Equals(item))
-                {
-                    int ids = int.Parse(item);
-                    var query = (from Q in context.Questions
-                                 join A in context.Answers
-                                 on Q.Id equals A.Question.Id
-                                 where A.Id == ids
-                                 select A
-                                 ).SingleOrDefault();
-                    answers.Add(query);
-                }
-            else
-                {
-                    TestResult testResult = new TestResult();
-                    testResult.UserId = userID;
-                    testResult.TestId = testId;
-                    testResult.Score = 0;
-                    context.TestResults.Add(testResult);
-                    context.SaveChanges();
-                }
+                SubmitAnswer(testId, listId, userID);
             }
-            //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
-            //foreach(var item in answers)
-            // {
-
-            // }
-            string listQ ="";
-           for(var i=0;i<answers.Count();i++)
+            else
             {
-                for(var j=i+1;j<answers.Count();j++)
+                var listTrue = context.TestResults.OrderByDescending(s => s.Id).Where(s => s.UserId == userID && s.TestId == testId).FirstOrDefault();
+                try
                 {
-                    if(answers[i].Question.Id==answers[j].Question.Id&&answers[i].Id!=answers[j].Id)
-                    {
-                       
 
-                         listQ += answers[i].Id +",";
-                        
+
+                    var arrr = listId.Replace('[', ' ');
+                    var arrrr = arrr.Replace(']', ' ');
+                    //var arrr = listId.Remove(0, 0);
+                    var arr = arrrr.Trim().Split(',');
+                    List<Answer> answers = new List<Answer>();
+                    foreach (var item in arr)
+                    {
+                        if (item != null && !"".Equals(item))
+                        {
+                            int ids = int.Parse(item);
+                            var query = (from Q in context.Questions
+                                         join A in context.Answers
+                                         on Q.Id equals A.Question.Id
+                                         where A.Id == ids
+                                         select A
+                                         ).SingleOrDefault();
+                            answers.Add(query);
+
+
+                        }
+                        else
+                        {
+                            TestResult testResult = new TestResult();
+                            testResult.UserId = userID;
+                            testResult.TestId = testId;
+                            testResult.Score = 0;
+                            testResult.TestTimeNo = listTrue.TestTimeNo + 1;
+                            context.TestResults.Add(testResult);
+                            context.SaveChanges();
+                        }
+                    }
+                    //  var questions = answers.Where(s=>s.Question.Id==answers.c).ToList();
+                    //foreach(var item in answers)
+                    // {
+
+                    // }
+
+                    string listQ = "";
+                    for (var i = 0; i < answers.Count(); i++)
+                    {
+                        for (var j = i + 1; j < answers.Count(); j++)
+                        {
+                            if (answers[i].Question.Id == answers[j].Question.Id && answers[i].Id != answers[j].Id)
+                            {
+
+
+                                listQ += answers[i].Id + ",";
+
+                            }
+                        }
+                    }
+
+                    var listqs = listQ.Split(',');
+                    HashSet<string> listhashset = new HashSet<string>();
+                    foreach (var i in listqs)
+                    {
+                        listhashset.Add(i);
+                    }
+                    foreach (var item in listhashset)
+                    {
+                        if (item != null && !"".Equals(item))
+                        {
+                            var listQuetions_1 = answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault();
+                            TestResult testResult = new TestResult();
+                            testResult.AnwserId = listQuetions_1.Id;
+                            testResult.QuestionId = listQuetions_1.Question.Id;
+                            testResult.UserId = userID;
+                            testResult.TestId = testId;
+                            testResult.Score = 0;
+                            testResult.TestTimeNo = listTrue.TestTimeNo + 1;
+                            context.TestResults.Add(testResult);
+                            context.SaveChanges();
+                            answers.Remove(answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault());
+                        }
+
+                    }
+                    foreach (var item in answers)
+                    {
+                        TestResult testResult = new TestResult();
+                        testResult.AnwserId = item.Id;
+                        testResult.QuestionId = item.Question.Id;
+                        testResult.UserId = userID;
+                        testResult.TestId = testId;
+
+                        if (item.IsTrue == true)
+                        {
+                            testResult.Score = 1;
+                        }
+                        testResult.TestTimeNo = listTrue.TestTimeNo + 1;
+                        context.TestResults.Add(testResult);
+                        context.SaveChanges();
                     }
                 }
+                catch { }
             }
           
-            var listqs = listQ.Split(',');
-            HashSet<string> listhashset = new HashSet<string>();
-           foreach(var i in listqs)
-            {
-                listhashset.Add(i);
-            }
-            foreach(var item in listhashset)
-            {
-                if(item!=null && !"".Equals(item))
-                {
-                    var listQuetions_1 = answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault();
+            //finally
+            //{
+            //    var listLastest = context.TestResults.OrderByDescending(s => s.Id).Where(s => s.TestId == testId && s.UserId == userID&&s.TestTimeNo>0).FirstOrDefault();
+            //    var listFirst = context.TestResults.Where(s => s.TestId == testId && s.UserId == userID && s.TestTimeNo == 0).ToList();
+            //    if(listLastest!=null)
+            //    foreach (var item in listFirst)
+            //    {
+            //        item.TestTimeNo = listLastest.TestTimeNo + 1;
+            //        context.Entry(item).State = EntityState.Modified;
+            //        context.SaveChanges();
+            //    }
+            //}
 
-                    TestResult testResult = new TestResult();
-                    testResult.AnwserId = listQuetions_1.Id;
-                    testResult.QuestionId = listQuetions_1.Question.Id;
-                    testResult.UserId = userID;
-                    testResult.TestId = testId;
-                    testResult.Score = 0;
-                    context.TestResults.Add(testResult);
-                    context.SaveChanges();
-                    answers.Remove(answers.Where(s => s.Id == int.Parse(item)).SingleOrDefault());
-                }
-
-            }
-            foreach(var item in answers)
-            {
-                TestResult testResult = new TestResult();
-                testResult.AnwserId = item.Id;
-                testResult.QuestionId = item.Question.Id;
-                testResult.UserId = userID;
-                testResult.TestId = testId;
-               
-                if(item.IsTrue==true)
-                {
-                    testResult.Score = 1;
-                }
-                context.TestResults.Add(testResult);
-                context.SaveChanges();
-            }
             return 1;
         }
 
-       
+
     }
 
 

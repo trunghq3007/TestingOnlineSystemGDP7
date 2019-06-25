@@ -351,7 +351,7 @@ namespace WebApi.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
-            int userid = 2;
+            int userid = userId;
             var E = JsonConvert.DeserializeObject<List<Answer>>(value.ToString());
             int F = service.Submit(E, testId, userid);
             return JsonConvert.SerializeObject(F, Formatting.Indented, jsonSetting); 

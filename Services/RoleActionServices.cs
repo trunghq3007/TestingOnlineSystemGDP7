@@ -157,13 +157,18 @@ namespace Services
         {
             return roleActionRepository.DeleteActionRole(idAction, idRole);
         }
-        public int InsertRoleAction(int idAction, int idRole)
+        public int InsertRoleAction(RoleAction roleAction)
         {
-            return roleActionRepository.InsertRoleAction(idAction, idRole);
+            return roleActionRepository.InsertRoleAction(roleAction);
         }
         public IEnumerable<Model.Action> GetActionOutRole(int idRole)
         {
             return roleActionRepository.GetActionOutRole(idRole);
+        }
+
+        public int InsertUserGroup(UserGroup userGroup)
+        {
+            throw new NotImplementedException();
         }
     }
 }

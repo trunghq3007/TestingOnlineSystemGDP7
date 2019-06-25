@@ -109,7 +109,17 @@ namespace Services
             return userRepository.Insert(user);
         }
 
+        public int InsertRoleAction(RoleAction roleAction)
+        {
+            throw new NotImplementedException();
+        }
+
         public int InsertUserGroup(int iduser, int idgroup)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertUserGroup(UserGroup userGroup)
         {
             throw new NotImplementedException();
         }

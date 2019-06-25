@@ -34,7 +34,7 @@ namespace Repository.Interfaces
         //Get user not add to group method
         IEnumerable<T> GetUserOutGroup(int idgroup);
         //Add user to group
-        int InsertUserGroup(int iduser, int idgroup);
+        int InsertUserGroup(UserGroup userGroup);
         //Delete user in group
         int DeleteUserGroup(int iduser, int idgroup);
         //Filter user by input
@@ -57,7 +57,7 @@ namespace Repository.Interfaces
         IEnumerable<Model.Action> GetActionInRole(int roleId);
         int DeleteActionRole(int idAction, int idRole);
         // Add Roleaction to role
-        int InsertRoleAction(int idAction, int idRole);
+        int InsertRoleAction(RoleAction roleAction);
         //Get ActionOutRole
         IEnumerable<T> GetActionOutRole(int idRole);
 

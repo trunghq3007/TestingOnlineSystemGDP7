@@ -126,13 +126,18 @@ namespace Repository
             return user;
         }
 
-        public int InsertUserGroup(UserGroup userGroup)
+        public int InsertUserGroup(List<UserGroup>  userGroup)
         {
-            UserGroup item = new UserGroup();
-            item.UserId = userGroup.UserId;
-            item.GroupId = userGroup.GroupId;
-            item.CreatedOn = DateTime.Now;
-            context.UserGroups.Add(item);
+            foreach (var item in userGroup)
+            {
+                UserGroup userGroups = new UserGroup();
+                userGroups.UserId = item.UserId;
+                userGroups.GroupId = item.GroupId;
+                userGroups.CreatedOn = DateTime.Now;
+                context.UserGroups.Add(item);
+            }
+           
+           
             return context.SaveChanges();
         }
 

@@ -124,6 +124,11 @@ namespace Services
             throw new NotImplementedException();
         }
 
+        public int InsertUserGroup(List<UserGroup> userGroup)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Login(string userName, string passWord)
         {
             throw new NotImplementedException();

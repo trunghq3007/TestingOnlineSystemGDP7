@@ -34,7 +34,7 @@ namespace Repository.Interfaces
         //Get user not add to group method
         IEnumerable<T> GetUserOutGroup(int idgroup);
         //Add user to group
-        int InsertUserGroup(UserGroup userGroup);
+        int InsertUserGroup(List<UserGroup> userGroup);
         //Delete user in group
         int DeleteUserGroup(int iduser, int idgroup);
         //Filter user by input

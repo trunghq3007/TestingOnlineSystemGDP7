@@ -114,7 +114,7 @@ namespace Services
             throw new NotImplementedException();
         }
 
-        public int InsertUserGroup(UserGroup userGroup)
+        public int InsertUserGroup(List<UserGroup> userGroup)
         {
             return usergroupRepository.InsertUserGroup(userGroup);
         }

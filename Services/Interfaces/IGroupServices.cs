@@ -36,5 +36,6 @@ namespace Services.Interfaces
         string GetRoleName(int idUser);
         IEnumerable<Model.Action> GetActionInRole(int roleId);
         List<int> GetListAction(string userName);
+        int InsertUserGroup(List<UserGroup> userGroup);
     }
 }

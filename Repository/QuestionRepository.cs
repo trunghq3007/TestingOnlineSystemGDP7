@@ -54,7 +54,7 @@ namespace Repository
 
                 if (model.CategoryId != null && !"".Equals(model.CategoryId))
                 {
-                    if (int.TryParse(model.CategoryId, out int categoryId)) result = result.Where(s => s.Category.Id == categoryId).ToList();
+                    if (int.TryParse(model.CategoryId, out int categoryId)) result = result.Where(s => s.Category?.Id == categoryId).ToList();
                 }
                 if (model.TagsId != null && !"".Equals(model.TagsId))
                 {

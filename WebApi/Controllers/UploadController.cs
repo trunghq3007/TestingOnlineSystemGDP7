@@ -133,7 +133,7 @@ namespace WebApi.Controllers
             {
                 string _tempUploadFolder = ConfigurationManager.AppSettings["MediaTempUploadFolder"];
                 string _storeFolder = ConfigurationManager.AppSettings["ImagesStorePath"];
-                string fileName = "export_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileName = "export_"+"" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string _tempStoreFolder = Server.MapPath(_tempUploadFolder + "/" + fileName);
                 if (!Directory.Exists(_tempStoreFolder)) Directory.CreateDirectory(_tempStoreFolder);
                 var question = service.GetAll().ToList();

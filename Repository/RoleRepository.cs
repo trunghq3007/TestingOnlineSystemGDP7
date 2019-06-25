@@ -194,5 +194,10 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public int InsertUserGroup(List<UserGroup> userGroup)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

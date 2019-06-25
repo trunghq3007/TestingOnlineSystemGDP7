@@ -134,7 +134,7 @@ namespace WebApi.Controllers
             };
             try
             {
-                var userGroupp = JsonConvert.DeserializeObject<UserGroup>(userGroup.ToString());
+                var userGroupp = JsonConvert.DeserializeObject<List<UserGroup>>(userGroup.ToString());
                
                 result.Success = services.InsertUserGroup(userGroupp);
                 return JsonConvert.SerializeObject(result);

@@ -26,5 +26,8 @@ namespace Services.Interfaces
         string GetCategoryName(int idExam);
         IEnumerable<ViewDetailExam> GetDetailExams(int id);
         IEnumerable<T> GetAll();
+
+
+        int Import(List<T> list);
     }
 }

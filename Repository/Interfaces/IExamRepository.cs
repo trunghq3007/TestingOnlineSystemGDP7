@@ -22,5 +22,7 @@ namespace Repository.Interfaces
 		string Export_exam(int id);
         string GetCategoryName(int idExam);
         IEnumerable<ViewDetailExam> GetDetailExams(int id);
+
+        int Import(List<T> list);
     }
 }

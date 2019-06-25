@@ -89,5 +89,10 @@ namespace Services
         {
             return examRepository.GetDetailExams(id);
         }
+
+        public int Import(List<Exam> list)
+        {
+            return examRepository.Import(list);
+        }
     }
 }

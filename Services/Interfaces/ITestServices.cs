@@ -17,7 +17,7 @@ namespace Services.Interfaces
 		int Update(T t);
 		int Delete(int id);
 		T Export_exam(int id);
-		List<ViewDetailTest> GetById(int id);
+        List<object> GetById(int id, int Userid);
         T getByTestId(int id);
 
     }

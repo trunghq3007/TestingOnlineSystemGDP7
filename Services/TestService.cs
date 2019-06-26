@@ -47,10 +47,10 @@ namespace Services
         //          return repository.GetAll();
         //      }
 
-        public List<ViewDetailTest> GetById(int id)
-		{
-            return repository.GetById(id);
-		}
+        public List<object> GetById(int id, int Userid)
+        {
+            return repository.GetById(id, Userid);
+        }
 
         public Test getByTestId(int id)
         {

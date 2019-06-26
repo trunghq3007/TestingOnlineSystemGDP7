@@ -342,8 +342,7 @@ namespace Repository
 
         public int AddMutipleQuestion(List<ExamQuestion> ListModel)
         {
-            try
-            {
+            
                 var check = ListModel.ElementAt(0);
                 var exam = context.Exams.Where(ex => ex.Id == check.ExamId).SingleOrDefault();
 
@@ -413,19 +412,14 @@ namespace Repository
                 }
 
                 return context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                return -2;
-            }
+           
             
         }
 
 
         public int RandomQuestion(ViewQuestionExam model)
         {
-            try
-            {
+           
                 List<ExamQuestion> list = new List<ExamQuestion>();
                 var exam = context.Exams.Where(ex => ex.Id == model.ExamId).SingleOrDefault();
                 var questions = context.Questions.Where(e => e.Category.Name == model.CategoryName && e.Level == model.Type).ToList();
@@ -503,11 +497,7 @@ namespace Repository
 
 
                 return context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                return -2;
-            }
+            
 
            
 
@@ -515,8 +505,7 @@ namespace Repository
 
         public int DeleteMutiple(List<ExamQuestion> ListModel)
         {
-            try
-            {
+            
                 var index = ListModel.ElementAt(0).ExamId;
                 var exam = context.Exams.Where(e => e.Id == index).SingleOrDefault();
                 if (exam.Status == false)
@@ -529,8 +518,7 @@ namespace Repository
 
                         context.Entry(currentQuestion).State = EntityState.Modified;
                         //context.SaveChanges();
-                        try
-                        {
+                       
                             var List = context.ExamQuestions
                                 .Where(eq => eq.ExamId == item.ExamId && eq.QuestionId == item.QuestionId).SingleOrDefault();
                             if (List != null)
@@ -539,12 +527,7 @@ namespace Repository
                             }
 
 
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-
-                        }
+                       
 
 
 
@@ -555,11 +538,7 @@ namespace Repository
                 {
                     return -1;
                 }
-            }
-            catch (Exception e)
-            {
-                return -2;
-            }
+          
            
           
         }

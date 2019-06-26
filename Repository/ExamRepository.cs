@@ -147,13 +147,14 @@ namespace Repository
         });
             return context.SaveChanges();
 		}
-		public IEnumerable<Exam> Search(string searchString)
-		{
-			if (!string.IsNullOrEmpty(searchString))
-			{
-				return context.Exams.Where(s => s.NameExam.Contains(searchString)).ToList();
-			}
-
+        public IEnumerable<Exam> Search(string searchString)
+        {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return context.Exams.Where(s => s.NameExam.Contains(searchString)).ToList();
+            }
+            return context.Exams.ToList();
+        }
 		
 		public int Update(Exam exam)
 		{
@@ -368,7 +369,10 @@ namespace Repository
      
             return list;
         }
-           
-        
+
+        public int Import(List<Exam> list)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

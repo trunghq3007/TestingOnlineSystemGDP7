@@ -372,7 +372,35 @@ namespace Repository
 
         public int Import(List<Exam> list)
         {
-            throw new NotImplementedException();
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    var result = 1;
+                    foreach (var exam in list)
+                    {
+
+                        context.Exams.Add(exam);
+                        result = context.SaveChanges();
+                        if (result <= 0)
+                        {
+                            transaction.Rollback();
+                            return result;
+                        };
+                    }
+
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+
+            }
+
         }
     }
 }

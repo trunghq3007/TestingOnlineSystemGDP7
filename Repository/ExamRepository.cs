@@ -154,8 +154,7 @@ namespace Repository
 				return context.Exams.Where(s => s.NameExam.Contains(searchString)).ToList();
 			}
 
-			return context.Exams.ToList();
-		}
+		
 		public int Update(Exam exam)
 		{
 

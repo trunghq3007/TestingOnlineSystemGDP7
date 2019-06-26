@@ -17,62 +17,51 @@ using System.Drawing;
 
 namespace Repository
 {
-    public class ExamRepository : Interfaces.IExamRepository<Exam>, IDisposable
-    {
-        private DBEntityContext context;
-        public ExamRepository(DBEntityContext context)
-        {
-            this.context = context;
-        }
+	public class ExamRepository : Interfaces.IExamRepository<Exam>, IDisposable
+	{
+		private DBEntityContext context;
+		public ExamRepository(DBEntityContext context)
+		{
+			this.context = context;
+		}
 
-        public int Delete(int id)
-        {
-            List<ExamQuestion> listEQ = new List<ExamQuestion>();
-            var item = context.Exams.Where(s => s.Id == id).SingleOrDefault();
+		public int Delete(int id)
+		{
+			var item = context.Exams.Where(s => s.Id == id).SingleOrDefault();
+			if (item != null)
+			{
+				if (item.Status != true)
+				{
+					context.Exams.Remove(item);
+					return context.SaveChanges();
+				}
+				else
+				{
 
-            if (item != null)
-            {
-                if (item.Status != true)
-                {
-                    listEQ = context.ExamQuestions.Where(s => s.ExamId == item.Id).ToList();
-                    foreach (var eq in listEQ)
-                    {
-                        context.Questions.Remove(context.Questions.Where(s => s.Id == eq.QuestionId).SingleOrDefault());
-                        List<Answer> listAnswer = new List<Answer>();
-                        listAnswer = context.Answers.Where(s => s.Question.Id == eq.QuestionId).ToList();
-                        foreach (var answer in listAnswer)
-                        {
-                            context.Answers.Remove(context.Answers.Where(s => s.Id == answer.Id).SingleOrDefault());
-                        }
+				}
 
-                    }
-                    context.Exams.Remove(item);
-                    context.SaveChanges();
-                    return 1;
-                }
-                else
-                {
-                }
-            }
-            return 0;
-        }
+
+			}
+
+			return 0;
+		}
 
 
 
-        public IEnumerable<Exam> Filter(Exam t)
-        {
-            throw new NotImplementedException();
-        }
+		public IEnumerable<Exam> Filter(Exam t)
+		{
+			throw new NotImplementedException();
+		}
 
-        public IEnumerable<Exam> Filter(ExamFilterModel fillterModel)
-        {
+		public IEnumerable<Exam> Filter(ExamFilterModel fillterModel)
+		{
             var result = context.Exams.ToList();
 
             if (fillterModel.CreateBy != null && !"".Equals(fillterModel.CreateBy))
             {
                 result = result.Where(s => s.CreateBy.Equals(fillterModel.CreateBy)).ToList();
             }
-            if (fillterModel.TypeExam != null && !"".Equals(fillterModel.TypeExam))
+            if (fillterModel.TypeExam !=null &&!"".Equals(fillterModel.TypeExam))
             {
                 result = result.Where(s => s.Category.Name.Equals(fillterModel.TypeExam)).ToList();
             }
@@ -101,15 +90,15 @@ namespace Repository
 
         }
 
-        //public IEnumerable<Exam> GetAll()
-        //{
-        //          return context.Exams.ToList();
-        //      }
+		//public IEnumerable<Exam> GetAll()
+		//{
+  //          return context.Exams.ToList();
+  //      }
 
         public Exam GetById(int id)
         {
             return context.Exams.Where(s => s.Id == id).SingleOrDefault();
-            // return context.Users.Where(s => s.UserId == id).SingleOrDefault();
+           // return context.Users.Where(s => s.UserId == id).SingleOrDefault();
         }
         public IEnumerable<ViewDetailExam> GetDetailExams(int id)
         {
@@ -133,8 +122,16 @@ namespace Repository
 
         }
         public int Insert(Exam exam)
-        {
+		{
             bool status = default(bool);
+            var exams = context.Exams.ToList();
+            foreach (var item in exams)
+            {
+                if (item.NameExam == exam.NameExam)
+                {
+                    return -2;
+                }
+            }
             //exam.Category = context.Categorys.Where(s => s.Category.Id == exam.Id).SingleOrDefault();
             context.Exams.Add(new Exam
             {
@@ -143,52 +140,52 @@ namespace Repository
                 QuestionNumber = exam.QuestionNumber,
                 Status = exam.Status = default(bool),
                 SpaceQuestionNumber = exam.SpaceQuestionNumber,
+                //CreateAt = DateTime.Now,
                 CreateAt = DateTime.Now,
                 Note = exam.Note,
                 Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id)
-            });
+        });
             return context.SaveChanges();
-        }
+		}
         public IEnumerable<Exam> Search(string searchString)
         {
             if (!string.IsNullOrEmpty(searchString))
             {
                 return context.Exams.Where(s => s.NameExam.Contains(searchString)).ToList();
             }
-
             return context.Exams.ToList();
         }
-        public int Update(Exam exam)
-        {
-
-            //exam.CreateAt=DateTime.Now;
-
-            //context.Entry(exam).State = EntityState.Modified;
-            //return context.SaveChanges();
+		
+		public int Update(Exam exam)
+		{
 
             var currentExam = context.Exams.Find(exam.Id);
+            //var currentExam = context.Exams.Find(1000);
             if (currentExam.Status != true)
-            {
-                currentExam.CreateAt = DateTime.Now;
+                {
+                    currentExam.CreateAt = DateTime.Now;
 
 
-                currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
-                //exam.Category = context.Categorys.Where(s => s.Id == currentExam.Category.Id).SingleOrDefault();
+                    currentExam.Category = context.Categorys.SingleOrDefault(s => s.Id == exam.Category.Id);
+                    //exam.Category = context.Categorys.Where(s => s.Id == currentExam.Category.Id).SingleOrDefault();
 
-                currentExam.NameExam = exam.NameExam;
-                currentExam.CreateBy = exam.CreateBy;
-                currentExam.QuestionNumber = exam.QuestionNumber;
-                currentExam.Status = exam.Status;
-                currentExam.SpaceQuestionNumber = exam.SpaceQuestionNumber;
-                //currentExam.Category.Id = exam.Category.Id;
-                currentExam.Note = exam.Note;
+                    currentExam.NameExam = exam.NameExam;
+                    currentExam.CreateBy = exam.CreateBy;
+                    currentExam.QuestionNumber = exam.QuestionNumber;
+                    currentExam.Status = exam.Status;
+                    currentExam.SpaceQuestionNumber = exam.SpaceQuestionNumber;
+                    //currentExam.Category.Id = exam.Category.Id;
+                    currentExam.Note = exam.Note;
 
 
-                context.Entry(currentExam).State = EntityState.Modified;
-                return context.SaveChanges();
-            }
+                    context.Entry(currentExam).State = EntityState.Modified;
+                    return context.SaveChanges();
+                }
+            
+            
+           
             return 0;
-
+           
 
 
         }
@@ -203,54 +200,54 @@ namespace Repository
             return categoryName;
         }
         private bool disposed = false;
-        public void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		public void Dispose(bool disposing)
+		{
+			if (!this.disposed)
+			{
+				if (disposing)
+				{
+					context.Dispose();
+				}
+			}
+			this.disposed = true;
+		}
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
-        public ListFilter listFilters()
-        {
-            ListFilter item = new ListFilter
-            {
-                Listtmetest = new HashSet<float>(),
-                ListCreateBy = new HashSet<string>(),
-                Listquestion = new HashSet<int>(),
+		public ListFilter listFilters()
+		{
+			ListFilter item = new ListFilter
+			{
+				Listtmetest = new HashSet<float>(),
+				ListCreateBy = new HashSet<string>(),
+				Listquestion = new HashSet<int>(),
                 ListTypeExam = new HashSet<string>(),
 
-            };
-            foreach (var it in context.Tests)
-            {
-                item.Listtmetest.Add(it.TestTime);
-            }
-            foreach (var itw in context.Exams)
-            {
-                item.ListCreateBy.Add(itw.CreateBy);
+			};
+			foreach (var it in context.Tests)
+			{
+				item.Listtmetest.Add(it.TestTime);
+			}
+			foreach (var itw in context.Exams)
+			{
+				item.ListCreateBy.Add(itw.CreateBy);
                 item.Listquestion.Add(itw.QuestionNumber);
 
-            }
-            foreach (var item1 in context.Categorys)
-            {
-                item.ListTypeExam.Add(item1.Name);
-            }
+			}
+			foreach (var item1 in context.Categorys)
+			{
+				item.ListTypeExam.Add(item1.Name);
+			}
 
-            return item;
+			return item;
 
-        }
+		}
 
-        public string Export_exam(int id)
-        {
+		public string Export_exam(int id)
+		{
             string Exam = "";
             Exam exam = (from e in context.Exams
                          where e.Id == id
@@ -369,41 +366,13 @@ namespace Repository
         public IEnumerable<Exam> GetAll()
         {
             var list = context.Exams.ToList();
-
+     
             return list;
         }
 
         public int Import(List<Exam> list)
         {
-            using (var transaction = context.Database.BeginTransaction())
-            {
-                try
-                {
-
-                    var result = 1;
-                    foreach (var exam in list)
-                    {
-
-                        context.Exams.Add(exam);
-                        result = context.SaveChanges();
-                        if (result <= 0)
-                        {
-                            transaction.Rollback();
-                            return result;
-                        };
-                    }
-
-                    transaction.Commit();
-                    return result;
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    throw e;
-                }
-
-            }
-
+            throw new NotImplementedException();
         }
     }
 }

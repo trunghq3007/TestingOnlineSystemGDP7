@@ -30,32 +30,31 @@ namespace WebApi.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
-            var model = JsonConvert.DeserializeObject<LoginModel>(value.ToString());
-            var result = new ResultObject();
-            result.Success = services.Login(model, true);
-            if (result.Success == 1)
-            {
-                var user = services.GetByUsername(model.UserName);
-                var listAction = services.GetListAction(user.UserName);
-                //string token = services.createToken(user.UserName);
-                //var userSession = new UserLogin();
-                //userSession.UserName = user.UserName;
-                //userSession.UserId = user.UserId;
-                //userSession.RoleId = user.RoleId;
-                //var listRoleActions = services.GetListAction(model.UserName);
-                //var userContext = new UserContext { CurrentUser = user, ListActionId = listAction.ToList() };
-                //HttpContext.Current.Session[HttpContext.Current.Session.SessionID] = userContext;
 
-                //HttpContext.Current.Session.Add(Commons.CommonConstants.SESSION_CREDENTIALS, listRoleActions);
-                //HttpContext.Current.Session.Add(Commons.CommonConstants.USER_SESSION, userSession);
-                dynamic data = new ExpandoObject();
-                data.ListAction = listAction;
-                //data.Token = token;
-                data.Name = user.UserId;
-                result.Data = JsonConvert.SerializeObject(data);
+            var result = new ResultObject();
+            try
+            {
+                var model = JsonConvert.DeserializeObject<LoginModel>(value.ToString());
+                result.Success = services.Login(model, true);
+                if (result.Success == 1)
+                {
+                    var user = services.GetByUsername(model.UserName);
+                    var listAction = services.GetListAction(user.UserName);
+
+                    dynamic data = new ExpandoObject();
+                    data.ListAction = listAction;
+
+                    data.Name = user.UserId;
+                    result.Data = JsonConvert.SerializeObject(data);
+                    return result;
+                }
                 return result;
             }
-            return result;
+            catch (Exception e)
+            {
+                result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+                return result;
+            }
         }
     }
 }

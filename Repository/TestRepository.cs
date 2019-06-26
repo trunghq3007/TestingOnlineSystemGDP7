@@ -129,27 +129,20 @@ namespace Repository
 			throw new NotImplementedException();
 		}
 
-		
 
-		List<ViewDetailTest> ITestRepository<Test>.GetById(int id)
-		{
-            var query = from t in context.Tests
-                        join ts in context.TestResults on t.Id equals ts.TestId
-                        join u in context.Users on ts.UserId equals u.UserId
-                        join e in context.Exams on t.ExamId equals e.Id
-                        join c in context.Categorys on e.Category.Id equals c.Id
-                        join s in context.SemesterExams on t.SemasterExamId equals s.ID
-                        where t.Id == id
-                        select new ViewDetailTest()
-                        {
-                            Id = t.Id,
-                            NameExam = e.NameExam,
-                            NameCategory = c.Name,
-                            TestName = t.TestName,
-                            NameUser = u.UserName,
-                            SemsesterName = s.SemesterName
-                        };
-            return query.ToList();
+
+        List<object> ITestRepository<Test>.GetById(int id, int Userid)
+        {
+            var query5 = context.TestResults.Where(s => s.TestId == id && s.UserId == Userid).GroupBy(x => new { x.TestTimeNo, x.TestId, x.UserId }).OrderByDescending(x => x.Key.TestTimeNo).Select(x => new { dep = x.Key.TestTimeNo, sum = x.Sum(c => c.Score), x.Key.TestId, x.Key.TestTimeNo }).ToList();
+            List<object> a = new List<object>();
+
+            foreach (var item in query5)
+            {
+                a.Add(item);
+            }
+
+
+            return a;
         }
 
         public IEnumerable<ViewTest> GetAll()

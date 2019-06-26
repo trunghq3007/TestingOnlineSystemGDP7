@@ -69,17 +69,17 @@ namespace WebApi.Controllers
             }
 
         }
-        
+
         [HttpGet]
         [ValidateSSID(ActionId = 56)]
-        public string Get([FromUri]string action,int id)
-		{
+        public string Get([FromUri]string action, int id, int Userid)
+        {
             ResultObject resultt = new ResultObject();
             if ("detail".Equals(action))
             {
                 try
                 {
-                    var result = testServices.GetById(id);
+                    var result = testServices.GetById(id, Userid);
                     return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -91,7 +91,7 @@ namespace WebApi.Controllers
                     return JsonConvert.SerializeObject(resultt);
                 }
             }
-         if ("DetailUpdate".Equals(action))
+            if ("DetailUpdate".Equals(action))
             {
                 try
                 {
@@ -108,13 +108,13 @@ namespace WebApi.Controllers
                 }
             }
             return "false";
-			
+
         }
 
 
 
 
-		[HttpDelete]
+        [HttpDelete]
         [ValidateSSID(ActionId = 58)]
         public string Put(int id)
 		{

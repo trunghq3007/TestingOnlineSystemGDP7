@@ -84,6 +84,7 @@
     <Compile Include="SemesterExam_User.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="TestAssignment.cs" />
     <Compile Include="TestResult.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserDetail.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="ViewModel\ViewDetailTest.cs" />
     <Compile Include="ViewModel\ViewQuestionExam.cs" />
     <Compile Include="ViewModel\ViewTest.cs" />
+    <Compile Include="ViewTestAssignment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

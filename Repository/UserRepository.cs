@@ -166,10 +166,8 @@ namespace Repository
 
         public bool Login(string userName, string passWord)
         {
-            var result = context.Users.Count(x => x.UserName == userName && x.Password == passWord);
-            if (result > 0)
-                return true;
-            else return false;
+	        var result = context.Users.Count(x => x.UserName == userName && x.Password == passWord);
+	        return result > 0;
         }
 
         public User GetByUsername(string userName)

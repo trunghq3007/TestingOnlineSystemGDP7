@@ -12,5 +12,6 @@ namespace Repository.Interfaces
 		List<User> GetById(int id);
 		List<User> GetAll(int id);
 		int Insert(List<TestAssignment> items);
+		int Delete(List<TestAssignment> items);
 	}
 }

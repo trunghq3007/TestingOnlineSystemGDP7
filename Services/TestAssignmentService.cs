@@ -33,5 +33,10 @@ namespace Services
 		{
 			return repository.Insert(items);
 		}
+
+		public int Delete(List<TestAssignment> items)
+		{
+			return repository.Delete(items);
+		}
 	}
 }

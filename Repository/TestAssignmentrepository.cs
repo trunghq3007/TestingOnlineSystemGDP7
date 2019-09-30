@@ -41,6 +41,16 @@ namespace Repository
 			context.TestAssignments.AddRange(items);
 			return context.SaveChanges();
 		}
+
+		public int Delete(List<TestAssignment> items)
+		{
+			foreach (var item in items)
+			{
+				context.TestAssignments.Remove(context.TestAssignments.FirstOrDefault(x=>x.TestId==item.TestId&&x.UserId==item.UserId));
+				
+			}
+			return context.SaveChanges();
+		}
 	}
 }
 

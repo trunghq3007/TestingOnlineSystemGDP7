@@ -63,24 +63,45 @@ namespace WebApi.Controllers
 			}
 			return "true";
 		}
-
-		public string Insert([FromBody] object value)
+		[System.Web.Http.HttpPost]
+		public string Insert([FromUri]string action, [FromBody]object value)
 		{
-			ResultObject resultt = new ResultObject();
-			try
+			if ("AddMutiple".Equals(action))
 			{
-				var testAssignment = JsonConvert.DeserializeObject<List<TestAssignment>>(value.ToString());
-				var result = testAssignmentService.Insert(testAssignment);
-				return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+				ResultObject resultt = new ResultObject();
+				try
 				{
-					ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-				});
+					var testAssignments = JsonConvert.DeserializeObject<List<TestAssignment>>(value.ToString());
+					var add = testAssignmentService.Insert(testAssignments);
+					return JsonConvert.SerializeObject(add);
+				}
+				catch (Exception e)
+				{
+					resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+					return JsonConvert.SerializeObject(resultt);
+				}
+
 			}
-			catch (Exception e)
+
+			if ("DeleteMutiple".Equals(action))
 			{
-				resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
-				return JsonConvert.SerializeObject(resultt);
+				ResultObject resultt = new ResultObject();
+
+				try
+				{
+					var testAssignments = JsonConvert.DeserializeObject<List<TestAssignment>>(value.ToString());
+					var delete = testAssignmentService.Delete(testAssignments);
+					return JsonConvert.SerializeObject(delete);
+				}
+				catch (Exception e)
+				{
+					resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+					return JsonConvert.SerializeObject(resultt);
+				}
+
 			}
+
+			return "true";
 		}
 	}
 }

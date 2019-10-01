@@ -13,8 +13,7 @@ using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
-
-
+	[AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ExamController : ApiController
     {
@@ -48,8 +47,7 @@ namespace WebApi.Controllers
 
 		[HttpGet]
         [ValidateSSID(ActionId = 10)]
-
-        public string GetExam(int id)
+		public string GetExam(int id)
 		{
             ResultObject resultt = new ResultObject();
 

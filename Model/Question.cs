@@ -26,9 +26,11 @@ namespace Model
         public DateTime? CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-
+		[NotMapped]
+        public string Answer { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
         public ICollection<ExamQuestion> ExamQuestions { get; set; }
+
     }
 }

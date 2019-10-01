@@ -13,6 +13,7 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 namespace WebApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+	[AllowAnonymous]
     public class SemesterCustomerController : ApiController
     {
         private SemesterCustomerSevice service;
@@ -72,17 +73,11 @@ namespace WebApi.Controllers
         [ValidateSSID(ActionId = 30)]
         public string getExam(int id)
         {
-         
-            
              var result = service.getDetailExam(id);
                 return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
-
-            
-         
-
         }
         [HttpGet]
         [ValidateSSID(ActionId = 31)]

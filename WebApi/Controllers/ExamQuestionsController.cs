@@ -12,6 +12,7 @@ using WebApi.Commons;
 
 namespace WebApi.Controllers
 {
+	[AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ExamQuestionsController : ApiController
 	{

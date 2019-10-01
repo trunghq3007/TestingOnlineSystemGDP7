@@ -16,7 +16,7 @@ namespace Repository.Interfaces
 		int Update(T t);
 		int Delete(int id);
 		T Export_exam(int id);
-        List<object> GetById(int id, int Userid);
+        List<object> GetById(int id);
         T GetByTestId(int id);
     }
 }

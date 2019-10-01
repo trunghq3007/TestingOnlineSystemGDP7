@@ -58,6 +58,7 @@ namespace Repository
                             E.QuestionNumber,
                             C.Name,
                             T.Id,
+							T.TotalTest
                         };
             examInformation.TestName = query.FirstOrDefault().TestName;
             examInformation.NumberChoiceQuestion = query.FirstOrDefault().QuestionNumber * 3 / 4;
@@ -65,7 +66,7 @@ namespace Repository
             examInformation.TestTime = query.FirstOrDefault().TestTime;
             examInformation.CategoryName = query.FirstOrDefault().Name;
             examInformation.QuestionNumber = query.FirstOrDefault().QuestionNumber;
-            examInformation.TotalScore = 10;
+            examInformation.TotalScore = query.FirstOrDefault().TotalTest;
             return examInformation;
         }
 

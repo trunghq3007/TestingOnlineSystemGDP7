@@ -72,14 +72,14 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [ValidateSSID(ActionId = 56)]
-        public string Get([FromUri]string action, int id, int Userid)
+        public string Get([FromUri]string action, int id)
         {
             ResultObject resultt = new ResultObject();
             if ("detail".Equals(action))
             {
                 try
                 {
-                    var result = testServices.GetById(id, Userid);
+                    var result = testServices.GetById(id);
                     return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore

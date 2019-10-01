@@ -452,6 +452,7 @@
     <Folder Include="Interfaces\" />
     <Folder Include="NewFolder1\" />
     <Folder Include="Providers\" />
+    <Folder Include="Views\TestAssignment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

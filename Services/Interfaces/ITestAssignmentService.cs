@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using Model.ViewModel;
 
 namespace Services.Interfaces
 {
@@ -13,5 +14,7 @@ namespace Services.Interfaces
 		List<User> GetAll(int id);
 		int Insert(List<TestAssignment> items);
 		int Delete(List<TestAssignment> items);
+		List<ViewTestResult> Result(TestResult item);
+		int AddContent(List<Question> items, int userId, int testId);
 	}
 }

@@ -131,14 +131,22 @@ namespace Repository
 
 
 
-        List<object> ITestRepository<Test>.GetById(int id, int Userid)
+        List<object> ITestRepository<Test>.GetById(int id)
         {
-            var query5 = context.TestResults.Where(s => s.TestId == id && s.UserId == Userid).GroupBy(x => new { x.TestTimeNo, x.TestId, x.UserId }).OrderByDescending(x => x.Key.TestTimeNo).Select(x => new { dep = x.Key.TestTimeNo, sum = x.Sum(c => c.Score), x.Key.TestId, x.Key.TestTimeNo }).ToList();
+            var query5 = context.TestResults.Where(s => s.TestId == id).GroupBy(x => new { x.TestTimeNo, x.TestId, x.UserId }).OrderByDescending(x => x.Key.TestTimeNo).Select(x => new { dep = x.Key.TestTimeNo, sum = x.Sum(c => c.Score), x.Key.TestId, x.Key.TestTimeNo,x.Key.UserId }).ToList();
             List<object> a = new List<object>();
 
             foreach (var item in query5)
             {
-                a.Add(item);
+	            var currentUser = context.Users.FirstOrDefault(x => x.UserId == item.UserId);
+                a.Add(new
+                {
+					item.dep,
+					item.sum,
+					item.TestId,
+					item.TestTimeNo,
+					user=currentUser
+                });
             }
 
 

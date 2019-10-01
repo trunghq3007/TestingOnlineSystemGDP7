@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.Cors;
-using System.Web.Mvc;
-using Model;
+﻿using Model;
 using Newtonsoft.Json;
 using Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace WebApi.Controllers
 {
@@ -19,7 +17,32 @@ namespace WebApi.Controllers
 	    {
 		    testAssignmentService = new TestAssignmentService();
 	    }
-		
+	    public string GetResult(int UserId,int TestId,int TestTimeNo)
+	    {
+			    ResultObject resultt = new ResultObject();
+			    try
+			    {
+					var testResult=new TestResult
+					{
+						UserId = UserId,
+						TestId = TestId,
+						TestTimeNo = TestTimeNo
+					};
+				var result = testAssignmentService.Result(testResult);
+				    return JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+				    {
+					    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+				    });
+			    }
+			    catch (Exception e)
+			    {
+				    resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+				    return JsonConvert.SerializeObject(resultt);
+			    }
+
+		    
+		}
+
 		public string Get([FromUri] string action, [FromUri] int id)
 		{
 			if ("GetAll".Contains(action))
@@ -61,8 +84,10 @@ namespace WebApi.Controllers
 				}
 
 			}
+			
 			return "true";
 		}
+
 		[System.Web.Http.HttpPost]
 		public string Insert([FromUri]string action, [FromBody]object value)
 		{
@@ -100,8 +125,27 @@ namespace WebApi.Controllers
 				}
 
 			}
+			
 
 			return "true";
+		}
+
+		[System.Web.Http.HttpPost]
+		public string Add([FromBody] object value, int testId, int userId)
+		{
+			ResultObject resultt = new ResultObject();
+
+			try
+			{
+				var testAssignments = JsonConvert.DeserializeObject<List<Question>>(value.ToString());
+				var addContent = testAssignmentService.AddContent(testAssignments,userId,testId);
+				return JsonConvert.SerializeObject(addContent);
+			}
+			catch (Exception e)
+			{
+				resultt.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
+				return JsonConvert.SerializeObject(resultt);
+			}
 		}
 	}
 }

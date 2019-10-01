@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Model.ViewModel;
 using Repository;
 using Repository.Interfaces;
 using Services.Interfaces;
@@ -37,6 +38,16 @@ namespace Services
 		public int Delete(List<TestAssignment> items)
 		{
 			return repository.Delete(items);
+		}
+
+		public List<ViewTestResult> Result(TestResult item)
+		{
+			return repository.Result(item);
+		}
+
+		public int AddContent(List<Question> items, int userId, int testId)
+		{
+			return repository.AddContent(items, userId, testId);
 		}
 	}
 }

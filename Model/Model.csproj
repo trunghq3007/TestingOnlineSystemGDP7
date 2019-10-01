@@ -90,6 +90,7 @@
     <Compile Include="UserDetail.cs" />
     <Compile Include="UserFilterModel.cs" />
     <Compile Include="UserGroup.cs" />
+    <Compile Include="ViewModel\AnswerModel.cs" />
     <Compile Include="ViewModel\Result.cs" />
     <Compile Include="ViewModel\UserContext.cs" />
     <Compile Include="ViewModel\ViewDetailExam.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="ViewModel\ViewDetailTest.cs" />
     <Compile Include="ViewModel\ViewQuestionExam.cs" />
     <Compile Include="ViewModel\ViewTest.cs" />
+    <Compile Include="ViewModel\ViewTestResult.cs" />
     <Compile Include="ViewTestAssignment.cs" />
   </ItemGroup>
   <ItemGroup>

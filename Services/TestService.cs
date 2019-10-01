@@ -47,9 +47,9 @@ namespace Services
         //          return repository.GetAll();
         //      }
 
-        public List<object> GetById(int id, int Userid)
+        public List<object> GetById(int id)
         {
-            return repository.GetById(id, Userid);
+            return repository.GetById(id);
         }
 
         public Test getByTestId(int id)

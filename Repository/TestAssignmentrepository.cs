@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Model;
+using Model.ViewModel;
 using Repository.Interfaces;
 
 namespace Repository
@@ -50,6 +52,59 @@ namespace Repository
 				
 			}
 			return context.SaveChanges();
+		}
+
+		public List<ViewTestResult> Result(TestResult item)
+		{
+			var test = context.Tests.Find(item.TestId);
+			var queryQuestions = (from t in context.TestResults
+				join q in context.Questions on t.QuestionId equals q.Id
+				where t.TestId == item.TestId && t.UserId == item.UserId && t.TestTimeNo == item.TestTimeNo
+				select new ViewTestResult
+				{
+					Answer = new AnswerModel
+					{
+						Content = t.Content,
+					},
+					Content = q.Content,
+					TestName = test.TestName,
+					TestTime = test.TestTime,
+					Type = q.Type
+				}).ToList();
+			return queryQuestions;
+		}
+
+		public int AddContent(List<Question> items, int userId, int testId)
+		{
+			var checkCount = context.TestResults.OrderByDescending(x=>x.Id).FirstOrDefault(x => x.TestId == testId);
+			var testResult=new TestResult
+			{
+				UserId = userId,
+				Score = (checkCount != null) ? 1 : checkCount.TestTimeNo + 1,
+				TestId = testId,
+				AnwserId = 0
+			};
+			foreach (var item in items)
+			{
+				if (item.Answer != null)
+				{
+					testResult.Content = item.Answer;
+					testResult.QuestionId = item.Id;
+					context.TestResults.Add(testResult);
+					context.SaveChanges();
+				}
+			}
+
+			return context.SaveChanges();
+
+		}
+
+		public int UpdateScore(List<ViewTestResult> items, int userId, int testId)
+		{
+			foreach (var item in items)
+			{
+				
+			}
 		}
 	}
 }

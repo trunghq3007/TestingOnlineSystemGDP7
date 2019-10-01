@@ -97,6 +97,7 @@
     <Compile Include="GroupRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAssignmentRepository.cs" />
     <Compile Include="TestRepository.cs" />
     <Compile Include="UserGroupRepository.cs" />
     <Compile Include="UserRepository.cs" />

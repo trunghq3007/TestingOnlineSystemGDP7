@@ -18,7 +18,7 @@ namespace Repository
         public SemesterExamCustomer(DBEntityContext context)
         {
             this.context = context;
-        }
+        }   
 
         public void Dispose()
         {

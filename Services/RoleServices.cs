@@ -12,7 +12,7 @@ namespace Services
 {
     public class RoleServices : Interfaces.IGroupServices<Role>
     {
-        private IGroupRepository<Role> roleRepository;
+        private IGroupRepository<Role> roleRepository; 
         public RoleServices()
         {
             roleRepository = new RoleRepository(new DBEntityContext());

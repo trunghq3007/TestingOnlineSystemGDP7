@@ -21,7 +21,7 @@ namespace Repository
 	{
 		private DBEntityContext context;
 		public ExamRepository(DBEntityContext context)
-		{
+		{   
 			this.context = context;
 		}
 

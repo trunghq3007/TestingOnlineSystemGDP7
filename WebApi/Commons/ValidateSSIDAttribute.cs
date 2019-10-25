@@ -16,23 +16,23 @@ namespace WebApi.Commons
         public int ActionId { get; set; }
         protected override bool IsAuthorized(HttpActionContext httpContext)
         {
-            var keys = HttpContext.Current.Request.Headers.GetValues("Permission");
-            if (keys == null || keys.Length < 0) return false;
-            else
-            {
-                dynamic data = JsonConvert.DeserializeObject<ExpandoObject>(keys[0]);
-                long userId = data.Name;
+            //var keys = HttpContext.Current.Request.Headers.GetValues("Permission");
+            //if (keys == null || keys.Length < 0) return false;
+            //else
+            //{
+            //    dynamic data = JsonConvert.DeserializeObject<ExpandoObject>(keys[0]);
+            //    long userId = data.Name;
 
 
-                //List<int> listAction = JsonConvert.DeserializeObject<List<int>>(val.ToString());
-                //string UserID = data.Name;
+            //    //List<int> listAction = JsonConvert.DeserializeObject<List<int>>(val.ToString());
+            //    //string UserID = data.Name;
 
-                foreach (var item in data.ListAction)
-                {
-                    if (item == ActionId) return true;
-                }
-            }
-            return false;
+            //    foreach (var item in data.ListAction)
+            //    {
+            //        if (item == ActionId) return true;
+            //    }
+            //}
+            return true;
 
             //var session = (UserLogin)HttpContext.Current.Session[Commons.CommonConstants.USER_SESSION];
             //if (session == null)

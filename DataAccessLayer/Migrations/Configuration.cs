@@ -5,12 +5,11 @@ namespace DataAccessLayer.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.DBEntityContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DataAccessLayer.DBEntityContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-			AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(DataAccessLayer.DBEntityContext context)

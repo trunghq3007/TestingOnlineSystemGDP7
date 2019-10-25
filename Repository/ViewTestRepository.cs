@@ -170,12 +170,17 @@ public	class ViewTestRepository : ITestRepository<ViewTest>, IDisposable
 			throw new NotImplementedException();
 		}
 
-		List<ViewDetailTest> ITestRepository<ViewTest>.GetById(int id)
-		{
-			throw new NotImplementedException();
-		}
+		//List<ViewDetailTest> ITestRepository<ViewTest>.GetById(int id)
+		//{
+		//	throw new NotImplementedException();
+		//}
 
         public ViewTest GetByTestId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<object> ITestRepository<ViewTest>.GetById(int id)
         {
             throw new NotImplementedException();
         }

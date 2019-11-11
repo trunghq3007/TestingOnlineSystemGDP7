@@ -121,7 +121,7 @@ namespace Repository
         {
             context.Configuration.LazyLoadingEnabled = false;
             List<TestResult> testResults = context.TestResults.ToList();
-            List<User> users = context.Users.ToList();
+            //List<User> users = context.Users.ToList();
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
 
@@ -151,13 +151,14 @@ namespace Repository
 
                 result.SemesterName = query2.FirstOrDefault().SemesterName;
 
-                var query3 = from TR in context.TestResults
-                             join U in context.Users
-                             on TR.UserId equals U.UserId
-                             select new { U.FullName, U.Email };
-
-                result.FullName = query3.FirstOrDefault().FullName;
-                result.Email = query3.FirstOrDefault().Email;
+                //var query3 = from TR in context.TestResults
+                //             join U in context.Users
+                //             on TR.UserId equals U.UserId
+                //             select new { U.FullName, U.Email };
+                //var tesst = query3.ToList();
+                var user = context.Users.Find(userId);
+                result.FullName = user.FullName;
+                result.Email = user.Email;
 
                 var query4 = from TR in context.TestResults
 

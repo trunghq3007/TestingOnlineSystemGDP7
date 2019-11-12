@@ -170,14 +170,19 @@ namespace Repository
                 var list = query5.sum;
                 result.Score = Convert.ToInt32(list);
 
-                
 
+
+                // select PassScore from tests t,Exams e where t.examid = e.id and t.id=1021
+
+                var totalQuestion = context.Exams.FirstOrDefault(s => context.Tests.Any(t => t.Id == id && s.Id == t.ExamId))?.QuestionNumber;
 
                 //    result.Score = Convert.ToInt32(testResult.Score);
-                if (result.Score <= 4)
-                    result.Category = "Trượt";
-                else
-                    result.Category = "Đỗ";
+                result.Category = test.PassScore <= result.Score ? "Đỗ" : "Trượt";
+                
+                //if (result.Score <= 4)
+                //    result.Category = "Trượt";
+                //else
+                //    result.Category = "Đỗ";
             }
             catch (Exception ex)
             {

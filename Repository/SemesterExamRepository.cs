@@ -174,11 +174,13 @@ namespace Repository
 
                 // select PassScore from tests t,Exams e where t.examid = e.id and t.id=1021
 
-                var totalQuestion = context.Exams.FirstOrDefault(s => context.Tests.Any(t => t.Id == id && s.Id == t.ExamId))?.QuestionNumber;
-
+                    var TotalQuestion = context.Exams.FirstOrDefault(s => context.Tests.Any(t => t.Id == id && s.Id == t.ExamId))?.QuestionNumber;
+               // DEmo var list1 = TotalQuestion;
+                //result.TotalQuestion = Convert.ToInt32(list1);
                 //    result.Score = Convert.ToInt32(testResult.Score);
                 result.Category = test.PassScore <= result.Score ? "Đỗ" : "Trượt";
-                
+                result.TotalQuestion = TotalQuestion.HasValue ? TotalQuestion.Value : 0;
+
                 //if (result.Score <= 4)
                 //    result.Category = "Trượt";
                 //else

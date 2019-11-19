@@ -244,6 +244,7 @@
     <Compile Include="Commons\HasCredentialAttribute.cs" />
     <Compile Include="Commons\UserLogin.cs" />
     <Compile Include="Commons\ValidateSSIDAttribute.cs" />
+    <Compile Include="Controllers\ExamReportController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\ExamQuestionsController.cs" />

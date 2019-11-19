@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnswerRepository.cs" />
+    <Compile Include="ExamReportRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="Commons\Encryptor.cs" />
     <Compile Include="ExamQuestionResponsitory.cs" />

@@ -15,6 +15,7 @@ namespace Model.ViewModel
         public string Email { get; set; }
         public int Score { get; set; }
         public string Category { get; set; }
+        public int TotalQuestion { get; set; }
 
     }
 }

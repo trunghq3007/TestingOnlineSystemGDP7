@@ -122,6 +122,13 @@
     <None Include="obj\Debug\WebApi.Tests.csprojAssemblyReference.cache" />
     <None Include="obj\Release\WebApi.Tests.csprojAssemblyReference.cache" />
     <None Include="packages.config" />
+    <Content Include="Properties\Web.config" />
+    <Content Include="Properties\Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Properties\Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />

@@ -121,7 +121,7 @@ namespace Repository
         {
             context.Configuration.LazyLoadingEnabled = false;
             List<TestResult> testResults = context.TestResults.ToList();
-            List<User> users = context.Users.ToList();
+            //List<User> users = context.Users.ToList();
             List<Test> tests = context.Tests.ToList();
             List<SemesterExam> semesterExams = context.SemesterExams.ToList();
 
@@ -151,13 +151,14 @@ namespace Repository
 
                 result.SemesterName = query2.FirstOrDefault().SemesterName;
 
-                var query3 = from TR in context.TestResults
-                             join U in context.Users
-                             on TR.UserId equals U.UserId
-                             select new { U.FullName, U.Email };
-
-                result.FullName = query3.FirstOrDefault().FullName;
-                result.Email = query3.FirstOrDefault().Email;
+                //var query3 = from TR in context.TestResults
+                //             join U in context.Users
+                //             on TR.UserId equals U.UserId
+                //             select new { U.FullName, U.Email };
+                //var tesst = query3.ToList();
+                var user = context.Users.Find(userId);
+                result.FullName = user.FullName;
+                result.Email = user.Email;
 
                 var query4 = from TR in context.TestResults
 
@@ -169,14 +170,21 @@ namespace Repository
                 var list = query5.sum;
                 result.Score = Convert.ToInt32(list);
 
-                
 
 
+                // select PassScore from tests t,Exams e where t.examid = e.id and t.id=1021
+
+                    var TotalQuestion = context.Exams.FirstOrDefault(s => context.Tests.Any(t => t.Id == id && s.Id == t.ExamId))?.QuestionNumber;
+               // DEmo var list1 = TotalQuestion;
+                //result.TotalQuestion = Convert.ToInt32(list1);
                 //    result.Score = Convert.ToInt32(testResult.Score);
-                if (result.Score <= 4)
-                    result.Category = "Trượt";
-                else
-                    result.Category = "Đỗ";
+                result.Category = test.PassScore <= result.Score ? "Đỗ" : "Trượt";
+                result.TotalQuestion = TotalQuestion.HasValue ? TotalQuestion.Value : 0;
+
+                //if (result.Score <= 4)
+                //    result.Category = "Trượt";
+                //else
+                //    result.Category = "Đỗ";
             }
             catch (Exception ex)
             {

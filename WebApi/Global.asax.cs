@@ -36,5 +36,38 @@ namespace WebApi
         {
             return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith(WebApiConfig.UrlPrefixRelative);
         }
+        protected void Session_Start(Object sender, EventArgs e)
+        {
+            if (Response.Cookies.Count > 0)
+            {
+
+                foreach (string s in Response.Cookies.AllKeys)
+                {
+
+                    if (s == System.Web.Security.FormsAuthentication.FormsCookieName ||
+
+                        s.ToLower().Equals("asp.net_sessionid"))
+                    {
+
+                        Response.Cookies[s].HttpOnly = false;
+                    }
+                }
+            }
+        }
+        void Application_EndRequest(object sender, EventArgs e)
+        {
+
+            if (Response.Cookies.Count > 0)
+            {
+
+                foreach (string s in Response.Cookies.AllKeys)
+                {
+
+                    Response.Cookies[s].HttpOnly = false;
+                }
+
+            }
+
+        }
     }
 }

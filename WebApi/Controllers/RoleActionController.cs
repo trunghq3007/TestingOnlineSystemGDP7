@@ -38,6 +38,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
+                result.Data = null;
                 result.Message = "EXCEPTION: " + e.Message + "Stack: " + e.StackTrace;
                 return JsonConvert.SerializeObject(result);
             }

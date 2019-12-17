@@ -154,6 +154,7 @@ namespace WebApi.Controllers
                 {
                     var question = JsonConvert.DeserializeObject<Question>(value.ToString());
                     question.Id = id;
+                    string userName = HttpContext.Current.Session["UserName"] as string;
                     result.Success = service.Update(question);
                     return JsonConvert.SerializeObject(result);
                 }

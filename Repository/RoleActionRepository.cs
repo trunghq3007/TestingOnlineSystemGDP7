@@ -76,7 +76,7 @@ namespace Repository
 
         public IEnumerable<Model.Action> GetActionInRole(int roleId)
         {
-            var result = context.Actions.Where(s => s.RoleActions.Where(x => x.RoleId == roleId).Count() > 0);
+            var result = context.Actions.Where(s => s.RoleActions.Where(x => x.RoleId == roleId).Count() > 0).ToList();
             //var result = (from a in context.Actions
             //    join r in context.RoleActions on a.ActionId equals r.ActionId
             //    where r.RoleId == roleId

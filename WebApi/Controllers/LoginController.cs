@@ -46,6 +46,7 @@ namespace WebApi.Controllers
 
                     data.Name = user.UserId;
                     result.Data = JsonConvert.SerializeObject(data);
+                    HttpContext.Current.Session["UserName"] = model.UserName;
                     return result;
                 }
                 return result;
